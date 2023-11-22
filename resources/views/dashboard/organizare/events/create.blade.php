@@ -1,24 +1,52 @@
 @extends('master.dashboard')
 
 @section('content')
-
     <div class="container-fluid">
         <div class="row justify-content-center">
-      
 
             <div class="col-md-9">
                 <div class="card ">
 
                     <div class="card-body m-auto ">
-                        <form action="{{Route('event.store')}}" id="store_event" method="post" enctype="multipart/form-data">
+                        <form action="{{ Route('event.store') }}" id="store_event" method="post" enctype="multipart/form-data">
                             @csrf
-                            <video id="myVideo" class="myVideo" height="900" autoplay loop muted>
-                                <source src="{{asset('storage/compressed/podcast talk show - Made with PosterMyWall.mp4') }}"  type="video/mp4">
+
+                            {{-- Exemple for user --}}
+
+                            <div class="scene">
+                                <div class="card">
+                                    <div class="card__face card__face--front d-flex justify-content-center align-items-center">
+                                        <div class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded" >u can chose image flyer for u event </div>
+                                        <img  id="Myimage_scene" class="Myimage_scene" 
+                                            src="{{ asset('exemple\Black Party Night Club Dj Flyer.png') }}" />
+                                    </div>
+                                    <div class="card__face card__face--back d-flex justify-content-center align-items-center">
+                                        <div class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded" >Or u can chose video flyer for u event </div>
+                                        <video id="myVideo_scene" class="myVideo_scene" autoplay loop muted>
+                                            <source
+                                                src="{{ asset('exemple\videos1700571747_podcast talk show - Made with PosterMyWall.mp4') }}"
+                                                type="video/mp4">
+                                        </video>
+                                    </div>
+                                </div>
+                            </div>
+                            {{--end Exemple for user --}}
+
+                            <img height="900" id="Myimage"
+                                style="  object-fit: fill;
+                            width: 100%;
+                            border-radius:10px; "
+                                src="{{ asset('storage/originals/image/1700574639_16-169348_user-icon-user-white-icon-transparent-clipart.jpg') }}"
+                                alt="">
+                            <video id="myVideo" class="myVideo Myvideo_create" height="900" autoplay loop muted>
+                                <source
+                                    src="{{ asset('storage/compressed/videos1700571747_podcast talk show - Made with PosterMyWall.mp4') }}"
+                                    type="video/mp4">
                             </video>
-                            <div class="video_add_containe" >
+
+                            <div class="video_add_containe">
                                 <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
-                                <input type="file" id="add_file" name="video"
-                                    aria-hidden="true" />
+                                <input type="file" id="add_file" name="video" aria-hidden="true" />
                             </div>
 
 
@@ -198,7 +226,8 @@
                                         <div class="input-group-prepend">
                                             <span class="input-group-text"><i class="far fa-clock"></i></span>
                                         </div>
-                                        <input type="text" name="date" class="form-control float-right" id="reservationtime">
+                                        <input type="text" name="date" class="form-control float-right"
+                                            id="reservationtime">
                                     </div>
                                     <!-- /.input group -->
                                 </div>
@@ -223,7 +252,8 @@
                                     </div>
                                 </nav>
                                 <div class="tab-content" id="nav-tabContent">
-                                    <div class="p-1"><i class="fa fa-plus-square " style="float: left" id="addTabBtn" aria-hidden="true"></i></div>
+                                    <div class="p-1"><i class="fa fa-plus-square " style="float: left" id="addTabBtn"
+                                            aria-hidden="true"></i></div>
                                     <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
                                         aria-labelledby="nav-home-tab">
                                         <button class="close close-tab" type="button" aria-label="Close">
@@ -234,14 +264,15 @@
                                             <textarea class="form-control" name="programme[]" rows="3" placeholder="Programme of the day"></textarea>
                                         </div>
                                     </div>
-                                   
+
                                 </div>
-                                
+
                             </div>
                             <div class="col-12 text-right">
-                                <button type="submit" style="float: right" class="btn btn-block btn-outline-primary mt-3 w-25 ">create</button>
+                                <button type="submit" style="float: right"
+                                    class="btn btn-block btn-outline-primary mt-3 w-25 ">create</button>
                             </div>
-                            
+
                         </form>
                     </div><!-- /.card-body -->
 
@@ -252,57 +283,4 @@
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script>
-
-
-     
-     $('#add_file').on('change' ,function (e) {
-        // Get the video element
-        var video = $('#myVideo')[0];
-        e.preventDefault();
-
-        var videoFile = $(this)[0].files[0];
-        var formData = new FormData();
-
-        formData.append('video', videoFile);
-        var route = "{{Route('event.store')}}";
-
-        // Create a URL for the selected file
-        var videoURL = URL.createObjectURL(videoFile);
-         
-        // Set the video source to the URL
-        $(video).attr('src', videoURL);
-         
-        // Load and play the video
-        video.load();
-        video.play();
-      
-         
-        
-
-        $.ajax({
-            url: route,
-            headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    },
-            method: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (error) {
-                
-                console.log(error);
-            }
-        })
-    });
-    
-</script>
-
-
-
-
 @endsection

@@ -24,6 +24,8 @@ use Illuminate\Support\Facades\Route;
 Route::name('event.')->prefix('event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
+    Route::get('/show', [DashboardController::class, 'show'])->name('show');
+    Route::get('/detail/{slug}', [DashboardController::class, 'detail'])->name('detail');
 });
 
 

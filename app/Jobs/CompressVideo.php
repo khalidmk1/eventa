@@ -25,10 +25,11 @@ class CompressVideo implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($originalPath, $videoName)
+    public function __construct($originalPath, $videoName )
     {
         $this->originalPath = $originalPath;
         $this->videoName = $videoName;
+
     }
 
     /**
@@ -38,15 +39,16 @@ class CompressVideo implements ShouldQueue
      */
     public function handle()
     {
+        
+        $savePath = 'compressed/';
          // Compress the video
          FFMpeg::fromDisk('public')
          ->open($this->originalPath)
          ->export()
          ->toDisk('public')
          ->inFormat(new X264('aac'))
-         ->save('compressed/video' . $this->videoName);
+         ->save($savePath .$this->videoName);
 
-     // Delete the original file
      Storage::disk('public')->delete($this->originalPath);
 
     }

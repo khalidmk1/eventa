@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 use App\Models\Events;
 use App\Jobs\CompressVideo;
+use App\Jobs\CompressImage;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
-
 
 class DashboardController extends Controller
 {
@@ -31,6 +31,13 @@ class DashboardController extends Controller
         return view('');
     }
 
+   
+
+    public function detail($slug){
+        $event = Events::find($slug);
+        return view('dashboard.organizare.events.detail')->with('event' , $event);
+    }
+
      //Controllers of admin
 
    
@@ -38,6 +45,17 @@ class DashboardController extends Controller
 
 
      //Controllers of organizare
+
+
+     public function show(){
+        $events = Events::where('user_id' , auth()->user()->id)->get();
+        $extensions = [];
+
+        foreach ($events as $event) {
+            $extensions[] = pathinfo($event->video, PATHINFO_EXTENSION);
+        }
+        return view('dashboard.organizare.events.show')->with(['events'=>$events , 'extensions' => $extensions]);
+    }
 
     public function create(){
         return view('dashboard.organizare.events.create')->with(['categories'=>$this->categories, 
@@ -53,20 +71,31 @@ class DashboardController extends Controller
 
         $event = new Events();
 
-        $video = $request->video;
-
-       
-
-        if($video){
-            // Store the original file
-            $originalPath = $video->storeAs('originals', $video->getClientOriginalName(), 'public');
-            // Dispatch the job for video compression
-            CompressVideo::dispatch($originalPath, $video->getClientOriginalName());
-            $compressedVideoPath = Storage::disk('public')->path('compressed/' . $video->getClientOriginalName());
-            $event->video = $video->getClientOriginalName();
-        }
-       
+        $video_image = $request->file('video');
+       /*  dd($video_image); */
       
+        $originalName =time().'_'. $video_image->getClientOriginalName();
+        $extension = $video_image->getClientOriginalExtension();
+
+        if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
+            /* dd($originalName); */
+            $storagePath_img = $video_image->storeAs('compressed/', $originalName, 'public');
+             $event->video = $originalName;
+
+        }
+        if(in_array($extension , ['mp4', 'avi', 'mov'])){
+
+
+              // Store the original file
+              $originalPath = $video_image->storeAs('originals/video',$originalName, 'public');
+              // Dispatch the job for video compression
+              CompressVideo::dispatch($originalPath, $originalName);
+             /*  $compressedVideoPath = Storage::disk('public')->path('compressed/videos' .$originalName ); */
+              $event->video = $originalName;
+             
+        }
+        
+        
 
             // Validate the request data
         $validatedData = $request->validate([
@@ -91,15 +120,11 @@ class DashboardController extends Controller
         }
         
         $event->user_id = auth()->user()->id; 
-        $event->title = $validatedData['title'];
         $event->date =$validatedData['date'];
         $event->description = $validatedData['description'];
         $slug = Str::slug($validatedData['title'], '_');
-        $existingSlug = Events::where('slug', $slug)->first();
-        
-        if($existingSlug){
-            $event->slug = $slug. '-' . uniqid();
-        }
+        $event->title = $validatedData['title'];
+        $event->slug = uniqid().'_' .$slug ;
         
         $event->tags = $UploadTags;
         $event->categorie = $UploadCategories;
