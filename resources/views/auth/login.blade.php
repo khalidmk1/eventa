@@ -50,15 +50,9 @@
 @extends('master.landing-page')
 
 @section('content')
-    @if ($errors->any())
-        @foreach ($errors->all() as $error)
-            <div class="alert alert-danger alert-dismissible fade show w-25 m-auto mt-2" role="alert">
-                <strong>{{ $error }}</strong>
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        @endforeach
-    @endif
-    <div class="card style_card centre_card">
+    <div id="ajax-errors-container"></div>
+
+    <div class="card style_card centre_card mb-2" id="card_style">
 
         <div class="card-body ">
             <ul class="nav nav-pills mb-3 justify-content-center" id="pills-tab" role="tablist">
@@ -68,7 +62,7 @@
                 </li>
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="pills-profile-tab" data-bs-toggle="pill" data-bs-target="#pills-profile"
-                        type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Seing up</button>
+                        type="button" role="tab" aria-controls="pills-profile" aria-selected="false">Sing up</button>
                 </li>
             </ul>
             <div class="tab-content" id="pills-tabContent">
@@ -83,7 +77,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label text-white">Password</label>
-                            <input type="password" name="password" class="form-control bg_form" id="exampleInputPassword1">
+                            <input type="password" name="password" class="form-control bg_form" id="exampleInputPassword1" required>
                         </div>
                         <div class="mb-3 form-check">
                             <input type="checkbox" class="form-check-input" id="exampleCheck1">
@@ -95,49 +89,94 @@
                 </div>
                 <div class="tab-pane fade" id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab"
                     tabindex="0">
-                    <form action="{{ Route('register') }}" method="POST">
+                    <form action="{{ Route('register') }}" id="register_user" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col">
-                              <img src="{{ asset('exemple/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg') }}"  id="avatar" class="rounded mx-auto d-block image_avatar" name="image" alt="avatar">
+                                <img src="{{ asset('exemple/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg') }}"
+                                    id="avatar" class="rounded mx-auto d-block image_avatar" 
+                                    alt="avatar">
                                 <div class="video_add_containe">
-                                  <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
-                                  <input type="file" id="add_file" name="video" aria-hidden="true" />
-                              </div>
-  
+                                    <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
+                                    <input type="file" id="add_file" name="image" aria-hidden="true" required  />
+                                </div>
+
                                 <div class="mb-3">
-                                    <label for="irst_name" class="form-label text-white">Name</label>
-                                    <input type="text" value="{{ old('first_name') }}" class="form-control bg_form"
-                                        id="irst_name" aria-describedby="emailHelp" required>
+                                    <label for="first_name" class="form-label text-white">Name</label>
+                                    <input type="text" value="{{ old('first_name') }}" name="first_name"
+                                        class="form-control bg_form" id="irst_name" aria-describedby="emailHelp" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="last_name" class="form-label text-white">Last Name</label>
-                                    <input type="text" value="{{ old('last_name') }}" class="form-control bg_form"
-                                        id="last_name" aria-describedby="emailHelp" required>
+                                    <input type="text" name="last_name" value="{{ old('last_name') }}"
+                                        class="form-control bg_form" id="last_name" aria-describedby="emailHelp" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="exampleInputEmail2" class="form-label text-white">Email</label>
-                                    <input type="email" value="{{ old('email') }}" class="form-control bg_form"
-                                        id="exampleInputEmail2" aria-describedby="emailHelp" required>
+                                    <label for="exampleInputEmail1" class="form-label text-white">Email</label>
+                                    <input type="email" name="email" value="{{ old('email') }}"
+                                        class="form-control bg_form" id="exampleInputEmail1"
+                                        aria-describedby="emailHelp" required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label text-white">Password</label>
                                     <input type="password" name="password" class="form-control bg_form"
-                                        id="exampleInputPassword1"  required>
+                                        id="exampleInputPassword1" required>
                                 </div>
                                 <div class="mb-3">
-                                    <label for="exampleInputPassword2" class="form-label text-white">Confirme Password</label>
+                                    <label for="exampleInputPassword2" class="form-label text-white">Confirme
+                                        Password</label>
                                     <input type="password" class="form-control bg_form" name="password_confirmation"
-                                        id="exampleInputPassword2"  required>
+                                        id="exampleInputPassword2" required>
                                 </div>
 
                             </div>
-                            <div class="col">
-                                2 of 2
+                            <div class="col d-flex flex-column justify-content-center">
+
+                                <div class="mb-3">
+                                    <label class="form-label text-white" for="roleSelect">Sing up as</label>
+                                    <select name="role" class="form-select select_option" id="roleSelect">
+                                        <option value="visiter">Visiter</option>
+                                        <option value="organizer">Organizer</option>
+                                    </select>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label class="form-label text-white" for="phone">Phone Number</label>
+                                    <input type="text" id="phone" class="form-control bg_form"
+                                        placeholder="(00) 555-5555" required name="phone"/>
+                                </div>
+
+                                <div class="mb-3 ">
+                                    <label class="form-label text-white" for="inputGroupSelect01">County</label>
+                                    <select class="form-select select_option" name="county" id="inputGroupSelect01">
+                                        @foreach ($county as $countys)
+                                            <option value="{{ $countys }}">{{ $countys }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+
+                                <div class="mb-3" id="Adresse_hd">
+                                    <label for="Adresse" class="form-label text-white">Adresse</label>
+                                    <input type="text" name="adresse" value="{{ old('Adresse') }}"
+                                        class="form-control bg_form" id="Adresse" aria-describedby="emailHelp">
+                                </div>
+
+                                <div class="mb-3" id="organizationName">
+                                    <label for="organization_name" class="form-label text-white">Name of
+                                        Organization</label>
+                                    <input type="text" value="{{ old('organization_name') }}"
+                                        class="form-control bg_form" id="organization_name" name="organization_name">
+                                </div>
+
+                                <div class="mb-3" id="organizationLink">
+                                    <label for="organization_link" class="form-label text-white">Link of
+                                        Organization</label>
+                                    <input type="text" value="{{ old('organization_link') }}"
+                                        class="form-control bg_form" id="organization_link" name="organization_link">
+                                </div>
+
                             </div>
                         </div>
-
-
 
 
                         <button type="submit" class="btn btn-primary">Sign up</button>
@@ -147,5 +186,4 @@
             </div>
         </div>
     </div>
- 
 @endsection

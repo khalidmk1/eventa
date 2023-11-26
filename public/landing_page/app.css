@@ -9,7 +9,6 @@
 }
 
 .body_login {
-
     background-color: #cccccc;
     height: 340px;
     background-position: center;
@@ -24,6 +23,10 @@
     background: rgba(164, 121, 183, 0.21);
     backdrop-filter: saturate(180%) blur(10px);
     width: 30rem;
+}
+
+.style_card_singup{
+    width: 40rem !important;
 }
 
 .bg_form{
@@ -50,8 +53,8 @@
 /* add avatar input */
 .video_add_containe {
     position: relative;
-    top: -15px;
-    left: 12px;
+    top: -16px;
+    left: 50px;
 }
 
 #add_file {
@@ -108,6 +111,15 @@
 
 .add_icon:active {
     top: 1px;
+}
+
+.select_option{
+    background-color: #08080859;
+    color: #ffffff;
+}
+
+.fade_input{
+    transition: visibility 2s, opacity 0.5s linear;
 }
 
 
