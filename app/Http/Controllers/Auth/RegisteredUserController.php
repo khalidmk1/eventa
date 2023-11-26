@@ -37,9 +37,17 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
+        $image =  $request->image;
+        if($request->hasFile('image')){
+            $filename = time() . '_' . $image->getClientOriginalName();
+            $path = $image->storeAs('avatars', $filename, 'public');
+        }
+
+        $slug =Str::slug($request->first_name,"_");
+
         $user = User::create([
-            'image' => $request->image,
-            'slug' => Str::slug($request->first_name,"_"),
+            'image' =>$filename,
+            'slug' => uniqid().'_'.$slug,
             'first_name' => $request->first_name,
             'last_name' => $request->last_name,
             'role' => 'admin',

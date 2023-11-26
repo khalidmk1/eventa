@@ -1,8 +1,13 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+{{-- <x-guest-layout>
+    @if($errors->any())
+    @foreach ($errors->all() as $error)
+       <div>{{ $error }}</div>
+   @endforeach
+ @endif
+    <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
         @csrf
 
-        <input type="file" name="image" id="">
+        <input type="file" name="image" id="" >
 
         <!-- Name -->
         <div>
@@ -12,8 +17,8 @@
         </div>
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="last_name" />
+            <x-input-label for="last_name" :value="__('last_name')" />
+            <x-text-input id="last_name" class="block mt-1 w-full" type="text" name="last_name" :value="old('last_name')" required autofocus autocomplete="last_name" />
             <x-input-error :messages="$errors->get('last_name')" class="mt-2" />
         </div>
 
@@ -58,3 +63,6 @@
         </div>
     </form>
 </x-guest-layout>
+ --}}
+
+@extends('master.landing-page')

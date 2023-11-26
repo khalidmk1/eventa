@@ -32,7 +32,7 @@
                             </div>
                             {{--end Exemple for user --}}
 
-                            <img height="900" id="Myimage"
+                            <img  height="900" id="Myimage"
                                 style="  object-fit: fill;
                             width: 100%;
                             border-radius:10px; "

@@ -24,7 +24,7 @@ class User extends Authenticatable
         'last_name',
         'role',
         'block',
-        'organization_name',
+        'organization_link',
         'email',
         'password',
     ];

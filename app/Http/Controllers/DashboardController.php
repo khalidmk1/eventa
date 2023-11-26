@@ -33,10 +33,7 @@ class DashboardController extends Controller
 
    
 
-    public function detail($slug){
-        $event = Events::find($slug);
-        return view('dashboard.organizare.events.detail')->with('event' , $event);
-    }
+   
 
      //Controllers of admin
 
@@ -55,6 +52,13 @@ class DashboardController extends Controller
             $extensions[] = pathinfo($event->video, PATHINFO_EXTENSION);
         }
         return view('dashboard.organizare.events.show')->with(['events'=>$events , 'extensions' => $extensions]);
+    }
+
+    public function detail($slug){
+        $event = Events::where('slug' , $slug)->first();
+        $extension =pathinfo($event->video, PATHINFO_EXTENSION);
+        return view('dashboard.organizare.events.detail')->with(['event'=>$event , 
+        'extension'=>$extension]);
     }
 
     public function create(){
