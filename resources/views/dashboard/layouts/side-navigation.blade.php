@@ -46,7 +46,7 @@
 
                   <li class="nav-header">Event</li>
                   <li class="nav-item">
-                      <a href="{{Route('event.create')}}" class="nav-link">
+                      <a href="{{Route('dashboard.event.create')}}" class="nav-link">
                           <i class="nav-icon far fa-calendar-alt"></i>
                           <p>
                               Create
@@ -54,7 +54,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                      <a href="{{route("event.show")}}" class="nav-link">
+                      <a href="{{route("dashboard.event.show")}}" class="nav-link">
                         <i class="nav-icon fa fa-calendar" aria-hidden="true"></i>
                           <p>
                               All 
@@ -62,7 +62,7 @@
                       </a>
                   </li>
                   <li class="nav-item">
-                    <a href="{{Route('dashboard.home')}}" class="nav-link active">
+                    <a href="{{Route('dashboard.profile.edit')}}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Profile</p>
                     </a>

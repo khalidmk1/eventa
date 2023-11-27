@@ -21,11 +21,14 @@ Route::name('home.')->prefix('/')->group(function (){
     Route::get('/', [LandingPageController::class, 'home'])->name('show');
 });
 
+Route::name('dashboard.')->prefix('dashboard')->group(function (){
+    Route::get('/home', [DashboardController::class, 'home'])->name('home');
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+});
+/* ->middleware(['auth','organizare']); */
 
-Route::get('/home', [DashboardController::class, 'home'])->name('dashboard.home')->middleware(['auth','organizare']);
 
-
-Route::name('event.')->prefix('event')->group(function (){
+Route::name('dashboard.event.')->prefix('dashboard/event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
@@ -36,7 +39,7 @@ Route::name('event.')->prefix('event')->group(function (){
 
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+   /*  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); */
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });

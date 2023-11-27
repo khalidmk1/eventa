@@ -8,7 +8,7 @@
                 <div class="card ">
 
                     <div class="card-body m-auto ">
-                        <form action="{{ Route('event.store') }}" id="store_event" method="post" enctype="multipart/form-data">
+                        <form action="{{ Route('dashboard.event.store') }}" id="store_event" method="post" enctype="multipart/form-data">
                             @csrf
 
                             {{-- Exemple for user --}}
