@@ -9,43 +9,42 @@
     <title>Document</title>
 
 
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
     <!-- Google Font: Source Sans Pro -->
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-    <!-- Font Awesome -->
+    <!-- Font Awesome Icons -->
     <link rel="stylesheet" href="../../plugins/fontawesome-free/css/all.min.css">
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <!-- Tempusdominus Bootstrap 4 -->
-    <link rel="stylesheet" href="../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
-    <!-- iCheck -->
-    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
-    <!-- JQVMap -->
-    <link rel="stylesheet" href="../../plugins/jqvmap/jqvmap.min.css">
-    <!-- Theme style -->
-    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
     <!-- overlayScrollbars -->
     <link rel="stylesheet" href="../../plugins/overlayScrollbars/css/OverlayScrollbars.min.css">
-    <!-- Daterange picker -->
-    <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
-    <!-- summernote -->
-    <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
     <!--costume style -->
     <link rel="stylesheet" href="{{ asset('dashboard/app.css') }}">
-    <!-- Bootstrap Color Picker -->
-    <link rel="stylesheet" href="../../plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="../../plugins/daterangepicker/daterangepicker.css">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" href="../../plugins/icheck-bootstrap/icheck-bootstrap.min.css">
     <!-- Select2 -->
     <link rel="stylesheet" href="../../plugins/select2/css/select2.min.css">
     <link rel="stylesheet" href="../../plugins/select2-bootstrap4-theme/select2-bootstrap4.min.css">
+
+    <!-- Tempusdominus Bootstrap 4 -->
+    <link rel="stylesheet" href="../../plugins/tempusdominus-bootstrap-4/css/tempusdominus-bootstrap-4.min.css">
+
     <!-- Bootstrap4 Duallistbox -->
     <link rel="stylesheet" href="../../plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css">
     <!-- BS Stepper -->
     <link rel="stylesheet" href="../../plugins/bs-stepper/css/bs-stepper.min.css">
     <!-- dropzonejs -->
     <link rel="stylesheet" href="../../plugins/dropzone/min/dropzone.min.css">
-
-
-
+    <!-- Theme style -->
+    <link rel="stylesheet" href="../../dist/css/adminlte.min.css">
+    <!-- JQVMap -->
+    <link rel="stylesheet" href="../../plugins/jqvmap/jqvmap.min.css">
+    <!-- summernote -->
+    <link rel="stylesheet" href="../../plugins/summernote/summernote-bs4.min.css">
 
 
 
@@ -88,7 +87,7 @@
 
     </div>
 
-    
+
 
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
@@ -99,7 +98,7 @@
     <!-- jQuery -->
     <script src="../../plugins/jquery/jquery.min.js"></script>
     <!-- jQuery UI 1.11.4 -->
-    <script src="../../plugins/jquery-ui/jquery-ui.min.js"></script>
+    <script src="{{ asset('plugins/jquery-ui/jquery-ui.min.js') }}"></script>
     <!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
     <script>
         $.widget.bridge('uibutton', $.ui.button)
@@ -108,11 +107,7 @@
     <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Sparkline -->
     <script src="../../plugins/sparklines/sparkline.js"></script>
-    <!-- JQVMap -->
-    <script src="../../plugins/jqvmap/jquery.vmap.min.js"></script>
-    <script src="../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
-    <!-- jQuery Knob Chart -->
-    <script src="../../plugins/jquery-knob/jquery.knob.min.js"></script>
+
     <!-- daterangepicker -->
     <script src="../../plugins/moment/moment.min.js"></script>
     <script src="../../plugins/inputmask/jquery.inputmask.min.js"></script>
@@ -135,8 +130,32 @@
     <script src="../../plugins/bootstrap-switch/js/bootstrap-switch.min.js"></script>
     <!-- BS-Stepper -->
     <script src="../../plugins/bs-stepper/js/bs-stepper.min.js"></script>
-    <!-- AdminLTE App -->
-    <script src="../../dist/js/adminlte.min.js"></script>
+    <!-- ChartJS -->
+    <script src="../../plugins/chart.js/Chart.min.js"></script>
+
+    <!-- JQVMap -->
+    <script src="../../plugins/jqvmap/jquery.vmap.min.js"></script>
+    <script src="../../plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
+    <!-- jQuery Knob Chart -->
+    <script src="../../plugins/jquery-knob/jquery.knob.min.js"></script>
+
+    <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+    <script src="../../dist/js/pages/dashboard.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 </body>

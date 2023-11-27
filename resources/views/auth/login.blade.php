@@ -72,18 +72,33 @@
                         @csrf
                         <div class="mb-3">
                             <label for="exampleInputEmail1" class="form-label text-white">Email address</label>
-                            <input type="email" value="{{ old('email') }}" class="form-control bg_form"
+                            <input type="email" name="email" value="{{ old('email') }}" class="form-control bg_form"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" required>
                         </div>
                         <div class="mb-3">
                             <label for="exampleInputPassword1" class="form-label text-white">Password</label>
-                            <input type="password" name="password" class="form-control bg_form" id="exampleInputPassword1" required>
+                            <input type="password" name="password" class="form-control bg_form" id="exampleInputPassword1"
+                                required>
                         </div>
-                        <div class="mb-3 form-check">
-                            <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                            <label class="form-check-label text-white" for="exampleCheck1 " name="remember">Remember
-                                Me</label>
+
+                        <div class="d-flex justify-content-between">
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="exampleCheck1">
+                                <label class="form-check-label text-white" for="exampleCheck1 " name="remember">Remember
+                                    Me</label>
+                            </div>
+                            <div class="mb-3 "> 
+                                @if (Route::has('password.request'))
+                                    <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
+                                        href="{{ route('password.request') }}">
+                                        Forgot your password
+                                    </a>
+                                @endif
+                            </div>
                         </div>
+
+
                         <button type="submit" class="btn btn-primary">Log in</button>
                     </form>
                 </div>
@@ -94,11 +109,10 @@
                         <div class="row">
                             <div class="col">
                                 <img src="{{ asset('exemple/default-avatar-profile-icon-of-social-media-user-photo-image-vector.jpg') }}"
-                                    id="avatar" class="rounded mx-auto d-block image_avatar" 
-                                    alt="avatar">
+                                    id="avatar" class="rounded mx-auto d-block image_avatar" alt="avatar">
                                 <div class="video_add_containe">
                                     <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
-                                    <input type="file" id="add_file" name="image" aria-hidden="true" required  />
+                                    <input type="file" id="add_file" name="image" aria-hidden="true" />
                                 </div>
 
                                 <div class="mb-3">
@@ -113,9 +127,9 @@
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label text-white">Email</label>
-                                    <input type="email" name="email" value="{{ old('email') }}"
-                                        class="form-control bg_form" id="exampleInputEmail1"
-                                        aria-describedby="emailHelp" required>
+                                    <input type="email" name="email" value="{{ old('email') }}" 
+                                        class="form-control bg_form" id="exampleInputEmail1" aria-describedby="emailHelp"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword1" class="form-label text-white">Password</label>
@@ -136,14 +150,14 @@
                                     <label class="form-label text-white" for="roleSelect">Sing up as</label>
                                     <select name="role" class="form-select select_option" id="roleSelect">
                                         <option value="visiter">Visiter</option>
-                                        <option value="organizer">Organizer</option>
+                                        <option value="organizer">organizare</option>
                                     </select>
                                 </div>
 
                                 <div class="mb-3">
                                     <label class="form-label text-white" for="phone">Phone Number</label>
                                     <input type="text" id="phone" class="form-control bg_form"
-                                        placeholder="(00) 555-5555" required name="phone"/>
+                                        placeholder="(00) 555-5555" required name="phone" />
                                 </div>
 
                                 <div class="mb-3 ">
@@ -177,6 +191,7 @@
 
                             </div>
                         </div>
+
 
 
                         <button type="submit" class="btn btn-primary">Sign up</button>

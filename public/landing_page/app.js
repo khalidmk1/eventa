@@ -25,7 +25,6 @@ $(document).ready(function () {
         var conceptName = $(this).val();
         if (conceptName == 'organizer') {
             adresse.slideDown();
-            adresse.show();
             organizationName.slideDown();
             organizationLink.slideDown();
         } else {
@@ -48,11 +47,17 @@ $(document).ready(function () {
         }
     });
 
+
     $('#register_user').submit(function (e) {
         e.preventDefault();
+    
         var formData = new FormData(this);
-
-
+        var loginTab = $('#pills-home-tab');
+        var loginTabContent = $('#pills-home');
+        var signupTab = $('#pills-profile-tab');
+        var signupTabContent = $('#pills-profile');
+        var cardBorder = $('#card_style');
+    
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -61,29 +66,72 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 console.log(response.message);
-                $('#ajax-errors-container').empty();
-                $('#ajax-errors-container').append('<div class="alert alert-success alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>' + response.message + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
-
-                $('#register_user')[0].reset();
+    
+                // Handle success
+                handleSuccess(response, loginTab, loginTabContent, signupTab, signupTabContent, cardBorder);
             },
             error: function (error) {
-
                 console.log(error);
-                // Clear previous errors
-                $('#ajax-errors-container').empty();
-                // Append new errors to the container
-                if (error.responseJSON && error.responseJSON.errors) {
-                    var errors = error.responseJSON.errors;
-                    $.each(errors, function (key, value) {
-                        $('#ajax-errors-container').append('<div class="alert alert-danger alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>' + value + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
-                    });
-                }
-
+    
+                // Handle errors
+                handleErrors(error);
             }
-
-
         });
     });
+    
+    function handleSuccess(response, loginTab, loginTabContent, signupTab, signupTabContent, cardBorder) {
+        $('#ajax-errors-container').empty();
+        $('#ajax-errors-container').append('<div class="alert alert-success alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>' + response.message + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+    
+        // Activate the login tab
+        activateTab(loginTab, loginTabContent);
+    
+        // Deactivate the signup tab
+        deactivateTab(signupTab, signupTabContent);
+    
+        // Toggle the card border style based on the active tab
+        toggleCardBorderStyle(loginTabContent, cardBorder);
+    
+        // Reset the form
+        $('#register_user')[0].reset();
+    }
+    
+    function handleErrors(error) {
+        // Clear previous errors
+        $('#ajax-errors-container').empty();
+    
+        // Append new errors to the container
+        if (error.responseJSON && error.responseJSON.errors) {
+            var errors = error.responseJSON.errors;
+            $.each(errors, function (key, value) {
+                $('#ajax-errors-container').append('<div class="alert alert-danger alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>' + value + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+            });
+        }
+    }
+    
+    function activateTab(tab, tabContent) {
+        tab.addClass('active');
+        tabContent.addClass('show');
+        tabContent.addClass('active');
+    }
+    
+    function deactivateTab(tab, tabContent) {
+        tab.removeClass('active');
+        tabContent.removeClass('show');
+        tabContent.removeClass('active');
+    }
+    
+    function toggleCardBorderStyle(activeTabContent, cardBorder) {
+        if (activeTabContent.hasClass('active')) {
+            cardBorder.addClass('style_card_singup');
+        } else {
+            cardBorder.removeClass('style_card_singup');
+        }
+    }
+
+    
+    
+    
 
 
 

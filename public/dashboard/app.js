@@ -96,6 +96,8 @@ $(document).ready(function () {
             success: function (response) {
                 /* console.log(data); */
 
+                $('#store_event')[0].reset();
+
                 console.log(response);
             },
             error: function (error) {

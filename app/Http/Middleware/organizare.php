@@ -16,6 +16,9 @@ class organizare
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if(auth()->user()->role == 'organizare' && auth()->user()->block == 0){
+            return $next($request);
+        }
+       
     }
 }

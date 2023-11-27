@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingPageController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,23 +17,23 @@ use Illuminate\Support\Facades\Route;
 */
 
 
+Route::name('home.')->prefix('/')->group(function (){
+    Route::get('/', [LandingPageController::class, 'home'])->name('show');
+});
 
-/* Route::get('/', function () {
-    return view('welcome');
-}); */
+
+Route::get('/home', [DashboardController::class, 'home'])->name('dashboard.home')->middleware(['auth','organizare']);
+
 
 Route::name('event.')->prefix('event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
     Route::get('/detail/{slug}', [DashboardController::class, 'detail'])->name('detail');
-});
+})->middleware(['auth','organizer']);
 
 
 
-Route::get('/', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

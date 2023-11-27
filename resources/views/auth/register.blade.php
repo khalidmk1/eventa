@@ -65,4 +65,4 @@
 </x-guest-layout>
  --}}
 
-@extends('master.landing-page')
+{{-- @extends('master.landing-page') --}}

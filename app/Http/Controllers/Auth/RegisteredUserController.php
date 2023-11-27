@@ -45,43 +45,12 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request)
     {
-       /*  $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
-
-        $image =  $request->image;
-        if($request->hasFile('image')){
-            $filename = time() . '_' . $image->getClientOriginalName();
-            $path = $image->storeAs('avatars', $filename, 'public');
-        }
-
-        $slug =Str::slug($request->first_name,"_");
-
-        $user = User::create([
-            'image' =>$filename,
-            'slug' => uniqid().'_'.$slug,
-            'first_name' => $request->first_name,
-            'last_name' => $request->last_name,
-            'role' => 'admin',
-            'organization_name'=>null,
-            'block' => 0,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-
-        event(new Registered($user));
-
-        Auth::login($user);
-
-        return redirect(RouteServiceProvider::HOME); */
 
 
         $user = new User();
        
         $validationRules = [
-           
+            'image' =>['required', 'file'],
             'first_name' => ['required', 'string', 'max:255'],
             'last_name' => ['required', 'string', 'max:255'],
             'role' => ['required', 'string', 'max:255'],
@@ -102,14 +71,14 @@ class RegisteredUserController extends Controller
         $validatForme = $request->validate($validationRules);
         
 
-$avatar = $request->image;
+$avatar = $validatForme['image'];
 
 if($request->hasFile('image')){
     $filename = time() . '_' . $avatar->getClientOriginalName();
     $path = $avatar->storeAs('avatars', $filename, 'public');
 } 
 
-$user->image = $avatar;
+$user->image = $filename;
 $user->first_name = $validatForme['first_name'];
 $user->last_name = $validatForme['last_name'];
 
@@ -117,7 +86,7 @@ $slug =Str::slug($request->first_name,"_");
 $user->slug = uniqid().'_'.$slug;
 
 $user->email = $validatForme['email'];
-$user->password = $validatForme['password'];
+$user->password = Hash::make($validatForme['password']);
 $user->role = $validatForme['role'];
 $user->phone = $validatForme['phone'];
 $user->county = $validatForme['county'];
@@ -127,28 +96,12 @@ $user->organization_link = $validatedForm['organization_link'] ?? null;
 $user->block = false;
 
 
-
-
-
-
-
-/* $user = User::create([
-    'image' =>$filename,
-    'slug' => uniqid().'_'.$slug,
-    'first_name' => $request->first_name,
-    'last_name' => $request->last_name,
-    'role' => 'admin',
-    'organization_name'=>null,
-    'block' => 0,
-    'email' => $request->email,
-    'password' => Hash::make($request->password),
-]); 
-event(new Registered($user));  */
 $user->save();
 
-/* Auth::login($user); */
+
 
 return response()->json(['message' => 'user created successfully']);
+
 }
 }
 

@@ -27,8 +27,8 @@ class DashboardController extends Controller
         'Special interest seminars','Faith-based talks and tours','Flea markets','Community workshops','Volunteering days'];
     }
 
-    public function index(){
-        return view('');
+    public function home(){
+        return view('dashboard.home');
     }
 
    
@@ -114,14 +114,20 @@ class DashboardController extends Controller
         foreach ($validatedData['categories'] as $categorie) {
             $UploadCategories[] = $categorie;
         }
-        
+        $list_categories = join(',', $UploadCategories);
+
+       
         foreach ($validatedData['tags'] as $tag) {
             $UploadTags[] = $tag;
         }
+        $list_tag = join(',' , $UploadTags);
         
+
         foreach($validatedData['programme'] as $programmes) {
             $UploadProgrammes[] = $programmes;
         }
+        $list_programme = join(',' , $UploadProgrammes);
+
         
         $event->user_id = auth()->user()->id; 
         $event->date =$validatedData['date'];
@@ -130,9 +136,9 @@ class DashboardController extends Controller
         $event->title = $validatedData['title'];
         $event->slug = uniqid().'_' .$slug ;
         
-        $event->tags = $UploadTags;
-        $event->categorie = $UploadCategories;
-        $event->programme = $UploadProgrammes;
+        $event->tags = $list_tag;
+        $event->categorie = $list_categories;
+        $event->programme = $list_programme;
 
 
         $event->save();

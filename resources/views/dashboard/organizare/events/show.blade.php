@@ -46,7 +46,7 @@
                                                 {{ $event->date }}
                                             </p>
 
-                                            <p class="info description">{{ $event->description }}</p>
+                                            <p class="info description">{{ strlen($event->description) > 110 ? substr($event->description, 0, 110) . ' ...' : $event->description }}</p>
                                         </div>
                                     </div>
                                     <a href="{{ Route('event.detail', $event->slug) }}" class="action">Detail</a>

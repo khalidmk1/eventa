@@ -16,6 +16,9 @@ class visiter
      */
     public function handle(Request $request, Closure $next)
     {
-        return $next($request);
+        if(auth()->user()->role == 'visiter' && auth()->user()->block == 0){
+            return $next($request);
+        }
+        
     }
 }

@@ -355,3 +355,10 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
     width: 100%;
     border-radius: 10px;
 }
+
+
+/* home dashboard */
+.avatar-costume{
+    height: 200px !important;
+    width: 100% !important;
+}
