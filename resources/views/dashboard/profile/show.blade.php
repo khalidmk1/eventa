@@ -4,7 +4,7 @@
     <div class="container-fluid">
 
         <div class="card card-primary card-outline">
-           
+
             <div class="card-body">
                 <div class="row">
                     <div class="col-5 col-sm-3">
@@ -20,16 +20,48 @@
                         <div class="tab-content" id="vert-tabs-tabContent">
                             <div class="tab-pane text-left fade show active" id="vert-tabs-home" role="tabpanel"
                                 aria-labelledby="vert-tabs-home-tab">
-                                
-                                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin malesuada lacus ullamcorper
-                                dui molestie, sit amet congue quam finibus. Etiam ultricies nunc non magna feugiat commodo.
-                                Etiam odio magna, mollis auctor felis vitae, ullamcorper ornare ligula. Proin pellentesque
-                                tincidunt nisi, vitae ullamcorper felis aliquam id. Pellentesque habitant morbi tristique
-                                senectus et netus et malesuada fames ac turpis egestas. Proin id orci eu lectus blandit
-                                suscipit. Phasellus porta, ante et varius ornare, sem enim sollicitudin eros, at commodo leo
-                                est vitae lacus. Etiam ut porta sem. Proin porttitor porta nisl, id tempor risus rhoncus
-                                quis. In in quam a nibh cursus pulvinar non consequat neque. Mauris lacus elit, condimentum
-                                ac condimentum at, semper vitae lectus. Cras lacinia erat eget sapien porta consectetur.
+
+                                <div class="row justify-content-center">
+                                    <div class="col-md-5">
+
+                                        <!-- Profile Image -->
+                                        <div class="card card-primary card-outline">
+                                            <div class="card-body box-profile">
+                                                <div class="text-center">
+                                                    <img class="profile-user-img  img-fluid img-circle"
+                                                        src="{{asset('storage/avatars/'. $user->image)}}" alt="User profile picture">
+                                                </div>
+
+                                                <h3 class="profile-username text-center">{{$user->first_name.' '.$user->last_name}}</h3>
+
+                                                <p class="text-muted text-center">{{$user->organization_name}}</p>
+
+                                                <ul class="list-group list-group-unbordered mb-3">
+                                                    <li class="list-group-item">
+                                                        <b>Followers</b> <a class="float-right">1,322</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>Following</b> <a class="float-right">543</a>
+                                                    </li>
+                                                    <li class="list-group-item">
+                                                        <b>Friends</b> <a class="float-right">13,287</a>
+                                                    </li>
+                                                </ul>
+
+                                                <a href="#" class="btn btn-primary btn-block"><b>Follow</b></a>
+                                            </div>
+                                            <!-- /.card-body -->
+                                        </div>
+                                        <!-- /.card -->
+
+                                    </div>
+                                    <!-- /.col -->
+
+                                    
+                                </div>
+
+
+
                             </div>
                             <div class="tab-pane fade" id="vert-tabs-profile" role="tabpanel"
                                 aria-labelledby="vert-tabs-profile-tab">
@@ -41,11 +73,11 @@
                                 posuere purus ligula eu lectus. Donec nunc tellus, elementum sit amet ultricies at, posuere
                                 nec nunc. Nunc euismod pellentesque diam.
                             </div>
-                           
+
                         </div>
                     </div>
                 </div>
-               
+
             </div>
             <!-- /.card -->
         </div>

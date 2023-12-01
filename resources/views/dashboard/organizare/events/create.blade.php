@@ -8,20 +8,27 @@
                 <div class="card ">
 
                     <div class="card-body m-auto ">
-                        <form action="{{ Route('dashboard.event.store') }}" id="store_event" method="post" enctype="multipart/form-data">
+                        <form action="{{ Route('dashboard.event.store') }}" id="store_event" method="post"
+                            enctype="multipart/form-data">
                             @csrf
 
                             {{-- Exemple for user --}}
 
                             <div class="scene">
                                 <div class="card">
-                                    <div class="card__face card__face--front d-flex justify-content-center align-items-center">
-                                        <div class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded" >u can chose image flyer for u event </div>
-                                        <img  id="Myimage_scene" class="Myimage_scene" 
+                                    <div
+                                        class="card__face card__face--front d-flex justify-content-center align-items-center">
+                                        <div
+                                            class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                                            u can chose image flyer for u event </div>
+                                        <img id="Myimage_scene" class="Myimage_scene"
                                             src="{{ asset('exemple\Black Party Night Club Dj Flyer.png') }}" />
                                     </div>
-                                    <div class="card__face card__face--back d-flex justify-content-center align-items-center">
-                                        <div class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded" >Or u can chose video flyer for u event </div>
+                                    <div
+                                        class="card__face card__face--back d-flex justify-content-center align-items-center">
+                                        <div
+                                            class="position-absolute paragraphe bg-dark shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+                                            Or u can chose video flyer for u event </div>
                                         <video id="myVideo_scene" class="myVideo_scene" autoplay loop muted>
                                             <source
                                                 src="{{ asset('exemple\videos1700571747_podcast talk show - Made with PosterMyWall.mp4') }}"
@@ -30,9 +37,9 @@
                                     </div>
                                 </div>
                             </div>
-                            {{--end Exemple for user --}}
+                            {{-- end Exemple for user --}}
 
-                            <img  height="900" id="Myimage"
+                            <img height="900" id="Myimage"
                                 style="  object-fit: fill;
                             width: 100%;
                             border-radius:10px; "
@@ -241,6 +248,35 @@
                                     <textarea class="form-control" name="description" rows="3" placeholder="Description"></textarea>
                                 </div>
                             </div>
+
+                            <!-- Date and time -->
+                            <div class="form-group">
+                                <label>Date and time:</label>
+                                <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                                    <input type="text" class="form-control datetimepicker-input"
+                                        data-target="#reservationdatetime" />
+                                    <div class="input-group-append" data-target="#reservationdatetime"
+                                        data-toggle="datetimepicker">
+                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
+
+                            <!-- /.form group -->
+                            {{--     <!-- Date and time -->
+                <div class="form-group">
+                    <label>Date and time:</label>
+                      <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                          <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime_1"/>
+                          <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
+                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                          </div>
+                      </div>
+                  </div>
+                  <!-- /.form group --> --}}
 
                             <div class="col-sm-12">
                                 <label>Programme</label>

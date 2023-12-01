@@ -50,7 +50,15 @@
 @extends('master.landing-page')
 
 @section('content')
-    <div id="ajax-errors-container"></div>
+    <div id="ajax-errors-container">
+
+    </div>
+
+    @if ($errors->any())
+        @foreach ($errors->all() as $error)
+        <div class="alert alert-danger alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>{{ $error }}</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+        @endforeach
+    @endif
 
     <div class="card style_card centre_card mb-2" id="card_style">
 
@@ -82,13 +90,13 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            
+
                             <div class="mb-3 form-check">
                                 <input type="checkbox" class="form-check-input" id="exampleCheck1">
                                 <label class="form-check-label text-white" for="exampleCheck1 " name="remember">Remember
                                     Me</label>
                             </div>
-                            <div class="mb-3 "> 
+                            <div class="mb-3 ">
                                 @if (Route::has('password.request'))
                                     <a class="link-offset-2 link-offset-3-hover link-underline link-underline-opacity-0 link-underline-opacity-75-hover"
                                         href="{{ route('password.request') }}">
@@ -123,11 +131,12 @@
                                 <div class="mb-3">
                                     <label for="last_name" class="form-label text-white">Last Name</label>
                                     <input type="text" name="last_name" value="{{ old('last_name') }}"
-                                        class="form-control bg_form" id="last_name" aria-describedby="emailHelp" required>
+                                        class="form-control bg_form" id="last_name" aria-describedby="emailHelp"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputEmail1" class="form-label text-white">Email</label>
-                                    <input type="email" name="email" value="{{ old('email') }}" 
+                                    <input type="email" name="email" value="{{ old('email') }}"
                                         class="form-control bg_form" id="exampleInputEmail1" aria-describedby="emailHelp"
                                         required>
                                 </div>

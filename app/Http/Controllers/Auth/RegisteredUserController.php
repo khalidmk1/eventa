@@ -60,13 +60,6 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ];
         
-        if ($request->role === 'Organizer') {
-            $validationRules = array_merge($validationRules, [
-                'adresse' => ['required', 'string', 'max:255'],
-                'organization_name' => ['required', 'string', 'max:255'],
-                'organization_link' => ['required', 'string', 'max:255'],
-            ]);
-        }
         
         $validatForme = $request->validate($validationRules);
         
@@ -83,16 +76,15 @@ $user->first_name = $validatForme['first_name'];
 $user->last_name = $validatForme['last_name'];
 
 $slug =Str::slug($request->first_name,"_");
-$user->slug = uniqid().'_'.$slug;
-
+$user->slug = $slug. '_' .uniqid();
 $user->email = $validatForme['email'];
 $user->password = Hash::make($validatForme['password']);
 $user->role = $validatForme['role'];
 $user->phone = $validatForme['phone'];
 $user->county = $validatForme['county'];
-$user->adresse = $validatedForm['adresse'] ?? null;
-$user->organization_name = $validatedForm['organization_name'] ?? null;
-$user->organization_link = $validatedForm['organization_link'] ?? null;
+$user->adresse = $request->adresse;
+$user->organization_name = $request->organization_name;
+$user->organization_link = $request->organization_link;
 $user->block = false;
 
 

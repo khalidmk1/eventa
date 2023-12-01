@@ -21,6 +21,8 @@ return new class extends Migration
             $table->string('categorie')->nullable();
             $table->longText('tags')->nullable();
             $table->string('title')->nullable();
+            $table->string('city')->nullable();
+            $table->string('adresse')->nullable();
             $table->longText('description')->nullable();
             $table->longText('programme')->nullable();
             $table->string('date')->nullable();

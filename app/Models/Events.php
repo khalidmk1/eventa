@@ -18,13 +18,16 @@ class Events extends Model
         'user_id',
         'slug',
         'image',
+        'video',
         'categorie',
         'tags',
         'title',
+        'city',
+        'adresse',
         'description',
         'programme',
-        'date',
-        'video'
+        'date'
+       
     ];
 
     protected $casts = [

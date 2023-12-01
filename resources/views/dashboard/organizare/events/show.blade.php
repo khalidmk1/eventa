@@ -31,7 +31,7 @@
                                     <div class="overlay"></div>
 
                                     <div class="event-info">
-                                        <p class="title">{{ $event->title }}</p>
+                                        <p class="title">{{$event->title}}</p>
                                         <div class="separator"></div>
                                         <p class="info">Bellmore, NY</p>
                                         <p class="price">Free</p>

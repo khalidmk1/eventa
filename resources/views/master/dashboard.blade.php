@@ -49,6 +49,9 @@
 
 
 
+
+
+
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">
@@ -140,8 +143,21 @@
     <!-- jQuery Knob Chart -->
     <script src="../../plugins/jquery-knob/jquery.knob.min.js"></script>
 
+    <!-- dropzonejs -->
+    <script src="../../plugins/dropzone/min/dropzone.min.js"></script>
+
     <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
     <script src="../../dist/js/pages/dashboard.js"></script>
+
+
+
+
+
+
+
+
+
+
 
 
 </body>

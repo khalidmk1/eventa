@@ -362,3 +362,8 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
     height: 200px !important;
     width: 100% !important;
 }
+
+.profile-user-img{
+    width: 136px !important;
+    height: 136px !important;
+}
