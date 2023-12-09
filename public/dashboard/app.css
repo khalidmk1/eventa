@@ -367,3 +367,10 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
     width: 136px !important;
     height: 136px !important;
 }
+
+.edit_profile_image{
+    right: -60px;
+    position: absolute;
+    top: 26px;
+
+}

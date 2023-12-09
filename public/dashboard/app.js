@@ -1,4 +1,24 @@
 $(document).ready(function () {
+
+    /*  show and hide passwords */
+    const togglePasswords = document.querySelectorAll('.toggle-password');
+    togglePasswords.forEach(togglePassword => {
+        togglePassword.addEventListener('click', () => {
+            const passwordField = togglePassword.previousElementSibling; // Select the preceding input field
+            const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordField.setAttribute('type', type);
+            togglePassword.classList.toggle('fa-eye-slash');
+        });
+    });
+
+
+    // show avatar image 
+    var image_avatar = $('#avatar');
+    $('#add_file').on('change', function () {
+        var imageURL = URL.createObjectURL(this.files[0]);
+        image_avatar.attr('src', imageURL);
+    });
+
     // Variables of the inputs
     var tagsToSections = {
         'Sports': $('#sport_tag'),

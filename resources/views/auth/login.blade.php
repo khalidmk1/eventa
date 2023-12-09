@@ -54,9 +54,16 @@
 
     </div>
 
+    
+
     @if ($errors->any())
         @foreach ($errors->all() as $error)
-        <div class="alert alert-danger alert-dismissible fade show w-25 m-auto mt-2" role="alert"><strong>{{ $error }}</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                {{ $error }}.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         @endforeach
     @endif
 
@@ -83,10 +90,14 @@
                             <input type="email" name="email" value="{{ old('email') }}" class="form-control bg_form"
                                 id="exampleInputEmail1" aria-describedby="emailHelp" required>
                         </div>
-                        <div class="mb-3">
+                        <div class="mb-3 ">
                             <label for="exampleInputPassword1" class="form-label text-white">Password</label>
-                            <input type="password" name="password" class="form-control bg_form" id="exampleInputPassword1"
-                                required>
+                            <div class="d-flex position-relative">
+                                <input type="password" name="password" class="form-control bg_form"
+                                    id="exampleInputPassword1" required>
+                                <i class="fa fa-eye text-white position-absolute p-2 toggle-password"
+                                    style="right: 0px;"></i>
+                            </div>
                         </div>
 
                         <div class="d-flex justify-content-between">
@@ -126,7 +137,8 @@
                                 <div class="mb-3">
                                     <label for="first_name" class="form-label text-white">Name</label>
                                     <input type="text" value="{{ old('first_name') }}" name="first_name"
-                                        class="form-control bg_form" id="irst_name" aria-describedby="emailHelp" required>
+                                        class="form-control bg_form" id="irst_name" aria-describedby="emailHelp"
+                                        required>
                                 </div>
                                 <div class="mb-3">
                                     <label for="last_name" class="form-label text-white">Last Name</label>
@@ -140,16 +152,24 @@
                                         class="form-control bg_form" id="exampleInputEmail1" aria-describedby="emailHelp"
                                         required>
                                 </div>
-                                <div class="mb-3">
+                                <div class="mb-3 ">
                                     <label for="exampleInputPassword1" class="form-label text-white">Password</label>
-                                    <input type="password" name="password" class="form-control bg_form"
-                                        id="exampleInputPassword1" required>
+                                    <div class="d-flex position-relative">
+                                        <input type="password" name="password" class="form-control bg_form"
+                                            id="exampleInputPassword1" required>
+                                        <i class="fa fa-eye text-white position-absolute p-2 toggle-password"
+                                            style="right: 0px;"></i>
+                                    </div>
                                 </div>
                                 <div class="mb-3">
                                     <label for="exampleInputPassword2" class="form-label text-white">Confirme
                                         Password</label>
-                                    <input type="password" class="form-control bg_form" name="password_confirmation"
-                                        id="exampleInputPassword2" required>
+                                    <div class="d-flex position-relative">
+                                        <input type="password" class="form-control bg_form " name="password_confirmation"
+                                            id="exampleInputPassword1" required>
+                                        <i class="fa fa-eye text-white position-absolute p-2 toggle-password"
+                                            style="right: 0px;"></i>
+                                    </div>
                                 </div>
 
                             </div>
@@ -210,4 +230,7 @@
             </div>
         </div>
     </div>
+
+
+
 @endsection

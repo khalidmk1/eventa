@@ -24,8 +24,7 @@ Route::name('home.')->prefix('/')->group(function (){
 Route::name('dashboard.')->prefix('dashboard')->group(function (){
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-});
-/* ->middleware(['auth','organizare']); */
+})->middleware(['auth','organizare','admin']);
 
 
 Route::name('dashboard.event.')->prefix('event')->group(function (){
@@ -41,7 +40,7 @@ Route::name('dashboard.event.')->prefix('event')->group(function (){
 Route::middleware('auth')->group(function () {
    /*  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); */
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    /* Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); */
 });
 
 require __DIR__.'/auth.php';
