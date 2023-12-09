@@ -15,7 +15,9 @@ class LandingPageController extends Controller
 
     public function home(){   
         $events = Events::take(3)->get();
+        if($events){
 
+            
     $extensions = [];
     
     foreach ($events as $event) {
@@ -25,6 +27,12 @@ class LandingPageController extends Controller
     }
     
     return view('landing_page.home')->with(['events' => $events, 'extensions' => $extensions , 'categories' => $this->categories ]);
+
+    }else{
+        return view('landing_page.home')->with('status' , 'No event has been created yet');
+    }
+
+
     }
 
 }
