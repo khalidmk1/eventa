@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfileController extends Controller
 {
@@ -32,6 +34,16 @@ class ProfileController extends Controller
 
         $user = $request->user(); 
         // Update individual fields
+
+        if ($request->hasFile('image')) {
+            
+            $originaleName = time() . '_' . $request->file('image')->getClientOriginalName();
+            // Delete the old image if it exists
+             Storage::delete('public/avatars/' . $user->image);
+        
+            $imagePath = $request->file('image')->storeAs('avatars/' , $originaleName , 'public');
+            $user->image = $originaleName;
+        }
       
         $user->first_name = $request->input('first_name');
         $user->last_name = $request->input('last_name');
@@ -50,7 +62,7 @@ class ProfileController extends Controller
         // Save the user
         $user->save();
     
-        return redirect()->route('dashboard.profile.edit')->with('status', 'profile-updated');
+        return redirect()->back()->with('status', 'profile-updated');
     }
 
     /**

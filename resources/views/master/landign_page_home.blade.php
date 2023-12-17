@@ -12,13 +12,23 @@
     <link rel="stylesheet" href="{{ asset('landing_page/app.css') }}">
 
 
+
 </head>
 
 <body>
+    @include('landing_page.layouts.navbar')
+   
+    @yield('content');
+    
+    @include('landing_page.layouts.footer')
+  
 
-    @extends('landing_page.layouts.navbar')
+  
+    
+    
+   
 
-    @yield('content')
+   
 
 
     <script src="{{ asset('landing_page/app.js') }}"></script>

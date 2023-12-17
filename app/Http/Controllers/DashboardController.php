@@ -25,6 +25,7 @@ class DashboardController extends Controller
         $this->Performing_arts_tags =['Entertainment','Fundraiser','Social','Business','Festival','Music','Comedy','Concert','Family','Skating','Food'];
         $this->Community_tags = ['Farmers markets','Fetes and fairs','Parades','Fun runs','Fireworks','Rallies','Fundraising events','Night markets',
         'Special interest seminars','Faith-based talks and tours','Flea markets','Community workshops','Volunteering days'];
+
     }
 
     public function home(){
@@ -116,19 +117,19 @@ class DashboardController extends Controller
         foreach ($validatedData['categories'] as $categorie) {
             $UploadCategories[] = $categorie;
         }
-        $list_categories = join(',', $UploadCategories);
+       
 
        
         foreach ($validatedData['tags'] as $tag) {
             $UploadTags[] = $tag;
         }
-        $list_tag = join(',' , $UploadTags);
+        
         
 
         foreach($validatedData['programme'] as $programmes) {
             $UploadProgrammes[] = $programmes;
         }
-        $list_programme = join(',' , $UploadProgrammes);
+        
 
         
         $event->user_id = auth()->user()->id; 
@@ -136,21 +137,14 @@ class DashboardController extends Controller
         $event->description = $validatedData['description'];
         $slug = Str::slug($validatedData['title'], '_');
         $event->title = $validatedData['title'];
-        $event->slug = uniqid().'_' .$slug ;
+        $event->slug = $slug.'_' .uniqid()  ;
         
-        $event->tags = $list_tag;
-        $event->categorie = $list_categories;
-        $event->programme = $list_programme;
+        $event->tags = $UploadTags;
+        $event->categorie = $UploadCategories;
+        $event->programme = $UploadProgrammes;
 
 
         $event->save();
-
-
-
-  
-
-
-
 
 
 

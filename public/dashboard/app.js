@@ -42,9 +42,9 @@ $(document).ready(function () {
 
         Object.entries(tagsToSections).forEach(([tag, section]) => {
             if (checkedValues.indexOf(tag) !== -1) {
-                section.show();
+                section.slideDown();
             } else {
-                section.hide();
+                section.slideUp();
             }
         });
 

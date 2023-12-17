@@ -1,7 +1,8 @@
 
+
 // avatar show image 
 var image_avatar = $('#avatar');
-$('#add_file').on('change', function () {
+$('#formFileSm').on('change', function () {
     var imageURL = URL.createObjectURL(this.files[0]);
     image_avatar.attr('src', imageURL);
 });
@@ -12,14 +13,14 @@ $(document).ready(function () {
     //randome color
     var random_color = ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-dark'];
 
-$('.randomcolor').each(function (i, el) {
-    var randomIndex = Math.floor(Math.random() * random_color.length);
-    var randomClass = random_color[randomIndex];
+    $('.randomcolor').each(function (i, el) {
+        var randomIndex = Math.floor(Math.random() * random_color.length);
+        var randomClass = random_color[randomIndex];
 
-    $(el).addClass(randomClass);
-});
+        $(el).addClass(randomClass);
+    });
 
-    
+
 
     // mask phone number 
     var phoneInput = document.getElementById('phone');
@@ -40,10 +41,6 @@ $('.randomcolor').each(function (i, el) {
             togglePassword.classList.toggle('fa-eye-slash');
         });
     });
-
-
-
-
 
 
 
@@ -168,13 +165,171 @@ $('.randomcolor').each(function (i, el) {
 
 });
 
+$(document).ready(function () {
+    // search tags in the show event landing page 
+
+    // Variables of the inputs
+    var tagsToSections = {
+        'Sports': $('#sport_tag'),
+        'Conferences': $('#Conferences_tag'),
+        'Expos': $('#expos_tag'),
+        'Concerts': $('#concerts_tag'),
+        'Festivals': $('#Festivals_tag'),
+        'Performing arts': $('#Performing_arts_tag'),
+        'Community': $('#Community_tag')
+    };
+
+    Object.values(tagsToSections).forEach(section => section.hide());
+
+    $('.checked').on('change', function () {
+        var checkedValues = [];
+
+        $('.checked:checked').each(function () {
+            checkedValues.push($(this).val());
+        });
+
+
+        Object.entries(tagsToSections).forEach(([tag, section]) => {
+            if (checkedValues.indexOf(tag) !== -1) {
+                section.slideDown();
+            } else {
+                section.slideUp();
+            }
+        });
+
+
+    });
+    var selectedTags = []; // Declare selectedTags in a higher scope
+
+    // Attach a change event listener to checkboxes
+    $('.checked_tag').on('change', function () {
+        // Fetch selected checkbox values
+        selectedTags = [];
+        $('.checked_tag:checked').each(function () {
+            selectedTags.push($(this).val());
+        });
+
+    });
+
+
+    var selectedCategorie = [];
+
+    // Attach a change event listener to checkboxes
+    $('.checked_categorie').on('change', function () {
+        // Fetch selected checkbox values
+        selectedCategorie = [];
+        $('.checked_categorie:checked').each(function () {
+            selectedCategorie.push($(this).val());
+        });
+
+    });
+
+
+    var city; // Declare city in a higher scope
+
+    $('#city').on('change', function () {
+        city = $(this).val();
+    });
+
+    $('#search_forme').submit(function (e) {
+        e.preventDefault();
+        var title = $('#title').val();
+        console.log(selectedCategorie);
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            data: {
+                'title': title,
+                'categorie': selectedCategorie,
+                'tags': selectedTags,
+                'city': city
+            },
+            success: function (data) {
+
+                $('.all_content').hide();
+
+                $('.event_conatine').empty();
+
+                var output = ' ';
+
+
+                if (data.length > 0) {
+
+                    data.forEach(event => {
+                        const extension = event.video.split('.').pop().toLowerCase();
+
+                        output += `
+        <div class="col">
+            <div class="card h-100 shadow-lg border-0 mb-5 p-0 rounded">
+                <div class="position-relative">
+                    <span class="position-absolute price">Free</span>`;
+
+                        if (['mp4', 'avi', 'mov'].includes(extension)) {
+                            output += `
+            <video class="card-img-top about_vid w-100" autoplay loop muted>
+                <source src="/storage/compressed/${event.video}" type="video/mp4">
+            </video>`;
+                        } else if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+                            output += `<img src="/storage/compressed/${event.video}" class="card-img-top about_img" alt="Skyscrapers"/>`;
+                        }
+
+                        output += `
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">${event.title}</h5>
+                    <p class="card-text">${event.description.length > 200 ? event.description.substring(0, 200) + ' ...' : event.description}</p>
+                </div>
+                <a href="/event/${event.slug}">detail</a>
+                <div class="card-footer border-0 text-center">
+                    <small class="text-muted">${event.categorie}</small>
+                </div>
+            </div>
+        </div>`;
+
+                        $('.event_conatine').append(output);
+                        output = ' '
+
+                    });
+
+
+                }
+
+
+
+            },
+            error: function (error) {
+                console.log(error);
+
+            }
+        });
+    });
+
+
+
+})
+
 
 
 
 
 // slider 
+var screenWidth = window.innerWidth;
 
-
+var swiper = new Swiper(".mySwiper", {
+    slidesPerView: screenWidth < 576 ? 1 : (screenWidth <= 768 ? 3 : 3),
+    spaceBetween: 30,
+    slidesPerGroup: 3,
+    loop: true,
+    loopFillGroupWithBlank: true,
+    pagination: {
+        el: ".swiper-pagination",
+        clickable: true,
+    },
+    navigation: {
+        nextEl: ".swiper-button-next",
+        prevEl: ".swiper-button-prev",
+    },
+});
 
 
 

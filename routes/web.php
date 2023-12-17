@@ -17,9 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 
-Route::name('home.')->prefix('/')->group(function (){
-    Route::get('/', [LandingPageController::class, 'home'])->name('show');
-});
+
 
 Route::name('dashboard.')->prefix('dashboard')->group(function (){
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
@@ -33,6 +31,14 @@ Route::name('dashboard.event.')->prefix('event')->group(function (){
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
     Route::get('/detail/{slug}', [DashboardController::class, 'detail'])->name('detail');
 })->middleware(['auth','organizer']);
+
+Route::name('home.')->prefix('/')->group(function (){
+    Route::get('/', [LandingPageController::class, 'home'])->name('show');
+    Route::get('events',[LandingPageController::class, 'show'])->name('event');
+    Route::get('event/{slug}',[LandingPageController::class, 'detail'])->name('detail');
+    Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
+    Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
+})->middleware(['visiter']);
 
 
 
