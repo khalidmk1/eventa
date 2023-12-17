@@ -279,7 +279,10 @@ $(document).ready(function () {
                     <h5 class="card-title">${event.title}</h5>
                     <p class="card-text">${event.description.length > 200 ? event.description.substring(0, 200) + ' ...' : event.description}</p>
                 </div>
-                <a href="/event/${event.slug}">detail</a>
+                <div class="text-center">
+                <a class="btn btn-info w-25 mb-2" href="/event/${event.slug}">detail -></a>
+                </div>
+               
                 <div class="card-footer border-0 text-center">
                     <small class="text-muted">${event.categorie}</small>
                 </div>

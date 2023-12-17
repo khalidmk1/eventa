@@ -191,9 +191,9 @@ class LandingPageController extends Controller
         }
     
        // Save the user
-    $user->save();
-
-    return redirect()->back()->with('status', 'Profile updated successfully');
+       $user->save();
+       
+       return redirect()->back()->with('status', 'Profile updated successfully');
 
     }
 

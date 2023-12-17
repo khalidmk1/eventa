@@ -13,6 +13,16 @@
         <div class="row">
 
             <div class="col-sm-4  mt-4 ">
+
+                @if ($errors->updatePassword->any())
+                    @foreach ($errors->updatePassword->all() as $error)
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $error }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endforeach
+                @endif
+
                 @if ($errors->any())
                     @foreach ($errors->all() as $error)
                         <div class="alert alert-danger alert-dismissible fade show" role="alert">
@@ -28,6 +38,7 @@
                         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
                 @endif
+
                 <div class="card shadow p-1 bg-body-tertiary">
                     <div class="card-body">
 
@@ -93,7 +104,12 @@
                                         {{ strlen($event->description) > 200 ? substr($event->description, 0, 200) . ' ...' : $event->description }}
                                     </p>
                                 </div>
-                                <a href="{{ Route('home.detail', $event->slug) }}">detail</a>
+
+                                <div class="text-center">
+                                    <a class="btn btn-info w-25 mb-2"
+                                        href="{{ Route('home.detail', $event->slug) }}">detail -></a>
+                                </div>
+
                                 <div class="card-footer border-0 text-center">
                                     @foreach ($event->categorie as $index => $categorie)
                                         @if ($index == 3)
@@ -148,12 +164,9 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-12"><label for=""
-                                    class="labels">Country</label>{{-- <input type="text"
-                                class="form-control" placeholder="country" value="{{ $user->county }}"
-                                name="county"> --}}
+                            <div class="col-md-12"><label for="city" class="labels">Country</label>
                                 <select class="form-select form-select-sm" name="county"
-                                    aria-label=".form-select-sm example">
+                                    aria-label=".form-select-sm example" id="city">
                                     <option class="selected" value="{{ $user->county }}">{{ $user->county }}
                                     </option>
                                     @foreach ($city as $city)

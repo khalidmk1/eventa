@@ -1,5 +1,5 @@
 <ul class="nav bg-body-nav w-100 p-3  justify-content-evenly">
-    <a class="navbar-brand logo_style m-2" href="#">EVENTA</a>
+    <a class="navbar-brand logo_style m-2" href="{{Route('home.show')}}">EVENTA</a>
 
     <ul class="nav">
         @auth

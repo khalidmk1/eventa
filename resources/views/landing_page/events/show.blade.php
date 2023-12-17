@@ -267,7 +267,10 @@
                                         {{ strlen($event->description) > 200 ? substr($event->description, 0, 200) . ' ...' : $event->description }}
                                     </p>
                                 </div>
-                                <a href="{{ Route('home.detail', $event->slug) }}">detail</a>
+                                <div class="text-center">
+                                    <a class="btn btn-info w-25 mb-2" href="{{ Route('home.detail', $event->slug) }}">detail -></a>
+                                </div>
+                               
                                 <div class="card-footer border-0 text-center">
                                     @foreach ($event->categorie as $index => $categorie)
                                     @if ($index == 3)
