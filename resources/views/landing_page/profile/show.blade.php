@@ -9,8 +9,25 @@
 
 
     <div class="container text-center">
+
         <div class="row">
+
             <div class="col-sm-4  mt-4 ">
+                @if ($errors->any())
+                    @foreach ($errors->all() as $error)
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <i class="fa-solid fa-triangle-exclamation"></i> {{ $error }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endforeach
+                @endif
+
+                @if (session('status'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <i class="fa-regular fa-circle-check"></i> {{ session('status') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
                 <div class="card shadow p-1 bg-body-tertiary">
                     <div class="card-body">
 
@@ -21,9 +38,9 @@
                         <h6 class="card-subtitle mb-2 text-body-secondary">{{ $user->organization_name }}</h6>
                         <p class="card-text"><i class="fa-solid fa-phone"></i> {{ $user->phone }}</p>
                         @if ($user->organization_link)
-                        <p class="card-text"><a href="{{ $user->organization_link }}"
-                            class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
-                            <i class="fa-solid fa-link"></i> website</a></p>
+                            <p class="card-text"><a href="{{ $user->organization_link }}"
+                                    class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                    <i class="fa-solid fa-link"></i> website</a></p>
                         @endif
                         <ul class="nav nav-pills mb-3 justify-content-between" id="pills-tab" role="tablist">
                             <li class="nav-item" role="presentation">
@@ -94,7 +111,7 @@
 
             <div class="row shadow p-1 mt-4 bg-body-tertiary rounded row-cols-1 row-cols-md-2 g-4 tab-pane fade "
                 id="pills-profile" role="tabpanel" aria-labelledby="pills-profile-tab" tabindex="0">
-                <form class="row" action="{{ route('home.update' , $user->id) }}" method="post"
+                <form class="row" action="{{ route('home.update', $user->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     @method('put')
@@ -106,8 +123,9 @@
                             </div>
                             <div class="mb-3">
                                 <label for="formFileSm" class="form-label">choose image</label>
-                                <input class="form-control form-control-sm" id="formFileSm" name="image" type="file">
-                              </div>
+                                <input class="form-control form-control-sm" id="formFileSm" name="image"
+                                    type="file">
+                            </div>
                             <div class="row mt-2">
                                 <div class="col-md-6"><label class="labels">First Name</label><input type="text"
                                         class="form-control" placeholder="first name" name="first_name"
@@ -123,23 +141,26 @@
                                         Number</label><input type="text" class="form-control" name="phone"
                                         placeholder="enter phone number" value="{{ $user->phone }}">
                                 </div>
-                              
+
                                 <div class="col-md-12"><label class="labels">Email</label><input type="email"
                                         class="form-control" name="email" placeholder="enter email "
                                         value="{{ $user->email }}">
                                 </div>
-                              
+
                             </div>
-                            <div class="col-md-12"><label for="" class="labels">Country</label>{{-- <input type="text"
+                            <div class="col-md-12"><label for=""
+                                    class="labels">Country</label>{{-- <input type="text"
                                 class="form-control" placeholder="country" value="{{ $user->county }}"
                                 name="county"> --}}
-                                <select class="form-select form-select-sm" name="county" aria-label=".form-select-sm example">
-                                    <option class="selected"  value="{{$user->county}}">{{$user->county}}</option>
-                                    @foreach ( $city as $city )
-                                    <option value="{{$city}}">{{$city}}</option>
+                                <select class="form-select form-select-sm" name="county"
+                                    aria-label=".form-select-sm example">
+                                    <option class="selected" value="{{ $user->county }}">{{ $user->county }}
+                                    </option>
+                                    @foreach ($city as $city)
+                                        <option value="{{ $city }}">{{ $city }}</option>
                                     @endforeach
-                                  </select>
-                        </div>
+                                </select>
+                            </div>
                             <div class="mt-5 text-center">
                                 <button class="btn btn-primary profile-button" type="submit">Edit
                                     Profile</button>
@@ -203,6 +224,6 @@
     </div>
 </div>
 
- <!-- Include jQuery library -->
- <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+<!-- Include jQuery library -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 @endsection

@@ -158,6 +158,17 @@ class LandingPageController extends Controller
     public function update(Request $request){
 
         $user = $request->user(); 
+         // Validation rules
+         $rules = [
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+            'phone' => ['required', 'regex:/^[0-9\(\)\s\-]+$/'],
+            'email' => 'required|email|max:255',
+            'county' => 'required|string|max:255',
+        ];
+
+        $validatedData = $request->validate($rules);
+       
        
 
         if ($request->hasFile('image')) {
@@ -169,15 +180,9 @@ class LandingPageController extends Controller
             $imagePath = $request->file('image')->storeAs('avatars/' , $originaleName , 'public');
             $user->image = $originaleName;
         }
+
+        $user->fill($validatedData);
        
-        // Update individual fields
-      
-        $user->first_name = $request->input('first_name');
-        $user->county = $request->input('county');
-        $user->last_name = $request->input('last_name');
-        $user->phone = $request->input('phone');
-        $user->email = $request->input('email');
-        $user->county = $request->input('county');
 
     
         // Check if email is updated
@@ -185,10 +190,10 @@ class LandingPageController extends Controller
             $user->email_verified_at = null;
         }
     
-        // Save the user
-        $user->save();
-    
-        return redirect()->back()->with('status', 'profile-updated');
+       // Save the user
+    $user->save();
+
+    return redirect()->back()->with('status', 'Profile updated successfully');
 
     }
 

@@ -17,18 +17,18 @@
 
 <body>
     @include('landing_page.layouts.navbar')
-   
+
     @yield('content');
-    
+
     @include('landing_page.layouts.footer')
-  
 
-  
-    
-    
-   
 
-   
+
+
+
+
+
+
 
 
     <script src="{{ asset('landing_page/app.js') }}"></script>
