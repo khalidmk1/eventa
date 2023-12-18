@@ -15,6 +15,18 @@ class DashboardController extends Controller
 {
 
     public function __construct(){
+        $this->city=["Casablanca","El Kelaa des Srarhna","Fès","Tangier","Marrakech","Sale","Mediouna","Rabat",
+        "Meknès","Oujda-Angad","Kenitra","Agadir","Tétouan","Taourirt","Temara","Safi","Khénifra","Laâyoune","Mohammedia",
+        "Kouribga","El Jadid","Béni Mellal","Ait Melloul","Nador","Taza","Settat","Barrechid","Al Khmissat","Inezgane",
+        "Ksar El Kebir","Larache","Guelmim","Berkane","Khemis Sahel","Ad Dakhla","Bouskoura","Al Fqih Ben Çalah",
+        "Oued Zem","Sidi Slimane","Errachidia","Guercif","Oulad Teïma","Ben Guerir","Sefrou","Fnidq","Sidi Qacem",
+        "Moulay Abdallah","Youssoufia","Martil","Aïn Harrouda","Skhirate","Ouezzane","Sidi Yahya Zaer",
+        "Al Hoceïma","M’diq","Sidi Bennour","Midalt","Azrou","My Drarga","Ain El Aouda","Beni Yakhlef","Ad Darwa",
+        "Al Aaroui","Qasbat Tadla","Boujad","Jerada","Mrirt","El Aïoun","Azemmour","Temsia","Zagora","Ait Ourir",
+        "Aziylal","Sidi Yahia El Gharb","Biougra","Zaïo","Aguelmous","El Hajeb","Zeghanghane","Imzouren","Tit Mellil",
+        "Mechraa Bel Ksiri","Al ’Attawia","Demnat","Arfoud","Tameslouht","Bou Arfa","Sidi Smai’il","Souk et Tnine Jorf el Mellah",
+        "Mehdya","Aïn Taoujdat","Chichaoua","Tahla","Oulad Yaïch","Moulay Bousselham","Iheddadene","Missour","Zawyat ech Cheïkh",
+        "Bouknadel","Oulad Tayeb","Oulad Barhil","Bir Jdid","Tifariti"];
         $this->categories = ['Sports', 'Conferences' , 'Expos' , 'Concerts' , 'Festivals' , 'Performing arts' ,'Community'];
         $this->sport_tags = ['american football' ,'basketball' , 'cricket' , 'baseball','NFL','NCAA','premier league','NASCAR','hockey','running','Football','skating',
         'golf','bicycling'];
@@ -69,7 +81,7 @@ class DashboardController extends Controller
         'sport_tags'=>$this->sport_tags , 'Conferences_tags' =>$this->Conferences_tags,
         'expos_tags' =>$this->expos_tags , 'concerts_tags' =>$this->concerts_tags ,
         'Festivals_tags' =>$this->Festivals_tags , 'Performing_arts_tags'=> $this->Performing_arts_tags,
-        'Community_tags' =>$this->Community_tags
+        'Community_tags' =>$this->Community_tags , 'city' => $this->city
 
     ]);
     }
@@ -92,7 +104,6 @@ class DashboardController extends Controller
         }
         if(in_array($extension , ['mp4', 'avi', 'mov'])){
 
-
               // Store the original file
               $originalPath = $video_image->storeAs('originals/video',$originalName, 'public');
               // Dispatch the job for video compression
@@ -105,43 +116,51 @@ class DashboardController extends Controller
         
 
             // Validate the request data
-        $validatedData = $request->validate([
-            'title' => 'required|string|max:255',
-            'tags' => 'required|array',
-            'date' => 'required|string|max:255',
-            'categories' => 'required|array',
-            'description' => 'required|string|max:65535',
-            'programme' => 'required|array',
-        ]);
-
-        foreach ($validatedData['categories'] as $categorie) {
-            $UploadCategories[] = $categorie;
-        }
-       
-
-       
-        foreach ($validatedData['tags'] as $tag) {
-            $UploadTags[] = $tag;
-        }
-        
-        
-
-        foreach($validatedData['programme'] as $programmes) {
-            $UploadProgrammes[] = $programmes;
-        }
-        
-
-        
-        $event->user_id = auth()->user()->id; 
-        $event->date =$validatedData['date'];
-        $event->description = $validatedData['description'];
-        $slug = Str::slug($validatedData['title'], '_');
-        $event->title = $validatedData['title'];
-        $event->slug = $slug.'_' .uniqid()  ;
-        
-        $event->tags = $UploadTags;
-        $event->categorie = $UploadCategories;
-        $event->programme = $UploadProgrammes;
+            $validatedData = $request->validate([
+                'price' => 'required|string|max:255',
+                'title' => 'required|string|max:255',
+                'tags' => 'required|array',
+                'adresse' =>'required|string|max:255',
+                'date_start' => 'required',
+                'date_end' => 'require',
+                'categories' => 'required|array',
+                'description' => 'required|string|max:65535',
+                'programme' => 'required|array',
+                'city' => 'required|string|max:255'
+            ]);
+    
+            foreach ($validatedData['categories'] as $categorie) {
+                $UploadCategories[] = $categorie;
+            }
+           
+    
+           
+            foreach ($validatedData['tags'] as $tag) {
+                $UploadTags[] = $tag;
+            }
+            
+            
+    
+            foreach($validatedData['programme'] as $programmes) {
+                $UploadProgrammes[] = $programmes;
+            }
+            
+    
+            
+            $event->user_id = auth()->user()->id; 
+            $event->date_end =$validatedData['date_end'];
+            $event->price = $validatedData['price'];
+            $event->city = $validatedData['city'];
+            $event->adresse = $validatedData['adresse'];
+            $event->date_start =$validatedData['date_start'];
+            $event->description = $validatedData['description'];
+            $slug = Str::slug($validatedData['title'], '_');
+            $event->title = $validatedData['title'];
+            $event->slug = $slug.'_' .uniqid()  ;
+            
+            $event->tags = $UploadTags;
+            $event->categorie = $UploadCategories;
+            $event->programme = $UploadProgrammes;
 
 
         $event->save();

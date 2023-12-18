@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('slug')->nullable();
             $table->unsignedBigInteger('user_id');
+            $table->string('price')->default('free');
             $table->longText('image')->nullable();
             $table->string('categorie')->nullable();
             $table->longText('tags')->nullable();
@@ -25,7 +26,8 @@ return new class extends Migration
             $table->string('adresse')->nullable();
             $table->longText('description')->nullable();
             $table->longText('programme')->nullable();
-            $table->string('date')->nullable();
+            $table->dateTime('date_start')->nullable();
+            $table->dateTime('date_end')->nullable();
             $table->string('video')->nullable();
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();

@@ -29,6 +29,11 @@ $(function () {
             time: 'far fa-clock'
         }
     });
+    $('#reservationdatetime_1').datetimepicker({
+        icons: {
+            time: 'far fa-clock'
+        }
+    });
 
     //Date range picker
     $('#reservation').daterangepicker()

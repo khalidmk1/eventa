@@ -30,7 +30,7 @@
 
                                     <div class="event-info">
                                         <p class="title">{{ $event->title }}</p>
-                                        <div class="separator"></div>
+                                        <div class="separator_card"></div>
                                         <p class="info">Bellmore, NY</p>
                                         <p class="price">Free</p>
 

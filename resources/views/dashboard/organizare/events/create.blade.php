@@ -224,22 +224,64 @@
                             </div>
 
 
-                            <div class="col-sm-12">
-                                <!-- Date and time range -->
-                                <div class="form-group">
-                                    <label>start and end of the event:</label>
-
-                                    <div class="input-group">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text"><i class="far fa-clock"></i></span>
+                            <div class="row">
+                                <!-- Date and time -->
+                                <div class="form-group col-12 col-md-6">
+                                    <label>Date start:</label>
+                                    <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" name="date_start"
+                                            data-target="#reservationdatetime" />
+                                        <div class="input-group-append" data-target="#reservationdatetime"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
                                         </div>
-                                        <input type="text" name="date" class="form-control float-right"
-                                            id="reservationtime">
                                     </div>
-                                    <!-- /.input group -->
                                 </div>
-                                <!-- /.form group -->
+
+
+                                <!-- Date and time -->
+                                <div class="form-group col-12 col-md-6">
+                                    <label>Date end:</label>
+                                    <div class="input-group date" id="reservationdatetime_1" data-target-input="nearest">
+                                        <input type="text" class="form-control datetimepicker-input" name="date_end"
+                                            data-target="#reservationdatetime_1" />
+                                        <div class="input-group-append" data-target="#reservationdatetime_1"
+                                            data-toggle="datetimepicker">
+                                            <div class="input-group-text"><i class="fa fa-calendar"></i></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-12 col-md-6">
+                                    <!-- text input -->
+                                    <div class="form-group">
+                                        <label>Price:</label>
+                                        <input type="text" name="price" class="form-control" placeholder="price">
+                                    </div>
+                                </div>
+
+                                <!-- /.form-group -->
+                                <div class="form-group col-12 col-md-6">
+                                    <label>City</label>
+                                    <select class="form-control select2" name="city" style="width: 100%;">
+                                        @foreach ($city as $city )
+                                        <option value="{{$city}}">{{$city}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <!-- /.form-group -->
+
                             </div>
+
+
+                            <div class="col-sm-12">
+                                <!-- textarea -->
+                                <div class="form-group">
+                                    <label>Adresse:</label>
+                                    <input type="text" name="adresse" class="form-control" placeholder="Adresse">
+                                </div>
+                            </div>
+
 
                             <div class="col-sm-12">
                                 <!-- textarea -->
@@ -249,34 +291,6 @@
                                 </div>
                             </div>
 
-                            <!-- Date and time -->
-                            <div class="form-group">
-                                <label>Date and time:</label>
-                                <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                                    <input type="text" class="form-control datetimepicker-input"
-                                        data-target="#reservationdatetime" />
-                                    <div class="input-group-append" data-target="#reservationdatetime"
-                                        data-toggle="datetimepicker">
-                                        <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                                    </div>
-                                </div>
-                            </div>
-
-
-
-
-                            <!-- /.form group -->
-                            {{--     <!-- Date and time -->
-                <div class="form-group">
-                    <label>Date and time:</label>
-                      <div class="input-group date" id="reservationdatetime" data-target-input="nearest">
-                          <input type="text" class="form-control datetimepicker-input" data-target="#reservationdatetime_1"/>
-                          <div class="input-group-append" data-target="#reservationdatetime" data-toggle="datetimepicker">
-                              <div class="input-group-text"><i class="fa fa-calendar"></i></div>
-                          </div>
-                      </div>
-                  </div>
-                  <!-- /.form group --> --}}
 
                             <div class="col-sm-12">
                                 <label>Programme</label>

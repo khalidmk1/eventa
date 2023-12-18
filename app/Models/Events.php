@@ -20,6 +20,7 @@ class Events extends Model
         'slug',
         'image',
         'video',
+        'price',
         'categorie',
         'tags',
         'title',
@@ -27,7 +28,8 @@ class Events extends Model
         'adresse',
         'description',
         'programme',
-        'date'
+        'date_end',
+        'date_start'
        
     ];
 
