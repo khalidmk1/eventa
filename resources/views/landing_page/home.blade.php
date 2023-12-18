@@ -82,7 +82,7 @@
     </section>
 
     <section class="container-fluid categories mt-5 mb-4"
-        style="background-image: url({{ asset('storage/originals/images/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg') }})">
+        style="background-image: url({{ asset('exemple/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg') }})">
 
         <h1 class="text-center p-3 text-light"><i class="fa-solid fa-list"></i> Categorie</h1>
         <div class="bd-example m-0 border-0 text-center">

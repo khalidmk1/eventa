@@ -72,7 +72,8 @@
                         <p class="card-text"><a href="{{ $event->user->organization_link }}"
                                 class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                 <i class="fa-solid fa-link"></i> website</a></p>
-                        <a type="button" href="{{Route('home.profile' , $event->user->slug)}}" class="btn btn-light btn-outline-secondary">Profile</a>
+                        <a type="button" href="{{ Route('home.profile', $event->user->slug) }}"
+                            class="btn btn-light btn-outline-secondary">Profile</a>
 
                     </div>
                 </div>
