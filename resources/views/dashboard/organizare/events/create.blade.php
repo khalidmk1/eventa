@@ -2,8 +2,11 @@
 
 @section('content')
     <div class="container-fluid">
-        <div class="row justify-content-center">
 
+
+        <div id="message_containe" class="row justify-content-center "></div>
+        <div class="row justify-content-center">
+           
             <div class="col-md-9">
                 <div class="card ">
 
@@ -294,30 +297,23 @@
 
                             <div class="col-sm-12">
                                 <label>Programme</label>
-                                <nav>
-                                    <div class="nav nav-tabs" id="nav-tab" role="tablist">
-                                        <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
-                                            href="#nav-home" role="tab" aria-controls="nav-home"
-                                            aria-selected="true">Day 1</a>
+                                <div class="row" id="programmeContainer">
+                                    <div class="col-4">
+                                        <div class="card border-primary mb-3" style="max-width: 50rem;">
+                                            <div class="card-header align-items-center justify-content-between d-flex "><span>Day 1</span>   <i class="fa fa-plus card_add border border-dark add-programme"></i></div>
+                                            <div class="card-body">
+                                                <div class="form-group ">
+                                                    <textarea class="form-control " name="programme[]" id="exampleFormControlTextarea1" cols="30" rows="6" ></textarea>
+                                                  </div>
+                                            </div>
+                                          </div>
+                                         
                                     </div>
-                                </nav>
-                                <div class="tab-content" id="nav-tabContent">
-                                    <div class="p-1"><i class="fa fa-plus-square " style="float: left" id="addTabBtn"
-                                            aria-hidden="true"></i></div>
-                                    <div class="tab-pane fade show active" id="nav-home" role="tabpanel"
-                                        aria-labelledby="nav-home-tab">
-                                        <button class="close close-tab" type="button" aria-label="Close">
-                                            <span aria-hidden="true">
-                                            </span>
-                                        </button>
-                                        <div class="form-group pt-3">
-                                            <textarea class="form-control" name="programme[]" rows="3" placeholder="Programme of the day"></textarea>
-                                        </div>
-                                    </div>
-
                                 </div>
-
+                                
                             </div>
+
+                            
                             <div class="col-12 text-right">
                                 <button type="submit" style="float: right"
                                     class="btn btn-block btn-outline-primary mt-3 w-25 ">create</button>

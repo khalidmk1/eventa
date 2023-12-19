@@ -10,6 +10,7 @@ use Illuminate\Support\Str;
 use FFMpeg;
 use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class DashboardController extends Controller
 {
@@ -88,90 +89,120 @@ class DashboardController extends Controller
 
     public function store(Request $request){
 
-        $event = new Events();
-
-        $video_image = $request->file('video');
-       /*  dd($video_image); */
-      
-        $originalName =time().'_'. $video_image->getClientOriginalName();
-        $extension = $video_image->getClientOriginalExtension();
-
-        if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
-            /* dd($originalName); */
-            $storagePath_img = $video_image->storeAs('compressed/', $originalName, 'public');
-             $event->video = $originalName;
-
-        }
-        if(in_array($extension , ['mp4', 'avi', 'mov'])){
-
-              // Store the original file
-              $originalPath = $video_image->storeAs('originals/video',$originalName, 'public');
-              // Dispatch the job for video compression
-              CompressVideo::dispatch($originalPath, $originalName);
-             /*  $compressedVideoPath = Storage::disk('public')->path('compressed/videos' .$originalName ); */
-              $event->video = $originalName;
-             
-        }
-        
+           // Validate the request data
+    $validator = Validator::make($request->all(), [
+        'video' => 'required|file',
+        'title' => 'required|string|max:255',
+        'tags' => 'required|array',
+        'adresse' =>'required|string|max:255',
+        'date_start' => 'required',
+        'date_end' => 'required',
+        'categories' => 'required|array',
+        'description' => 'required|string|max:65535',
+        'programme' => 'required|array',
+        'city' => 'required|string|max:255'
+    ]);
         
 
-            // Validate the request data
-            $validatedData = $request->validate([
-                'price' => 'required|string|max:255',
-                'title' => 'required|string|max:255',
-                'tags' => 'required|array',
-                'adresse' =>'required|string|max:255',
-                'date_start' => 'required',
-                'date_end' => 'require',
-                'categories' => 'required|array',
-                'description' => 'required|string|max:65535',
-                'programme' => 'required|array',
-                'city' => 'required|string|max:255'
-            ]);
+ // If the validation fails, return the errors
+ if ($validator->fails()) {
     
-            foreach ($validatedData['categories'] as $categorie) {
-                $UploadCategories[] = $categorie;
-            }
-           
+    return response()->json(['errors' => $validator->errors()], 422);
+
+}else{
+
+    $event = new Events();
+
     
-           
-            foreach ($validatedData['tags'] as $tag) {
-                $UploadTags[] = $tag;
-            }
+
+    $video_image = $request->file('video');
+    /*  dd($video_image); */
+   
+     $originalName =time().'_'. $video_image->getClientOriginalName();
+     $extension = $video_image->getClientOriginalExtension();
+
+     if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
+         /* dd($originalName); */
+         $storagePath_img = $video_image->storeAs('compressed/', $originalName, 'public');
+          $event->video = $originalName;
+
+     }
+     if(in_array($extension , ['mp4', 'avi', 'mov'])){
+
+           // Store the original file
+           $originalPath = $video_image->storeAs('originals/video',$originalName, 'public');
+           // Dispatch the job for video compression
+           CompressVideo::dispatch($originalPath, $originalName);
+          /*  $compressedVideoPath = Storage::disk('public')->path('compressed/videos' .$originalName ); */
+           $event->video = $originalName;
+          
+     }
+     
+     
+
+       
+         foreach ($request->input('categories') as $categorie) {
+             $UploadCategories[] = $categorie;
+         }
+        
+ 
+        
+         foreach ($request->input('tags') as $tag) {
+             $UploadTags[] = $tag;
+         }
+         
+         
+ 
+         foreach($request->input('programme') as $programmes) {
+             $UploadProgrammes[] = $programmes;
+         }
+
+         $currentDate = new \DateTime('now');
+
+         // Convert input date strings to DateTime objects
+         $dateStart = \DateTime::createFromFormat('m/d/Y h:i A', $request->input('date_start'));
+         $dateEnd = \DateTime::createFromFormat('m/d/Y h:i A', $request->input('date_end'));
+         
+         $event->user_id = auth()->user()->id; 
+        
+
+         if($request->input('price')){
+            $event->price = $request->input('price'); 
+         }else{
+            $event->price = 'free';
+         }
+         
+         $event->city = $request->input('city');
+         $event->adresse = $request->input('adresse');
+
+         $event->date_start = $dateStart;
+         $event->date_end = $dateEnd;
+
+         $event->description = $request->input('description');
+         $slug = Str::slug($request->input('title'), '_');
+         $event->title = $request->input('title');
+         $event->slug = $slug.'_' .uniqid()  ;
+         
+         $event->tags = $UploadTags;
+         $event->categorie = $UploadCategories;
+         $event->programme = $UploadProgrammes;
+        
+
+         if ($currentDate < $dateStart && $dateStart < $dateEnd) {
+            // Your event creation logic
+            $event->save();
+            return response()->json(['message' => 'Event created successfully']);
+        } else {
             
-            
-    
-            foreach($validatedData['programme'] as $programmes) {
-                $UploadProgrammes[] = $programmes;
-            }
-            
-    
-            
-            $event->user_id = auth()->user()->id; 
-            $event->date_end =$validatedData['date_end'];
-            $event->price = $validatedData['price'];
-            $event->city = $validatedData['city'];
-            $event->adresse = $validatedData['adresse'];
-            $event->date_start =$validatedData['date_start'];
-            $event->description = $validatedData['description'];
-            $slug = Str::slug($validatedData['title'], '_');
-            $event->title = $validatedData['title'];
-            $event->slug = $slug.'_' .uniqid()  ;
-            
-            $event->tags = $UploadTags;
-            $event->categorie = $UploadCategories;
-            $event->programme = $UploadProgrammes;
+            Storage::delete('public/compressed/' . $event->video);
+
+            return response()->json(['message' => 'The date is invalid']);
+        }
+
+   
+}
 
 
-        $event->save();
-
-
-
-
-
-
-// You can return a response as needed
-return response()->json(['message' => 'Event created successfully']);
 
     }
     

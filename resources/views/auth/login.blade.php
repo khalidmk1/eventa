@@ -214,7 +214,7 @@
                                 <div class="mb-3" id="organizationLink">
                                     <label for="organization_link" class="form-label text-white">Link of
                                         Organization</label>
-                                    <input type="text" value="{{ old('organization_link') }}"
+                                    <input type="url" value="{{ old('organization_link') }}"
                                         class="form-control bg_form" id="organization_link" name="organization_link">
                                 </div>
 

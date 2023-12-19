@@ -268,25 +268,26 @@
                                     </p>
                                 </div>
                                 <div class="text-center">
-                                    <a class="btn btn-info w-25 mb-2" href="{{ Route('home.detail', $event->slug) }}">detail -></a>
+                                    <a class="btn btn-info w-25 mb-2"
+                                        href="{{ Route('home.detail', $event->slug) }}">detail -></a>
                                 </div>
-                               
+
                                 <div class="card-footer border-0 text-center">
                                     @foreach ($event->categorie as $index => $categorie)
-                                    @if ($index == 3)
-                                    @break
-                                @endif
-                                        <small class="text-muted categorie-tag">{{ $categorie }}</small>
-                                    @endforeach
-                                </div>
+                                        @if ($index == 3)
+                                        @break
+                                    @endif
+                                    <small class="text-muted categorie-tag">{{ $categorie }}</small>
+                                @endforeach
                             </div>
                         </div>
-                    @endforeach
+                    </div>
+                @endforeach
 
-                </div>
             </div>
         </div>
     </div>
+</div>
 </section>
 
 
@@ -294,4 +295,24 @@
 <!-- Include jQuery library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
+<script>
+    // slider 
+    var screenWidth = window.innerWidth;
+
+    var swiper = new Swiper(".mySwiper", {
+        slidesPerView: screenWidth < 576 ? 1 : (screenWidth <= 768 ? 3 : 3),
+        spaceBetween: 30,
+        slidesPerGroup: 3,
+        loop: true,
+        loopFillGroupWithBlank: true,
+        pagination: {
+            el: ".swiper-pagination",
+            clickable: true,
+        },
+        navigation: {
+            nextEl: ".swiper-button-next",
+            prevEl: ".swiper-button-prev",
+        },
+    });
+</script>
 @endsection

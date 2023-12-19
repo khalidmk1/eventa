@@ -1,14 +1,19 @@
 
 
-// avatar show image 
-var image_avatar = $('#avatar');
-$('#formFileSm').on('change', function () {
-    var imageURL = URL.createObjectURL(this.files[0]);
-    image_avatar.attr('src', imageURL);
-});
+
 
 
 $(document).ready(function () {
+    // avatar show image 
+    var image_avatar = $('#avatar');
+    $('#formFileSm').on('change', function () {
+        var imageURL = URL.createObjectURL(this.files[0]);
+        image_avatar.attr('src', imageURL);
+    });
+    $('#add_file').on('change', function () {
+        var imageURL = URL.createObjectURL(this.files[0]);
+        image_avatar.attr('src', imageURL);
+    });
 
     //randome color
     var random_color = ['btn-primary', 'btn-secondary', 'btn-success', 'btn-danger', 'btn-warning', 'btn-info', 'btn-dark'];
@@ -315,24 +320,7 @@ $(document).ready(function () {
 
 
 
-// slider 
-var screenWidth = window.innerWidth;
 
-var swiper = new Swiper(".mySwiper", {
-    slidesPerView: screenWidth < 576 ? 1 : (screenWidth <= 768 ? 3 : 3),
-    spaceBetween: 30,
-    slidesPerGroup: 3,
-    loop: true,
-    loopFillGroupWithBlank: true,
-    pagination: {
-        el: ".swiper-pagination",
-        clickable: true,
-    },
-    navigation: {
-        nextEl: ".swiper-button-next",
-        prevEl: ".swiper-button-prev",
-    },
-});
 
 
 

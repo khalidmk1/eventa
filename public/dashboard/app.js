@@ -35,9 +35,11 @@ $(document).ready(function () {
     $('.checked').on('change', function () {
         var checkedValues = [];
 
+
         $('.checked:checked').each(function () {
             checkedValues.push($(this).val());
         });
+
 
 
         Object.entries(tagsToSections).forEach(([tag, section]) => {
@@ -45,6 +47,8 @@ $(document).ready(function () {
                 section.slideDown();
             } else {
                 section.slideUp();
+                section.find('select').val(null).trigger('change'); // Clear select inputs
+                section.find('input[type=text]').val(''); // Clear text inputs
             }
         });
 
@@ -54,51 +58,71 @@ $(document).ready(function () {
 
 
 
-    let tabCounter = 1;
-
-
-    function addTab() {
-
-        tabCounter++;
-
-
-        let tabLink = $(`<a class="nav-item nav-link" data-toggle="tab" href="#nav-tab-${tabCounter}" role="tab" aria-controls="nav-tab-${tabCounter}" aria-selected="false">Day ${tabCounter}</a>`);
-
-
-        let tabContent = $(`
-           <div class="tab-pane fade" id="nav-tab-${tabCounter}" role="tabpanel" aria-labelledby="nav-tab-${tabCounter}">
-               <button class="close close-tab" type="button" aria-label="Close">
-                   <span aria-hidden="true">&times;</span>
-               </button>
-               <div class="form-group pt-3">                        
-               <textarea name="programme[]" class="form-control" rows="3" placeholder="Programe of the day"></textarea>
-             </div>
-             
-           </div>
-       `);
-
-        // Append tab link and content to the respective containers
-        $('#nav-tab').append(tabLink);
-        $('#nav-tabContent').append(tabContent);
-
-        // Show the newly added tab
-        tabLink.tab('show');
-    }
-
-    // Event listener for the button click
-    $('#addTabBtn').on('click', function () {
-        addTab();
-    });
-
-    // Event listener for closing a tab
-    $('#nav-tabContent').on('click', '.close-tab', function () {
-        let tabId = $(this).closest('.tab-pane').attr('id');
-        $(`a[href="#${tabId}"]`).remove(); // Remove tab link
-        $(`#${tabId}`).remove(); // Remove tab content
-        tabCounter--;
-    });
 
 });
+
+function addProgramme() {
+    let newProgramme = `
+        <div class="col-4 days">
+            <div class="card border-primary mb-3" style="max-width: 50rem;">
+                <div class="card-header align-items-center justify-content-between d-flex">
+
+                <span>Day ${$('.days').length + 2}</span> 
+                <i class="fa fa-trash trash_icon remove-programme" aria-hidden="true"></i>   
+                <i class="fa fa-plus card_add border border-dark  add-programme"></i>
+
+                </div>
+
+                <div class="card-body">
+                    <div class="form-group">
+                        <textarea  name="programme[]" class="form-control" rows="6"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>`;
+
+    // Remove existing add-programme button
+    $('.add-programme').remove();
+
+    $('#programmeContainer').append(newProgramme);
+
+}
+
+// Event listener for adding a new programme
+$(document).on('click', '.add-programme', function () {
+    addProgramme();
+});
+
+// Event listener for removing a programme
+$(document).on('click', '.remove-programme', function () {
+    $(this).closest('.days').remove();
+
+    // Update the day numbers after removal
+    $('.days').each(function (index) {
+        $(this).find('.card-header span').text(`Day ${index + 2}`);
+    });
+
+    // Check if there are any remaining .days, if not, append the button to the last card-header
+    if ($('.days').length !== 0) {
+        let addButton = '<i class="fa fa-plus card_add border border-dark add-programme "></i>';
+        $('#programmeContainer .card-header').last().append(addButton);
+    }
+    if ($('.days').length === 0) {
+        let addButton = '<i class="fa fa-plus card_add border border-dark add-programme"></i>';
+        $('#programmeContainer .card-header').last().append(addButton);
+    }
+
+
+});
+
+
+
+
+
+
+
+
+
 
 
 
@@ -106,6 +130,7 @@ $(document).ready(function () {
 $(document).ready(function () {
     $('#store_event').submit(function (e) {
         e.preventDefault();
+       
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -115,19 +140,63 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 /* console.log(data); */
+                $('html, body').animate({ scrollTop: 0 }, 'slow'); 
+                $('.days').remove();
+
+                if ($('.days').length === 0) {
+                    let addButton = '<i class="fa fa-plus card_add border border-dark add-programme"></i>';
+                    $('#programmeContainer .card-header').last().append(addButton);
+                }
+
 
                 $('#store_event')[0].reset();
 
+                var seccuss;
+                if (response.message === "The date is invalid") {
+                    seccuss = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
+                        <strong>${response.message}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+                } else {
+                    seccuss = `<div class="col-6 alert alert-success alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
+                        <strong>${response.message}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+                }
+
+               
+            $('#message_containe').append(seccuss);
                 console.log(response);
             },
             error: function (error) {
-
                 console.log(error);
-            }
+                $('html, body').animate({ scrollTop: 0 }, 'slow'); 
+                if (error.responseJSON.errors) {
+                   
 
+                    $.each(error.responseJSON.errors, function (key, value) {
+                        console.log(value);
+                        var error = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show  danger_alert " role="alert">
+                                        <strong>${value}</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                                    $('#message_containe').append(error);
+                    });
+                }
+               
+               
+            }
 
         });
     });
+
+   
 
 
 });
