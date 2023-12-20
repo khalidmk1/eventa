@@ -165,9 +165,10 @@ class DashboardController extends Controller
          
          $event->user_id = auth()->user()->id; 
         
+         $price = $request->input('price');
 
-         if($request->input('price')){
-            $event->price = $request->input('price'); 
+         if($price){
+            $event->price = $price; 
          }else{
             $event->price = 'free';
          }
