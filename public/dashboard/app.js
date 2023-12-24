@@ -130,7 +130,7 @@ $(document).on('click', '.remove-programme', function () {
 $(document).ready(function () {
     $('#store_event').submit(function (e) {
         e.preventDefault();
-       
+        $('#exampleModal').show()
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -139,7 +139,9 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-                /* console.log(data); */
+
+                $('#exampleModal').hide()
+
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 $('.days').remove();
 
@@ -173,6 +175,8 @@ $(document).ready(function () {
                 console.log(response);
             },
             error: function (error) {
+
+
                 console.log(error);
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 if (error.responseJSON.errors) {

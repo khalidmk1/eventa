@@ -133,7 +133,6 @@ class DashboardController extends Controller
            $originalPath = $video_image->storeAs('event/video',$originalName, 'public');
            // Dispatch the job for video compression
           /*  CompressVideo::dispatch($originalPath, $originalName); */
-          /*  $compressedVideoPath = Storage::disk('public')->path('compressed/videos' .$originalName ); */
            $event->video = $originalName;
           
      }
