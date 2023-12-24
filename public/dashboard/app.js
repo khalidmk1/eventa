@@ -128,10 +128,11 @@ $(document).on('click', '.remove-programme', function () {
 
 //create event
 $(document).ready(function () {
-   
+
     $('#store_event').submit(function (e) {
         e.preventDefault();
-        $('#exampleModalCenter').modal('show')
+        $('#form_containe').addClass("form_create_hide");
+        $('#spinner_animation').addClass('spinner_animation_show');
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -141,10 +142,11 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 setTimeout(function () {
-                    $('#exampleModalCenter').modal('hide');
+                    $('#form_containe').removeClass("form_create_hide").addClass("form_create_show");
+                    $('#spinner_animation').removeClass('spinner_animation_show').addClass('spinner_animation_hide');
                 }, 1000);
 
-                $('html, body').animate({ scrollTop: 0 }, 'slow'); 
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
                 $('.days').remove();
 
                 if ($('.days').length === 0) {
@@ -172,20 +174,21 @@ $(document).ready(function () {
                     </div>`;
                 }
 
-               
-            $('#message_containe').append(seccuss);
+
+                $('#message_containe').append(seccuss);
                 console.log(response);
             },
             error: function (error) {
 
                 setTimeout(function () {
-                    $('#exampleModalCenter').modal('hide');
+                    $('#form_containe').removeClass("form_create_hide").addClass("form_create_show");
+                    $('#spinner_animation').removeClass('spinner_animation_show').addClass('spinner_animation_hide');
                 }, 1000);
 
                 console.log(error);
-                $('html, body').animate({ scrollTop: 0 }, 'slow'); 
+                $('html, body').animate({ scrollTop: 0 }, 'slow');
                 if (error.responseJSON.errors) {
-                                    
+
 
                     $.each(error.responseJSON.errors, function (key, value) {
                         console.log(value);
@@ -195,17 +198,17 @@ $(document).ready(function () {
                                             <span aria-hidden="true">&times;</span>
                                         </button>
                                     </div>`;
-                                    $('#message_containe').append(error);
+                        $('#message_containe').append(error);
                     });
                 }
-               
-               
+
+
             }
 
         });
     });
 
-   
+
 
 
 });
