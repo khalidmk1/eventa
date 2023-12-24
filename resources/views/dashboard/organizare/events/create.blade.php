@@ -1,9 +1,29 @@
 @extends('master.dashboard')
 
 @section('content')
-<style>
-   
-</style>
+    <style>
+        /* spiner charge */
+        .loader {
+            width: 48px;
+            height: 48px;
+            border: 5px solid #FFF;
+            border-bottom-color: #FF3D00;
+            border-radius: 50%;
+            display: inline-block;
+            box-sizing: border-box;
+            animation: rotation 1s linear infinite;
+        }
+
+        @keyframes rotation {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
     <div class="container-fluid">
 
         <div id="message_containe" class="row justify-content-center "></div>
@@ -12,7 +32,7 @@
         <div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered " role="document">
-                <div class="modal-content bg-transparent">
+                <div class="modal-content bg-transparent border-0 shadow-none">
                     <div class="modal-body text-center">
                         <span class="loader"></span>
                     </div>
@@ -352,4 +372,103 @@
     </div><!-- /.container-fluid -->
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+
+    <script>
+        //create event
+        $(document).ready(function() {
+
+            $('#store_event').submit(function(e) {
+                e.preventDefault();
+                $('#exampleModalCenter').modal('show')
+                var formData = new FormData(this);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        setTimeout(function() {
+                            $('#exampleModalCenter').modal('hide')
+                            location.reload(); // Reload the page after success
+                        }, 1000);
+
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 'slow');
+                        $('.days').remove();
+
+                        if ($('.days').length === 0) {
+                            let addButton =
+                                '<i class="fa fa-plus card_add border border-dark add-programme"></i>';
+                            $('#programmeContainer .card-header').last().append(addButton);
+                        }
+
+
+                        $('#store_event')[0].reset();
+
+                        var seccuss;
+                        if (response.message === "The date is invalid") {
+                            seccuss = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
+                        <strong>${response.message}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+                        } else {
+                            seccuss = `<div class="col-6 alert alert-success alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
+                        <strong>${response.message}</strong>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>`;
+                        }
+
+
+                        $('#message_containe').append(seccuss);
+                        console.log(response);
+                    },
+                    error: function(error) {
+
+                        setTimeout(function() {
+                            $('#exampleModalCenter').modal('hide')
+                        }, 1000);
+
+                        console.log(error);
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 'slow');
+
+                        if ($('#message_containe').children().length > 0) {
+                            // Clear existing error messages
+                            $('#message_containe').empty();
+                        }
+
+
+                        if (error.responseJSON.errors) {
+
+                            $.each(error.responseJSON.errors, function(key, value) {
+                                console.log(value);
+                                var error = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show  danger_alert " role="alert">
+                                        <strong>${value}</strong>
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>`;
+                                $('#message_containe').append(error);
+                            });
+                        }
+                        
+
+
+                    }
+
+                });
+            });
+
+
+
+
+        });
+    </script>
 @endsection

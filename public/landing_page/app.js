@@ -171,6 +171,14 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
+
+
+    
+    
+
+
+
+
     // search tags in the show event landing page 
 
     // Variables of the inputs
@@ -199,6 +207,7 @@ $(document).ready(function () {
                 section.slideDown();
             } else {
                 section.slideUp();
+                section.find('input[type=checkbox]').prop('checked', false);
             }
         });
 
@@ -219,9 +228,8 @@ $(document).ready(function () {
 
     var selectedCategorie = [];
 
-    // Attach a change event listener to checkboxes
     $('.checked_categorie').on('change', function () {
-        // Fetch selected checkbox values
+        
         selectedCategorie = [];
         $('.checked_categorie:checked').each(function () {
             selectedCategorie.push($(this).val());
@@ -230,7 +238,8 @@ $(document).ready(function () {
     });
 
 
-    var city; // Declare city in a higher scope
+
+    var city; 
 
     $('#city').on('change', function () {
         city = $(this).val();
