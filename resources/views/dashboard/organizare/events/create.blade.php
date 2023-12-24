@@ -439,7 +439,9 @@
                             scrollTop: 0
                         }, 'slow');
 
-                        
+                        if ($('#message_containe').children().length > 0) {
+                            $('#message_containe').empty();
+                        }
 
 
                         if (error.responseJSON.errors) {
@@ -456,9 +458,7 @@
                             });
                         }
 
-                        if ($('#message_containe').children().length > 0) {
-                            $('#message_containe').empty();
-                        }
+                       
                         
 
 
