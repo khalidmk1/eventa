@@ -439,10 +439,7 @@
                             scrollTop: 0
                         }, 'slow');
 
-                        if ($('#message_containe').children().length > 0) {
-                            // Clear existing error messages
-                            $('#message_containe').empty();
-                        }
+                        
 
 
                         if (error.responseJSON.errors) {
@@ -457,6 +454,10 @@
                                     </div>`;
                                 $('#message_containe').append(error);
                             });
+                        }
+
+                        if ($('#message_containe').children().length > 0) {
+                            $('#message_containe').empty();
                         }
                         
 

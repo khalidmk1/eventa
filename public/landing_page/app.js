@@ -178,9 +178,6 @@ $(document).ready(function () {
 
 
 
-
-    // search tags in the show event landing page 
-
     // Variables of the inputs
     var tagsToSections = {
         'Sports': $('#sport_tag'),
@@ -203,6 +200,7 @@ $(document).ready(function () {
 
 
         Object.entries(tagsToSections).forEach(([tag, section]) => {
+            console.log(tag);
             if (checkedValues.indexOf(tag) !== -1) {
                 section.slideDown();
             } else {

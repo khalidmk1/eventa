@@ -91,6 +91,7 @@
 }
 
 
+/* check box of create event */
 ul.ks-cboxtags {
     list-style: none;
     padding: 20px;
@@ -161,6 +162,7 @@ ul.ks-cboxtags li input[type="checkbox"] {
 ul.ks-cboxtags li input[type="checkbox"]:focus+label {
     border: 2px solid #e9a1ff;
 }
+/* end check box of create event */
 
 
 .Myvideo_create {
@@ -172,7 +174,7 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
 .Myvideo_show {
     object-fit: fill;
     width: 100%;
-    height: 100%;
+    height: 200px;
 }
 
 .Myvideo_detail {
@@ -252,7 +254,7 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
 }
 
 /*  show event card */
-
+/* 
 .item-container {
     position: relative;
     margin: 24px;
@@ -379,22 +381,21 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
 .action:hover {
     background-color: rgba(255, 255, 255, 0.2);
 
-}
+} */
 
 /* event detail page */
 .img_detail {
     object-fit: fill;
     width: 100%;
     border-radius: 10px;
+    height: 700px;
 }
 
 
 /* home dashboard */
-.avatar-costume{
-    height: 200px !important;
-    width: 100% !important;
+.user-panel img {
+    width: 2.6rem ;
 }
-
 .profile-user-img{
     width: 136px !important;
     height: 136px !important;

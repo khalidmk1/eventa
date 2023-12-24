@@ -9,7 +9,7 @@
             <div class="col-12">
                 <div class="card">
 
-                    <div class="card-body justify-content-center m-auto ">
+                    <div class="card-body justify-content-center  ">
 
                         <h1><strong>{{$event->title}}</strong></h1>
                         {{--  <img src="{{asset('')}}" class="card-img-top" alt="..."> --}}
@@ -19,7 +19,7 @@
                                     src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                             </video>
                         @else
-                            <img height="900"  class="card-img-top media-item img_detail"
+                            <img  class="card-img-top media-item img_detail"
                                
                                 src="{{ asset('storage/event/image/' . $event->video) }}" alt="">
                         @endif
