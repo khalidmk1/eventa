@@ -12,7 +12,7 @@
 
         
         <div class="row justify-content-center ">
-            <div class="col-md-9 spinner_animation_hide position-absolute" id="spinner_animation">
+            <div class="col-md-9 spinner_animation_hide" id="spinner_animation">
                 <div class="card m-auto" style="width: 18rem;">
                     <div class="card-body text-center">
                         <div class="spinner-border spiner_charge" role="status">

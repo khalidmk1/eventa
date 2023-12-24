@@ -431,7 +431,6 @@ ul.ks-cboxtags li input[type="checkbox"]:focus+label {
 }
 
 .spinner_animation_show {
-    position: absolute;
     opacity: 1;
     transition: opacity 0.5s ease-in-out;
 }
