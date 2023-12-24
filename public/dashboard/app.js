@@ -128,9 +128,10 @@ $(document).on('click', '.remove-programme', function () {
 
 //create event
 $(document).ready(function () {
+   
     $('#store_event').submit(function (e) {
         e.preventDefault();
-        $('#exampleModal').modal('show')
+        $('#exampleModalCenter').modal('show')
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -139,8 +140,9 @@ $(document).ready(function () {
             processData: false,
             contentType: false,
             success: function (response) {
-
-                $('#exampleModal').modal('hide')
+                setTimeout(function () {
+                    $('#exampleModalCenter').modal('hide');
+                }, 1000);
 
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 $('.days').remove();
@@ -176,11 +178,14 @@ $(document).ready(function () {
             },
             error: function (error) {
 
-                $('#exampleModal').modal('hide')
+                setTimeout(function () {
+                    $('#exampleModalCenter').modal('hide');
+                }, 1000);
+
                 console.log(error);
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 if (error.responseJSON.errors) {
-                   
+                                    
 
                     $.each(error.responseJSON.errors, function (key, value) {
                         console.log(value);
