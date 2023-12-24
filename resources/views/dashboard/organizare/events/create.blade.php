@@ -1,6 +1,9 @@
 @extends('master.dashboard')
 
 @section('content')
+<style>
+   
+</style>
     <div class="container-fluid">
 
         <div id="message_containe" class="row justify-content-center "></div>
@@ -8,16 +11,15 @@
         <!-- Modal -->
         <div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog"
             aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
+            <div class="modal-dialog modal-dialog-centered " role="document">
+                <div class="modal-content bg-transparent">
                     <div class="modal-body text-center">
-                        <div class="spinner-border spiner_charge" role="status">
-                            <span class="sr-only">Loading...</span>
-                        </div>
+                        <span class="loader"></span>
                     </div>
                 </div>
             </div>
         </div>
+
 
 
         <div class="row justify-content-center ">
@@ -318,7 +320,8 @@
                                         <div class="card border-primary mb-3" style="max-width: 50rem;">
                                             <div class="card-header align-items-center justify-content-between d-flex ">
                                                 <span>Day 1</span> <i
-                                                    class="fa fa-plus card_add border border-dark add-programme"></i></div>
+                                                    class="fa fa-plus card_add border border-dark add-programme"></i>
+                                            </div>
                                             <div class="card-body">
                                                 <div class="form-group ">
                                                     <textarea class="form-control " name="programme[]" id="exampleFormControlTextarea1" cols="30" rows="6"></textarea>
@@ -347,4 +350,6 @@
         </div>
         <!-- /.row -->
     </div><!-- /.container-fluid -->
+    <!-- Include jQuery library -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
 @endsection

@@ -142,6 +142,7 @@ $(document).ready(function () {
             success: function (response) {
                 setTimeout(function () {
                     $('#exampleModalCenter').modal('hide')
+                    location.reload(); // Reload the page after success
                  }, 1000);
 
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
@@ -180,6 +181,7 @@ $(document).ready(function () {
 
                 setTimeout(function () {
                    $('#exampleModalCenter').modal('hide')
+                   
                 }, 1000);
 
                 console.log(error);
