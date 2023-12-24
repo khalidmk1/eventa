@@ -131,8 +131,7 @@ $(document).ready(function () {
 
     $('#store_event').submit(function (e) {
         e.preventDefault();
-        $('#form_containe').addClass("form_create_hide");
-        $('#spinner_animation').addClass('spinner_animation_show');
+        $('#exampleModalCenter').modal('show')
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -142,9 +141,8 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
                 setTimeout(function () {
-                    $('#form_containe').removeClass("form_create_hide").addClass("form_create_show");
-                    $('#spinner_animation').removeClass('spinner_animation_show').addClass('spinner_animation_hide');
-                }, 1000);
+                    $('#exampleModalCenter').modal('hide')
+                 }, 1000);
 
                 $('html, body').animate({ scrollTop: 0 }, 'slow');
                 $('.days').remove();
@@ -181,8 +179,7 @@ $(document).ready(function () {
             error: function (error) {
 
                 setTimeout(function () {
-                    $('#form_containe').removeClass("form_create_hide").addClass("form_create_show");
-                    $('#spinner_animation').removeClass('spinner_animation_show').addClass('spinner_animation_hide');
+                   $('#exampleModalCenter').modal('hide')
                 }, 1000);
 
                 console.log(error);

@@ -1,29 +1,29 @@
 @extends('master.dashboard')
 
 @section('content')
-
-  
-
-
-
     <div class="container-fluid">
 
+        <div id="message_containe" class="row justify-content-center "></div>
 
-
-        
-        <div class="row justify-content-center ">
-            <div class="col-md-9 spinner_animation_hide" id="spinner_animation">
-                <div class="card m-auto" style="width: 18rem;">
-                    <div class="card-body text-center">
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModalCenter" data-backdrop="static" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-body text-center">
                         <div class="spinner-border spiner_charge" role="status">
                             <span class="sr-only">Loading...</span>
-                          </div>
+                        </div>
                     </div>
-                  </div>
+                </div>
             </div>
-           
+        </div>
+
+
+        <div class="row justify-content-center ">
+
             <div class="col-md-9" id="form_containe">
-                <div id="message_containe" class="row justify-content-center "></div>
+
                 <div class="card ">
 
                     <div class="card-body m-auto ">
@@ -283,8 +283,8 @@
                                 <div class="form-group col-12 col-md-6">
                                     <label>City</label>
                                     <select class="form-control select2" name="city" style="width: 100%;">
-                                        @foreach ($city as $city )
-                                        <option value="{{$city}}">{{$city}}</option>
+                                        @foreach ($city as $city)
+                                            <option value="{{ $city }}">{{ $city }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -316,20 +316,22 @@
                                 <div class="row" id="programmeContainer">
                                     <div class="col-4">
                                         <div class="card border-primary mb-3" style="max-width: 50rem;">
-                                            <div class="card-header align-items-center justify-content-between d-flex "><span>Day 1</span>   <i class="fa fa-plus card_add border border-dark add-programme"></i></div>
+                                            <div class="card-header align-items-center justify-content-between d-flex ">
+                                                <span>Day 1</span> <i
+                                                    class="fa fa-plus card_add border border-dark add-programme"></i></div>
                                             <div class="card-body">
                                                 <div class="form-group ">
-                                                    <textarea class="form-control " name="programme[]" id="exampleFormControlTextarea1" cols="30" rows="6" ></textarea>
-                                                  </div>
+                                                    <textarea class="form-control " name="programme[]" id="exampleFormControlTextarea1" cols="30" rows="6"></textarea>
+                                                </div>
                                             </div>
-                                          </div>
-                                         
+                                        </div>
+
                                     </div>
                                 </div>
-                                
+
                             </div>
 
-                            
+
                             <div class="col-12 text-right">
                                 <button type="submit" style="float: right"
                                     class="btn btn-block btn-outline-primary mt-3 w-25 ">create</button>
