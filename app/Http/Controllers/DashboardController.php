@@ -123,16 +123,16 @@ class DashboardController extends Controller
 
      if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
          /* dd($originalName); */
-         $storagePath_img = $video_image->storeAs('compressed/', $originalName, 'public');
+         $storagePath_img = $video_image->storeAs('event/image', $originalName, 'public');
           $event->video = $originalName;
 
      }
      if(in_array($extension , ['mp4', 'avi', 'mov'])){
 
            // Store the original file
-           $originalPath = $video_image->storeAs('originals/video',$originalName, 'public');
+           $originalPath = $video_image->storeAs('event/video',$originalName, 'public');
            // Dispatch the job for video compression
-           CompressVideo::dispatch($originalPath, $originalName);
+          /*  CompressVideo::dispatch($originalPath, $originalName); */
           /*  $compressedVideoPath = Storage::disk('public')->path('compressed/videos' .$originalName ); */
            $event->video = $originalName;
           

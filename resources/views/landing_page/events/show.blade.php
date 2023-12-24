@@ -14,10 +14,10 @@
                             <div class="image">
                                 @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                                     <video autoplay loop muted>
-                                        <source src="{{ asset('storage/compressed/' . $event->video) }}" type="video/mp4">
+                                        <source src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                                     </video>
                                 @elseif (in_array($extensions[$index], ['jpg', 'jpeg', 'png', 'gif']))
-                                    <img src="{{ asset('storage/compressed/' . $event->video) }}" alt="">
+                                    <img src="{{ asset('storage/event/image/' . $event->video) }}" alt="">
                                 @endif
 
 
@@ -252,11 +252,11 @@
                                     <span class="position-absolute price">Free</span>
                                     @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                                         <video class="card-img-top  about_vid w-100" autoplay loop muted>
-                                            <source src="{{ asset('storage/compressed/' . $event->video) }}"
+                                            <source src="{{ asset('storage/event/video/' . $event->video) }}"
                                                 type="video/mp4">
                                         </video>
                                     @elseif (in_array($extensions[$index], ['jpg', 'jpeg', 'png', 'gif']))
-                                        <img src="{{ asset('storage/compressed/' . $event->video) }}"
+                                        <img src="{{ asset('storage/event/image/' . $event->video) }}"
                                             class="card-img-top about_img" alt="Skyscrapers" />
                                     @endif
 

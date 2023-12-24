@@ -272,10 +272,10 @@ $(document).ready(function () {
                         if (['mp4', 'avi', 'mov'].includes(extension)) {
                             output += `
             <video class="card-img-top about_vid w-100" autoplay loop muted>
-                <source src="/storage/compressed/${event.video}" type="video/mp4">
+                <source src="/storage/event/video/${event.video}" type="video/mp4">
             </video>`;
                         } else if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
-                            output += `<img src="/storage/compressed/${event.video}" class="card-img-top about_img" alt="Skyscrapers"/>`;
+                            output += `<img src="/storage/event/image/${event.video}" class="card-img-top about_img" alt="Skyscrapers"/>`;
                         }
 
                         output += `

@@ -8,10 +8,10 @@
                     <div class="carousel-item {{ $index === 0 ? 'active' : '' }}">
                         @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                             <video class="slide_vid w-100" autoplay loop muted>
-                                <source src="{{ asset('storage/compressed/' . $event->video) }}" type="video/mp4">
+                                <source src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                             </video>
                         @elseif (in_array($extensions[$index], ['jpg', 'jpeg', 'png', 'gif']))
-                            <img src="{{ asset('storage/compressed/' . $event->video) }}" class="d-block slide_img w-100"
+                            <img src="{{ asset('storage/event/image/' . $event->video) }}" class="d-block slide_img w-100"
                                 alt="...">
                         @endif
 
@@ -54,10 +54,10 @@
                             <span class="position-absolute price">Free</span>
                             @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                                 <video class="card-img-top about_vid w-100" autoplay loop muted>
-                                    <source src="{{ asset('storage/compressed/' . $event->video) }}" type="video/mp4">
+                                    <source src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                                 </video>
                             @elseif (in_array($extensions[$index], ['jpg', 'jpeg', 'png', 'gif']))
-                                <img src="{{ asset('storage/compressed/' . $event->video) }}" class="card-img-top about_img"
+                                <img src="{{ asset('storage/event/image/' . $event->video) }}" class="card-img-top about_img"
                                     alt="Skyscrapers" />
                             @endif
 

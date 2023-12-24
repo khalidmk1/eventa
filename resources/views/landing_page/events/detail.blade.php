@@ -8,10 +8,10 @@
                 <div class="card shadow  bg-body-tertiary">
                     @if (in_array($extension, ['mp4', 'avi', 'mov']))
                         <video autoplay loop muted class="asset-detail">
-                            <source src="{{ asset('storage/compressed/' . $event->video) }}" type="video/mp4">
+                            <source src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                         </video>
                     @elseif (in_array($extension, ['jpg', 'jpeg', 'png', 'gif']))
-                        <img src="{{ asset('storage/compressed/' . $event->video) }}" class="card-img-top asset-detail"
+                        <img src="{{ asset('storage/event/image/' . $event->video) }}" class="card-img-top asset-detail"
                             alt="event-asset">
                     @endif
 

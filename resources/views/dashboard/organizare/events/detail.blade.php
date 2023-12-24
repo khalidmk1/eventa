@@ -16,12 +16,12 @@
                         @if (in_array($extension, ['mp4', 'avi', 'mov']))
                             <video  class="myVideo Myvideo_detail " autoplay loop muted>
                                 <source id="source_video" class="media-item"
-                                    src="{{ asset('storage/compressed/' . $event->video) }}" type="video/mp4">
+                                    src="{{ asset('storage/event/video/' . $event->video) }}" type="video/mp4">
                             </video>
                         @else
                             <img height="900"  class="card-img-top media-item img_detail"
                                
-                                src="{{ asset('storage/compressed/' . $event->video) }}" alt="">
+                                src="{{ asset('storage/event/image/' . $event->video) }}" alt="">
                         @endif
 
 
