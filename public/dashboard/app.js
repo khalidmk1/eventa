@@ -130,7 +130,7 @@ $(document).on('click', '.remove-programme', function () {
 $(document).ready(function () {
     $('#store_event').submit(function (e) {
         e.preventDefault();
-        $('#exampleModal').show()
+        $('#exampleModal').modal('show')
         var formData = new FormData(this);
         $.ajax({
             url: $(this).attr('action'),
@@ -140,7 +140,7 @@ $(document).ready(function () {
             contentType: false,
             success: function (response) {
 
-                $('#exampleModal').hide()
+                $('#exampleModal').modal('hide')
 
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 $('.days').remove();
@@ -176,7 +176,7 @@ $(document).ready(function () {
             },
             error: function (error) {
 
-
+                $('#exampleModal').modal('hide')
                 console.log(error);
                 $('html, body').animate({ scrollTop: 0 }, 'slow'); 
                 if (error.responseJSON.errors) {
