@@ -3,6 +3,7 @@
 
 
 
+
 $(document).ready(function () {
     // avatar show image 
     var image_avatar = $('#avatar');
@@ -173,8 +174,8 @@ $(document).ready(function () {
 $(document).ready(function () {
 
 
-    
-    
+
+
 
 
 
@@ -227,7 +228,7 @@ $(document).ready(function () {
     var selectedCategorie = [];
 
     $('.checked_categorie').on('change', function () {
-        
+
         selectedCategorie = [];
         $('.checked_categorie:checked').each(function () {
             selectedCategorie.push($(this).val());
@@ -237,7 +238,7 @@ $(document).ready(function () {
 
 
 
-    var city; 
+    var city;
 
     $('#city').on('change', function () {
         city = $(this).val();
@@ -322,6 +323,49 @@ $(document).ready(function () {
 
 
 })
+
+$(document).ready(function () {
+    $('.event_folow').on('click', function (e) {
+        e.preventDefault();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var dataId = $(this).data("id");
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
+            },
+            success: function (data) {
+
+                var hearts = $('#heart_'+dataId);
+                console.log(hearts);
+                if (data === "folow true") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-regular').addClass('fa-solid');
+                    });
+                }
+                if (data === "folow false") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-solid').addClass('fa-regular');
+                    });
+                }
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+
+            }
+
+
+        })
+
+    })
+
+
+
+})
+
+
 
 
 

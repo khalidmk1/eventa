@@ -51,4 +51,14 @@ class Events extends Model
     }
     
 
+    /**
+     * Get all of the event for the Events
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function folow(): HasMany
+    {
+        return $this->hasMany(EventFolow::class);
+    }
+
 }

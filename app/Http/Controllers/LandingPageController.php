@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Events;
 use App\Models\User;
+use App\Models\EventFolow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -106,8 +107,15 @@ class LandingPageController extends Controller
                     $extension = pathinfo($event->video, PATHINFO_EXTENSION);
                     $extensions[] = $extension;
                 }   
+                 /*  $event = Events::where('slug' , $slug )->first(); */
+                 $confirmedFolows = EventFolow::whereIn('event_id', $events->pluck('id'))
+                 ->where('confirmed', 1)
+                 ->get()
+                 ->groupBy('event_id');
 
+                 
                 return view('landing_page.events.show')->with([
+                    'confirmedFolows'=> $confirmedFolows,
                     'events' => $events,
                     'extensions' => $extensions,
                     'city' => $this->city,
@@ -196,6 +204,48 @@ class LandingPageController extends Controller
        return redirect()->back()->with('status', 'Profile updated successfully');
 
     }
+
+
+    public function event_folow($slug){
+        $event = Events::where('slug' , $slug )->first();
+       
+        $folow_false = EventFolow::where('user_id', auth()->user()->id)
+            ->where('event_id', $event->id)
+            ->where('confirmed', 0)
+            ->first();
+        
+        $folow_true = EventFolow::where('user_id', auth()->user()->id)
+            ->where('event_id', $event->id)
+            ->where('confirmed', 1)
+            ->first();
+        
+        if ($folow_false) {
+            $message = 'folow true';
+            $folow_false->update([
+                'confirmed' => 1
+            ]);
+            return response()->json($message);
+        } elseif ($folow_true) {
+            $message = 'folow false';
+            $folow_true->update([
+                'confirmed' => 0
+            ]);
+            return response()->json($message);
+        } else {
+            $message = 'folow created';
+            $newfolow = EventFolow::create([
+                'user_id' => auth()->user()->id,
+                'event_id' => $event->id,
+                'confirmed' => 1
+            ]);
+            return response()->json($message);
+        }
+
+        
+        
+    }
+
+    
 
 
 

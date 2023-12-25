@@ -457,6 +457,9 @@
                                 $('#message_containe').append(error);
                             });
                         }
+                        /* $('#message_containe').empty(); */
+                            
+                            
 
                        
                         
