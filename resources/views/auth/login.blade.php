@@ -52,9 +52,7 @@
 @section('content')
     <div id="ajax-errors-container">
 
-    </div>
-
-    
+    </div>    
 
     @if ($errors->any())
         @foreach ($errors->all() as $error)

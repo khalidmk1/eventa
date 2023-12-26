@@ -39,8 +39,7 @@ Route::name('home.')->prefix('/')->group(function (){
     Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
     Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
-    Route::get('trake/folow', [LandingPageController::class, 'folow_trake'])->name('trake');
-})->middleware(['visiter']);
+})->middleware(['visiter' , 'auth']);
 
 
 

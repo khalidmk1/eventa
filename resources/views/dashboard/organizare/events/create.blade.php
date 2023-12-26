@@ -377,7 +377,7 @@
         //create event
         $(document).ready(function() {
 
-            $('#store_event').submit(function(e) {
+            $('#store_event').off('submit').on('submit', function(e) {
                 e.preventDefault();
                 $('#exampleModalCenter').modal('show')
                 var formData = new FormData(this);

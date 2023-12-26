@@ -2,9 +2,11 @@
 
 @section('content')
     <div class="container mt-3 text-center">
-        <div class="row">
-            <div class="col-sm-8 mb-3">
 
+        <div class="row">
+
+            <div class="col-sm-8 mb-3">
+                <div class="message_container mb-2"></div>
                 <div class="card shadow  bg-body-tertiary">
                     @if (in_array($extension, ['mp4', 'avi', 'mov']))
                         <video autoplay loop muted class="asset-detail">
@@ -17,17 +19,37 @@
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-9 col-sm-12">
+                            <div class="col-md-12 col-sm-12">
                                 <h2 class="text-start">{{ $event->title }}
                                     @foreach ($event->categorie as $categorie)
                                         <span class="categorie-tag" style="font-size: 20px ">{{ $categorie }}</span>
                                     @endforeach
                                 </h2>
                             </div>
-                            <div class="col-md-3 col-sm-12">
+                            <div class="col-md-12 col-sm-12 d-flex gap-2 justify-content-end">
+                                @if (auth()->check())
+                                    @if ($confirmedFolows->has($event->id))
+                                        <form action="{{ Route('home.folow', $event->slug) }}" method="post"
+                                            data-id="{{ $event->id }}" class="event_folow">
+                                            @csrf
+                                            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-heart"
+                                                    id="heart_{{ $event->id }}"></i>
+                                                suivi</button>
+                                        </form>
+                                    @endif
+                                @else
+                                    <form action="{{ Route('home.folow', $event->slug) }}" method="post"
+                                        data-id="{{ $event->id }}" class="event_folow">
+                                        @csrf
+                                        <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-heart"
+                                                id="heart_{{ $event->id }}"></i>
+                                            suivi</button>
+                                    </form>
+                                @endif
                                 <button type="button" class="btn btn-outline-primary"><i class="fa-solid fa-check"></i>
                                     participate</button>
                             </div>
+
                         </div>
 
                         <p class="card-text">{{ $event->description }}</p>

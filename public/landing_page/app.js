@@ -337,17 +337,30 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var hearts = $('#heart_'+dataId);
+                var hearts = $('#heart_' + dataId);
                 console.log(hearts);
                 if (data === "folow true") {
                     hearts.each(function () {
                         $(this).removeClass('fa-regular').addClass('fa-solid');
                     });
+                    location.reload(true)
                 }
                 if (data === "folow false") {
                     hearts.each(function () {
                         $(this).removeClass('fa-solid').addClass('fa-regular');
                     });
+                    location.reload(true)
+                }
+
+                if(data === "folow created"){
+                    location.reload(true)
+                }
+
+                if (data === "please you need to be authenticated") {
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+                    $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " +'<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' +'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
                 console.log(data);
             },

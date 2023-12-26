@@ -4,6 +4,7 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
     <section class="slid-containe container">
+        <div class="message_container"></div>
         <h1 class="mt-5">last Events</h1>
         <div class="swiper mySwiper container">
             <div class="swiper-wrapper content">
@@ -253,18 +254,22 @@
                                         data-id="{{ $event->id }}" class="event_folow">
                                         @csrf
 
-                                        @if ($confirmedFolows->has($event->id))
-                                        <i class="fa-solid fa-heart position-absolute p-2"
+                                        @if (auth()->check())
+                                            @if ($confirmedFolows->has($event->id))
+                                                <i class="fa-solid fa-heart position-absolute p-2"
+                                                    id="heart_{{ $event->id }}"
+                                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                                            @else
+                                                <i class="fa-regular fa-heart position-absolute p-2"
+                                                    id="heart_{{ $event->id }}"
+                                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                                            @endif
+                                        @else 
+                                        
+                                        <i class="fa-regular fa-heart position-absolute p-2"
                                         id="heart_{{ $event->id }}"
                                         style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
-                                        
-                                    @else
-                                    <i class="fa-regular fa-heart position-absolute p-2"
-                                    id="heart_{{ $event->id }}"
-                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
-                                    @endif
-
-
+                                        @endif
 
                                     </form>
                                     <span class="position-absolute price">{{ $event->price }}</span>

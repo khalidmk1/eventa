@@ -69,6 +69,10 @@ class LandingPageController extends Controller
             $searched_events->where('title', 'LIKE', "%{$request->title}%");
         }
 
+        if($request->has('city')){
+            $searched_events->where('city' , 'LIKE' , "%{$request->city}%");
+        }
+
     
         if ($request->has('categorie')) {
             $categories = is_array($request->categorie) ? $request->categorie : [$request->categorie];
@@ -107,11 +111,13 @@ class LandingPageController extends Controller
                     $extension = pathinfo($event->video, PATHINFO_EXTENSION);
                     $extensions[] = $extension;
                 }   
-                 /*  $event = Events::where('slug' , $slug )->first(); */
-                 $confirmedFolows = EventFolow::whereIn('event_id', $events->pluck('id'))
-                 ->where('confirmed', 1)
-                 ->get()
-                 ->groupBy('event_id');
+        
+               if(Auth::check()){
+                $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
+                ->whereIn('event_id', $events->pluck('id'))
+                ->where('confirmed', 1)
+                ->get()
+                ->groupBy('event_id');
 
                  
                 return view('landing_page.events.show')->with([
@@ -128,6 +134,21 @@ class LandingPageController extends Controller
                     'Performing_arts_tags' => $this->Performing_arts_tags,
                     'Community_tags' => $this->Community_tags,
                 ]);
+               }else{
+                return view('landing_page.events.show')->with([
+                    'events' => $events,
+                    'extensions' => $extensions,
+                    'city' => $this->city,
+                    'categories' => $this->categories,
+                    'sport_tags' => $this->sport_tags,
+                    'Conferences_tags' => $this->Conferences_tags,
+                    'expos_tags' => $this->expos_tags,
+                    'concerts_tags' => $this->concerts_tags,
+                    'Festivals_tags' => $this->Festivals_tags,
+                    'Performing_arts_tags' => $this->Performing_arts_tags,
+                    'Community_tags' => $this->Community_tags,
+                ]);
+               }
             }
            
      
@@ -136,11 +157,23 @@ class LandingPageController extends Controller
 
     public function detail($slug){
         $event = Events::where('slug' , $slug)->first();
-
         $extension = pathinfo($event->video, PATHINFO_EXTENSION);
-
-        return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension,]);
-    }
+       if(Auth::check()){
+        $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
+        ->whereIn('event_id', $event->pluck('id'))
+        ->where('confirmed', 0)
+        ->get()
+        ->groupBy('event_id');
+        
+        return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension, 
+        'confirmedFolows'=>$confirmedFolows ,
+    ]);
+       }else{
+        return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension
+    ]);
+}
+    
+}
 
     public function edit(Request $request , $slug){
         $user = User::where('slug' , $slug)->first();
@@ -207,7 +240,8 @@ class LandingPageController extends Controller
 
 
     public function event_folow($slug){
-        $event = Events::where('slug' , $slug )->first();
+        if(Auth::check()){
+            $event = Events::where('slug' , $slug )->first();
        
         $folow_false = EventFolow::where('user_id', auth()->user()->id)
             ->where('event_id', $event->id)
@@ -238,6 +272,10 @@ class LandingPageController extends Controller
                 'event_id' => $event->id,
                 'confirmed' => 1
             ]);
+            return response()->json($message);
+        }
+        }else{
+            $message = 'please you need to be authenticated';
             return response()->json($message);
         }
 
