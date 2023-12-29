@@ -193,8 +193,15 @@ class DashboardController extends Controller
             $event->save();
             return response()->json(['message' => 'Event created successfully']);
         } else {
-            
-            Storage::delete('public/compressed/' . $event->video);
+
+            if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
+                Storage::delete('public/event/image/' . $originalName);
+       
+            }
+            if(in_array($extension , ['mp4', 'avi', 'mov']) ){
+
+                Storage::delete('public/event/video/' . $originalName); 
+            }
 
             return response()->json(['message' => 'The date is invalid']);
         }

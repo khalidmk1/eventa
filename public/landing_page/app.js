@@ -62,7 +62,7 @@ $(document).ready(function () {
 
     $('#roleSelect').on('change', function () {
         var conceptName = $(this).val();
-        if (conceptName == 'organizer') {
+        if (conceptName == 'organizare') {
             adresse.slideDown();
             organizationName.slideDown();
             organizationLink.slideDown();
@@ -173,12 +173,6 @@ $(document).ready(function () {
 
 $(document).ready(function () {
 
-
-
-
-
-
-
     // Variables of the inputs
     var tagsToSections = {
         'Sports': $('#sport_tag'),
@@ -208,7 +202,6 @@ $(document).ready(function () {
                 section.find('input[type=checkbox]').prop('checked', false);
             }
         });
-
 
     });
     var selectedTags = []; // Declare selectedTags in a higher scope
@@ -258,9 +251,30 @@ $(document).ready(function () {
                 'city': city
             },
             success: function (data) {
-   
 
-                /* console.log(data[2].event_id); */
+                var obj = data[2]
+
+                if(Array.isArray(obj)){
+                    console.log('hello');
+                }
+
+                console.log(data);
+
+               /*  for (let key in obj) {
+                    // Check if the property is directly on the object (not inherited)
+                    if (obj.hasOwnProperty(key)) {
+
+                        var arr = obj[key]
+
+                        arr.forEach(element => {
+
+                            console.log(element);
+
+                          
+
+                        });
+                    }
+                } */
 
                 $('.all_content').hide();
 
@@ -281,37 +295,49 @@ $(document).ready(function () {
                 <div class="position-relative">
                     <span class="position-absolute price">Free</span>`;
 
-                    output +=`  <form action="/folow/${event.slug}" method="post"
+                        output += `  <form action="/folow/${event.slug}" method="post"
                     data-id="${event.id}" class="event_folow">`
 
-                    if(data[1] == true){
+                        if (data[1] == true) {
 
-                        console.log('hello');
-
-                        /* for (let i = 0; i < data[2].length; i++) {
-                            const element = data;
-                            console.log(element);
-                            if (element) {
-                                output += `<i class="fa-solid fa-heart position-absolute p-2"
-                                    id="heart_${event.id}"
-                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
-                            } else {
+                            if(Array.isArray(obj)){
                                 output += `<i class="fa-regular fa-heart position-absolute p-2"
-                                    id="heart_${event.id}"
-                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                                            id="heart_${event.id}"
+                                            style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                            }else{
+
+                                for (let key in obj) {
+                                    // Check if the property is directly on the object (not inherited)
+                                    if (obj.hasOwnProperty(key)) {
+    
+                                        var arr = obj[key]
+    
+                                        arr.forEach(element => {
+    
+                                            if (element.event_id == event.id) {
+                                                output += `<i class="fa-solid fa-heart position-absolute p-2"
+                                        id="heart_${event.id}"
+                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                                            } else {
+                                                output += `<i class="fa-regular fa-heart position-absolute p-2"
+                                        id="heart_${event.id}"
+                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                                            }
+    
+                                        });
+                                    }
+                                }
+
                             }
-                            
-                        } */
-                       
-                        
-                    }else{
-                        output +=`  <i class="fa-regular fa-heart position-absolute p-2"
+
+                        } else {
+                            output += `  <i class="fa-regular fa-heart position-absolute p-2"
                         id="heart_${event.id}"
                         style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
                         `
-                    }
+                        }
 
-                    output +=`</form>`
+                        output += `</form>`
 
                         if (['mp4', 'avi', 'mov'].includes(extension)) {
                             output += `
@@ -332,28 +358,28 @@ $(document).ready(function () {
                 <a class="btn btn-info w-25 mb-2" href="/event/${event.slug}">detail -></a>
                 </div>`;
 
-                output +=`<div class="card-footer border-0 text-center">`
+                        output += `<div class="card-footer border-0 text-center">`
 
-                var categorie = event.categorie
+                        var categorie = event.categorie
 
 
 
-                categorie.forEach(element => {
-                    output +=`
+                        categorie.forEach(element => {
+                            output += `
                     
-                    <small class="text-muted categorie-tag">${ element }</small>
+                    <small class="text-muted categorie-tag">${element}</small>
                   
                     `;
-                });
+                        });
 
-               
-               
-               
 
-                output +=`  </div>
+
+
+
+                        output += `  </div>
                  </div>
                 </div>`;
-           
+
 
                         $('.event_conatine').append(output);
                         output = ' '

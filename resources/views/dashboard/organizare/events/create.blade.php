@@ -390,7 +390,6 @@
                     success: function(response) {
                         setTimeout(function() {
                             $('#exampleModalCenter').modal('hide')
-                            location.reload(); // Reload the page after success
                         }, 1000);
 
                         $('html, body').animate({
@@ -405,7 +404,7 @@
                         }
 
 
-                        $('#store_event')[0].reset();
+                      
 
                         var seccuss;
                         if (response.message === "The date is invalid") {
@@ -416,12 +415,15 @@
                         </button>
                     </div>`;
                         } else {
+                           
                             seccuss = `<div class="col-6 alert alert-success alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
                         <strong>${response.message}</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
                     </div>`;
+
+                    $('#store_event')[0].reset();
                         }
 
 
@@ -434,14 +436,13 @@
                             $('#exampleModalCenter').modal('hide')
                         }, 1000);
 
-                        console.log(error);
                         $('html, body').animate({
                             scrollTop: 0
                         }, 'slow');
 
-                        if ($('#message_containe').children().length > 0) {
+                       /*  if ($('#message_containe').children().length > 0) {
                             $('#message_containe').empty();
-                        }
+                        } */
 
 
                         if (error.responseJSON.errors) {
@@ -457,13 +458,7 @@
                                 $('#message_containe').append(error);
                             });
                         }
-                        /* $('#message_containe').empty(); */
                             
-                            
-
-                       
-                        
-
 
                     }
 
