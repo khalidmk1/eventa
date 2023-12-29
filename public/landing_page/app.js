@@ -201,7 +201,6 @@ $(document).ready(function () {
 
 
         Object.entries(tagsToSections).forEach(([tag, section]) => {
-            console.log(tag);
             if (checkedValues.indexOf(tag) !== -1) {
                 section.slideDown();
             } else {
@@ -247,7 +246,8 @@ $(document).ready(function () {
     $('#search_forme').submit(function (e) {
         e.preventDefault();
         var title = $('#title').val();
-        console.log(selectedCategorie);
+        var url_location = $(location).attr('href');
+
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -258,6 +258,9 @@ $(document).ready(function () {
                 'city': city
             },
             success: function (data) {
+   
+
+                /* console.log(data[2].event_id); */
 
                 $('.all_content').hide();
 
@@ -268,14 +271,47 @@ $(document).ready(function () {
 
                 if (data.length > 0) {
 
-                    data.forEach(event => {
+                    data[0].forEach(event => {
                         const extension = event.video.split('.').pop().toLowerCase();
+
 
                         output += `
         <div class="col">
             <div class="card h-100 shadow-lg border-0 mb-5 p-0 rounded">
                 <div class="position-relative">
                     <span class="position-absolute price">Free</span>`;
+
+                    output +=`  <form action="/folow/${event.slug}" method="post"
+                    data-id="${event.id}" class="event_folow">`
+
+                    if(data[1] == true){
+
+                        console.log('hello');
+
+                        /* for (let i = 0; i < data[2].length; i++) {
+                            const element = data;
+                            console.log(element);
+                            if (element) {
+                                output += `<i class="fa-solid fa-heart position-absolute p-2"
+                                    id="heart_${event.id}"
+                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                            } else {
+                                output += `<i class="fa-regular fa-heart position-absolute p-2"
+                                    id="heart_${event.id}"
+                                    style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                            }
+                            
+                        } */
+                       
+                        
+                    }else{
+                        output +=`  <i class="fa-regular fa-heart position-absolute p-2"
+                        id="heart_${event.id}"
+                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                        `
+                    }
+
+                    output +=`</form>`
 
                         if (['mp4', 'avi', 'mov'].includes(extension)) {
                             output += `
@@ -294,13 +330,30 @@ $(document).ready(function () {
                 </div>
                 <div class="text-center">
                 <a class="btn btn-info w-25 mb-2" href="/event/${event.slug}">detail -></a>
-                </div>
+                </div>`;
+
+                output +=`<div class="card-footer border-0 text-center">`
+
+                var categorie = event.categorie
+
+
+
+                categorie.forEach(element => {
+                    output +=`
+                    
+                    <small class="text-muted categorie-tag">${ element }</small>
+                  
+                    `;
+                });
+
                
-                <div class="card-footer border-0 text-center">
-                    <small class="text-muted">${event.categorie}</small>
-                </div>
-            </div>
-        </div>`;
+               
+               
+
+                output +=`  </div>
+                 </div>
+                </div>`;
+           
 
                         $('.event_conatine').append(output);
                         output = ' '
@@ -325,10 +378,12 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-    $('.event_folow').on('click', function (e) {
+    $(document).on('click', '.event_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var btn = $('.folow_btn');
         var dataId = $(this).data("id");
+
         $.ajax({
             url: $(this).attr('action'),
             method: $(this).attr('method'),
@@ -338,31 +393,34 @@ $(document).ready(function () {
             success: function (data) {
 
                 var hearts = $('#heart_' + dataId);
-                console.log(hearts);
+                /* console.log(hearts); */
                 if (data === "folow true") {
                     hearts.each(function () {
                         $(this).removeClass('fa-regular').addClass('fa-solid');
                     });
-                    location.reload(true)
+                    btn.hide();
                 }
                 if (data === "folow false") {
                     hearts.each(function () {
                         $(this).removeClass('fa-solid').addClass('fa-regular');
                     });
-                    location.reload(true)
+                    btn.show();
                 }
 
-                if(data === "folow created"){
-                    location.reload(true)
+                if (data === "folow created") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-regular').addClass('fa-solid');
+                    });
+                    btn.hide();
                 }
 
                 if (data === "please you need to be authenticated") {
                     $('html, body').animate({
                         scrollTop: 0
                     }, 'slow');
-                    $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " +'<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' +'</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+                    $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
-                console.log(data);
+
             },
             error: function (error) {
                 console.log(error);

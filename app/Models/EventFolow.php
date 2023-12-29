@@ -23,7 +23,7 @@ class EventFolow extends Model
      */
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Event::class);
+        return $this->belongsTo(Events::class);
     }
 
 }

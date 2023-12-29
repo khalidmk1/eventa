@@ -32,7 +32,7 @@
                                         <form action="{{ Route('home.folow', $event->slug) }}" method="post"
                                             data-id="{{ $event->id }}" class="event_folow">
                                             @csrf
-                                            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-heart"
+                                            <button type="button"  class="btn btn-outline-dark folow_btn"><i class="fa-solid fa-heart"
                                                     id="heart_{{ $event->id }}"></i>
                                                 suivi</button>
                                         </form>

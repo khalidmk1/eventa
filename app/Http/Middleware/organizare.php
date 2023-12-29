@@ -18,6 +18,8 @@ class organizare
     {
         if(auth()->user()->role == 'organizare' && auth()->user()->block == 0){
             return $next($request);
+        }else{
+            return redirect()->back();
         }
        
     }

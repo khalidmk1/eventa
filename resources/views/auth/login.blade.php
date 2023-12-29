@@ -177,7 +177,7 @@
                                     <label class="form-label text-white" for="roleSelect">Sing up as</label>
                                     <select name="role" class="form-select select_option" id="roleSelect">
                                         <option value="visiter">Visiter</option>
-                                        <option value="organizer">organizare</option>
+                                        <option value="organizare">organizare</option>
                                     </select>
                                 </div>
 

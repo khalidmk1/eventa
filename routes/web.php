@@ -19,27 +19,32 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::name('dashboard.')->prefix('dashboard')->group(function (){
+Route::middleware(['auth','organizare','admin'])->name('dashboard.')->prefix('dashboard')->group(function (){
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-})->middleware(['auth','organizare','admin']);
+});
 
 
-Route::name('dashboard.event.')->prefix('event')->group(function (){
+Route::middleware(['auth','organizare'])->name('dashboard.event.')->prefix('event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
     Route::get('/detail/{slug}', [DashboardController::class, 'detail'])->name('detail');
-})->middleware(['auth','organizer']);
+});
 
 Route::name('home.')->prefix('/')->group(function (){
     Route::get('/', [LandingPageController::class, 'home'])->name('show');
     Route::get('events',[LandingPageController::class, 'show'])->name('event');
     Route::get('event/{slug}',[LandingPageController::class, 'detail'])->name('detail');
+    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
+    
+});
+
+Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(function (){
     Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
-    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
-})->middleware(['visiter' , 'auth']);
+    Route::get('favoris', [LandingPageController::class, 'Favoris_list'])->name('favoris');
+});
 
 
 

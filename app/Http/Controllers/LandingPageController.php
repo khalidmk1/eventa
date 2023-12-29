@@ -95,10 +95,26 @@ class LandingPageController extends Controller
         }
 
         $events = $searched_events->get();
+        
+        $auth = Auth::check();
 
             if ($request->ajax()) {
 
-                return response()->json($events);
+               if(Auth::check()){
+                $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
+                ->whereIn('event_id', $events->pluck('id'))
+                ->where('confirmed', 1)
+                ->get()
+                ->groupBy('event_id');
+
+              
+
+                return response()->json([$events , $auth , $confirmedFolows]);
+               }
+               else{
+                
+                return response()->json([$events , $auth]);
+               }
 
             }else{
 
@@ -111,6 +127,7 @@ class LandingPageController extends Controller
                     $extension = pathinfo($event->video, PATHINFO_EXTENSION);
                     $extensions[] = $extension;
                 }   
+
         
                if(Auth::check()){
                 $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
@@ -118,6 +135,8 @@ class LandingPageController extends Controller
                 ->where('confirmed', 1)
                 ->get()
                 ->groupBy('event_id');
+
+
 
                  
                 return view('landing_page.events.show')->with([
@@ -176,6 +195,7 @@ class LandingPageController extends Controller
 }
 
     public function edit(Request $request , $slug){
+
         $user = User::where('slug' , $slug)->first();
 
         $events = Events::where('user_id' , $user->id)->get();
@@ -278,9 +298,83 @@ class LandingPageController extends Controller
             $message = 'please you need to be authenticated';
             return response()->json($message);
         }
+    }
 
-        
-        
+    public function Favoris_list(Request $request){
+
+        $searched_events = Events::query();
+
+        if ($request->has('title')) {
+            $searched_events->where('title', 'LIKE', "%{$request->title}%");
+        }
+
+        if($request->has('city')){
+            $searched_events->where('city' , 'LIKE' , "%{$request->city}%");
+        }
+
+    
+        if ($request->has('categorie')) {
+            $categories = is_array($request->categorie) ? $request->categorie : [$request->categorie];
+    
+            $searched_events->where(function ($query) use ($categories) {
+                foreach ($categories as $category) {
+                    $query->orWhere('categorie', 'like', "%$category%");
+                }
+            });
+        }
+    
+        if ($request->has('tags')) {
+            $tags = is_array($request->tags) ? $request->tags : [$request->tags];
+    
+            $searched_events->where(function ($query) use ($tags) {
+                foreach ($tags as $tag) {
+                    $query->orWhere('tags', 'like', "%$tag%");
+                }
+            });
+        }
+
+        $events = $searched_events->get();
+
+            if ($request->ajax()) {
+
+                return response()->json($events);
+
+            }else{
+
+
+                $events = EventFolow::with('event')->where('user_id', auth()->user()->id)
+                ->where('confirmed', 1)
+                ->get();
+
+                $extensions = [];
+                
+                foreach ($events as $event) {
+                    // Assuming that 'video' is a property of each event
+                    $extension = pathinfo($event->event->video, PATHINFO_EXTENSION);
+                    $extensions[] = $extension;
+                }   
+    
+                 
+                return view('landing_page.events.favoris')->with([
+                    'events' => $events,
+                    'extensions' => $extensions,
+                    'city' => $this->city,
+                    'categories' => $this->categories,
+                    'sport_tags' => $this->sport_tags,
+                    'Conferences_tags' => $this->Conferences_tags,
+                    'expos_tags' => $this->expos_tags,
+                    'concerts_tags' => $this->concerts_tags,
+                    'Festivals_tags' => $this->Festivals_tags,
+                    'Performing_arts_tags' => $this->Performing_arts_tags,
+                    'Community_tags' => $this->Community_tags,
+                ]);
+               
+
+            }
+
+
+
+
     }
 
     

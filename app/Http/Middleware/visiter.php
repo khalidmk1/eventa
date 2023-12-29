@@ -18,6 +18,8 @@ class visiter
     {
         if(auth()->user()->role == 'visiter' && auth()->user()->block == 0){
             return $next($request);
+        }else{
+            return redirect()->back();
         }
         
     }

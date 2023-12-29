@@ -16,15 +16,18 @@
                     <li>
                         <a class="dropdown-item" href="{{Route('home.profile' , auth()->user()->slug)}}">My profile</a>
                     </li>
-                    @if (auth()->user()->role == 'organizer' || auth()->user()->role == 'admin')
+                    @if (auth()->user()->role == 'organizare' || auth()->user()->role == 'admin')
                         <li>
                             <a class="dropdown-item" href="{{ Route('dashboard.home') }}">Space</a>
                         </li>
                     @endif
+                    <li>
+                        <a class="dropdown-item" href="{{ Route('home.favoris') }}">List Favoris Event</a>
+                    </li>
                     <form action="{{ Route('logout') }}" method="post">
                         @csrf
                         <li>
-                            <button type="submit" class="dropdown-item">Logout</button>
+                            <button type="submit" class="dropdown-item text-center">Logout</button>
                         </li>
                     </form>
 
