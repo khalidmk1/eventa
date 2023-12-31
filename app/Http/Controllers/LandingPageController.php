@@ -7,7 +7,7 @@ use App\Models\EventFolow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
-
+use Illuminate\Support\Facades\Route;
 
 class LandingPageController extends Controller
 {
@@ -102,10 +102,10 @@ class LandingPageController extends Controller
 
                if(Auth::check()){
                 $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
-                ->whereIn('event_id', $events->pluck('id'))
+                ->whereIn('events_id', $events->pluck('id'))
                 ->where('confirmed', 1)
                 ->get()
-                ->groupBy('event_id');
+                ->groupBy('events_id');
 
               
 
@@ -130,13 +130,12 @@ class LandingPageController extends Controller
 
         
                if(Auth::check()){
+
                 $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
-                ->whereIn('event_id', $events->pluck('id'))
+                ->whereIn('events_id', $events->pluck('id'))
                 ->where('confirmed', 1)
                 ->get()
-                ->groupBy('event_id');
-
-
+                ->groupBy('events_id');
 
                  
                 return view('landing_page.events.show')->with([
@@ -153,7 +152,9 @@ class LandingPageController extends Controller
                     'Performing_arts_tags' => $this->Performing_arts_tags,
                     'Community_tags' => $this->Community_tags,
                 ]);
+                
                }else{
+
                 return view('landing_page.events.show')->with([
                     'events' => $events,
                     'extensions' => $extensions,
@@ -179,13 +180,18 @@ class LandingPageController extends Controller
         $extension = pathinfo($event->video, PATHINFO_EXTENSION);
        if(Auth::check()){
         $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
-        ->whereIn('event_id', $event->pluck('id'))
+        ->whereIn('events_id', $event->pluck('id'))
         ->where('confirmed', 0)
         ->get()
-        ->groupBy('event_id');
+        ->groupBy('events_id');
+
+        $existsFolows = EventFolow::where('user_id' , auth()->user()->id)
+        ->whereIn('events_id', $event->pluck('id'))
+        ->where('confirmed', 1)
+        ->exists();
         
         return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension, 
-        'confirmedFolows'=>$confirmedFolows ,
+        'confirmedFolows'=>$confirmedFolows , 'existsFolows' => $existsFolows
     ]);
        }else{
         return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension
@@ -264,15 +270,15 @@ class LandingPageController extends Controller
             $event = Events::where('slug' , $slug )->first();
        
         $folow_false = EventFolow::where('user_id', auth()->user()->id)
-            ->where('event_id', $event->id)
+            ->where('events_id', $event->id)
             ->where('confirmed', 0)
             ->first();
         
         $folow_true = EventFolow::where('user_id', auth()->user()->id)
-            ->where('event_id', $event->id)
+            ->where('events_id', $event->id)
             ->where('confirmed', 1)
             ->first();
-        
+
         if ($folow_false) {
             $message = 'folow true';
             $folow_false->update([
@@ -289,15 +295,39 @@ class LandingPageController extends Controller
             $message = 'folow created';
             $newfolow = EventFolow::create([
                 'user_id' => auth()->user()->id,
-                'event_id' => $event->id,
+                'events_id' => $event->id,
                 'confirmed' => 1
             ]);
             return response()->json($message);
         }
+
+
         }else{
             $message = 'please you need to be authenticated';
             return response()->json($message);
         }
+    }
+
+
+    public function folow_checked($slug){
+        
+        $event = Events::where('slug' , $slug )->first();
+        
+        $folow_true = EventFolow::where('user_id', auth()->user()->id)
+            ->where('events_id', $event->id)
+            ->where('confirmed', 1)
+            ->first();
+
+        if ($folow_true) {
+            $message = 'folow false';
+            $folow_true->update([
+                'confirmed' => 0,
+                'check' => 1
+            ]);
+            return response()->json([$message , $folow_true]);
+        }
+        
+
     }
 
     public function Favoris_list(Request $request){
@@ -333,18 +363,40 @@ class LandingPageController extends Controller
             });
         }
 
-        $events = $searched_events->get();
+
+        $events = $searched_events 
+        ->whereHas('folow', function ($query) {
+            $query->where('user_id', auth()->user()->id)
+                ->where('confirmed', 1);
+        })
+        ->get();       
+
+        $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
+                ->whereIn('events_id', $events->pluck('id'))
+                ->where('confirmed', 1)
+                ->get()
+                ->groupBy('events_id');
+
+               
+                
+        $auth = Auth::check();
 
             if ($request->ajax()) {
 
-                return response()->json($events);
+                return response()->json([$events , $auth , $confirmedFolows]);
 
             }else{
-
 
                 $events = EventFolow::with('event')->where('user_id', auth()->user()->id)
                 ->where('confirmed', 1)
                 ->get();
+
+                $countfolow = EventFolow::with('event')->where('user_id', auth()->user()->id)
+                ->where('confirmed', 1)
+                ->where('check' , 0)
+                ->count();
+
+                /* dd($countfolow); */
 
                 $extensions = [];
                 
@@ -353,9 +405,11 @@ class LandingPageController extends Controller
                     $extension = pathinfo($event->event->video, PATHINFO_EXTENSION);
                     $extensions[] = $extension;
                 }   
-    
-                 
+                
+
+
                 return view('landing_page.events.favoris')->with([
+                    'confirmedFolows'=> $confirmedFolows,
                     'events' => $events,
                     'extensions' => $extensions,
                     'city' => $this->city,
@@ -372,12 +426,14 @@ class LandingPageController extends Controller
 
             }
 
-
-
-
     }
 
-    
+    public function favoris_count(){
+        $folow_count = EventFolow::where('user_id', auth()->user()->id)
+        ->where('confirmed', 0)
+        ->where('')
+        ->first();
+    }
 
 
 

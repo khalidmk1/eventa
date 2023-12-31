@@ -264,15 +264,19 @@
                                                     id="heart_{{ $event->id }}"
                                                     style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
                                             @endif
-                                        @else 
-                                        
-                                        <i class="fa-regular fa-heart position-absolute p-2"
-                                        id="heart_{{ $event->id }}"
-                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                                        @else
+                                            <i class="fa-regular fa-heart position-absolute p-2"
+                                                id="heart_{{ $event->id }}"
+                                                style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
                                         @endif
 
                                     </form>
-                                    <span class="position-absolute price">{{ $event->price }}</span>
+                                    @if ($event->price == 'free')
+                                        <span class="position-absolute price">{{ $event->price }}</span>
+                                    @else
+                                        <span class="position-absolute price">{{ $event->price }} DH</span>
+                                    @endif
+
                                     @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                                         <video class="card-img-top  about_vid w-100" autoplay loop muted>
                                             <source src="{{ asset('storage/event/video/' . $event->video) }}"

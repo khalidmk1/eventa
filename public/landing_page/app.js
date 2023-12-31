@@ -204,11 +204,10 @@ $(document).ready(function () {
         });
 
     });
-    var selectedTags = []; // Declare selectedTags in a higher scope
+    var selectedTags = [];
 
-    // Attach a change event listener to checkboxes
+
     $('.checked_tag').on('change', function () {
-        // Fetch selected checkbox values
         selectedTags = [];
         $('.checked_tag:checked').each(function () {
             selectedTags.push($(this).val());
@@ -236,10 +235,12 @@ $(document).ready(function () {
         city = $(this).val();
     });
 
+    var title = $('#title').val();
+
     $('#search_forme').submit(function (e) {
         e.preventDefault();
-        var title = $('#title').val();
-        var url_location = $(location).attr('href');
+       
+        /*  var url_location = $(location).attr('href'); */
 
         $.ajax({
             url: $(this).attr('action'),
@@ -252,29 +253,9 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                var obj = data[2]
-
-                if(Array.isArray(obj)){
-                    console.log('hello');
-                }
+                var obj = data[2];
 
                 console.log(data);
-
-               /*  for (let key in obj) {
-                    // Check if the property is directly on the object (not inherited)
-                    if (obj.hasOwnProperty(key)) {
-
-                        var arr = obj[key]
-
-                        arr.forEach(element => {
-
-                            console.log(element);
-
-                          
-
-                        });
-                    }
-                } */
 
                 $('.all_content').hide();
 
@@ -283,7 +264,7 @@ $(document).ready(function () {
                 var output = ' ';
 
 
-                if (data.length > 0) {
+                if (data[0].length > 0) {
 
                     data[0].forEach(event => {
                         const extension = event.video.split('.').pop().toLowerCase();
@@ -293,28 +274,34 @@ $(document).ready(function () {
         <div class="col">
             <div class="card h-100 shadow-lg border-0 mb-5 p-0 rounded">
                 <div class="position-relative">
-                    <span class="position-absolute price">Free</span>`;
+                   `;
+
+                        if (event.price == 'free') {
+                            output += `<span class="position-absolute price">${event.price}</span>`;
+                        } else {
+                            output += `<span class="position-absolute price">${event.price} DH</span>`;
+                        }
+
 
                         output += `  <form action="/folow/${event.slug}" method="post"
                     data-id="${event.id}" class="event_folow">`
 
                         if (data[1] == true) {
 
-                            if(Array.isArray(obj)){
+                            if (Array.isArray(obj)) {
                                 output += `<i class="fa-regular fa-heart position-absolute p-2"
                                             id="heart_${event.id}"
                                             style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
-                            }else{
+                            } else {
 
                                 for (let key in obj) {
-                                    // Check if the property is directly on the object (not inherited)
                                     if (obj.hasOwnProperty(key)) {
-    
+
                                         var arr = obj[key]
-    
+
                                         arr.forEach(element => {
-    
-                                            if (element.event_id == event.id) {
+
+                                            if (element.events_id == event.id) {
                                                 output += `<i class="fa-solid fa-heart position-absolute p-2"
                                         id="heart_${event.id}"
                                         style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
@@ -323,7 +310,7 @@ $(document).ready(function () {
                                         id="heart_${event.id}"
                                         style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
                                             }
-    
+
                                         });
                                     }
                                 }
@@ -362,8 +349,6 @@ $(document).ready(function () {
 
                         var categorie = event.categorie
 
-
-
                         categorie.forEach(element => {
                             output += `
                     
@@ -371,10 +356,6 @@ $(document).ready(function () {
                   
                     `;
                         });
-
-
-
-
 
                         output += `  </div>
                  </div>
@@ -400,6 +381,170 @@ $(document).ready(function () {
     });
 
 
+    //fovoris list page
+    $('#search_forme_favoris').submit(function (e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            data: {
+                'title': title,
+                'categorie': selectedCategorie,
+                'tags': selectedTags,
+                'city': city
+            },
+
+            success : function (data) {
+                console.log(data);
+                $('.event_conatine').empty();
+                $('.all_content').hide();
+
+                var obj = data[2];
+
+                var output = ''
+
+
+                if (data[0].length > 0) {
+
+                    data[0].forEach(event => {
+                        const extension = event.video.split('.').pop().toLowerCase();
+
+
+                        output += `
+        <div class="col event" data-event-id="${event.id }">
+            <div class="card h-100 shadow-lg border-0 mb-5 p-0 rounded">
+                <div class="position-relative">
+                   `;
+
+                        if (event.price == 'free') {
+                            output += `<span class="position-absolute price">${event.price}</span>`;
+                        } else {
+                            output += `<span class="position-absolute price">${event.price} DH</span>`;
+                        }
+
+
+                        output += `  <form action="/checked/${event.slug}" method="post"
+                    data-id="${event.id}" class="event_folow">`
+
+                        if (data[1] == true) {
+
+                            if (Array.isArray(obj)) {
+                                output += `<i class="fa-regular fa-heart position-absolute p-2"
+                                            id="heart_${event.id}"
+                                            style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                            } else {
+
+                                for (let key in obj) {
+                                    if (obj.hasOwnProperty(key)) {
+
+                                        var arr = obj[key]
+
+                                        arr.forEach(element => {
+
+                                            if (element.events_id == event.id) {
+                                                output += `<i class="fa-solid fa-heart position-absolute p-2"
+                                        id="heart_${event.id}"
+                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                                            } else {
+                                                output += `<i class="fa-regular fa-heart position-absolute p-2"
+                                        id="heart_${event.id}"
+                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>`;
+                                            }
+
+                                        });
+                                    }
+                                }
+
+                            }
+
+                        } else {
+                            output += `  <i class="fa-regular fa-heart position-absolute p-2"
+                        id="heart_${event.id}"
+                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                        `
+                        }
+
+                        output += `</form>`
+
+                        if (['mp4', 'avi', 'mov'].includes(extension)) {
+                            output += `
+            <video class="card-img-top about_vid w-100" autoplay loop muted>
+                <source src="/storage/event/video/${event.video}" type="video/mp4">
+            </video>`;
+                        } else if (['jpg', 'jpeg', 'png', 'gif'].includes(extension)) {
+                            output += `<img src="/storage/event/image/${event.video}" class="card-img-top about_img" alt="Skyscrapers"/>`;
+                        }
+
+                        output += `
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">${event.title}</h5>
+                    <p class="card-text">${event.description.length > 200 ? event.description.substring(0, 200) + ' ...' : event.description}</p>
+                </div>
+                <div class="text-center">
+                <a class="btn btn-info w-25 mb-2" href="/event/${event.slug}">detail -></a>
+                </div>`;
+
+                        output += `<div class="card-footer border-0 text-center">`
+
+                        var categorie = event.categorie
+
+                        categorie.forEach(element => {
+                            output += `
+                    
+                    <small class="text-muted categorie-tag">${element}</small>
+                  
+                    `;
+                        });
+
+                        output += `  </div>
+                 </div>
+                </div>`;
+
+
+                       
+                    });
+
+
+                }else{
+                    output += `<h2>is empty</h2>`
+                }
+
+
+                $('.event_conatine').append(output);
+                output = ' '
+
+            },
+
+            error: function (error) {
+                console.log(error);
+
+            }
+
+
+        })
+    })
+
+
+    function count_favoris(){
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+
+            success : function (data) {
+                console.log(data);
+
+            },
+
+            error: function (error) {
+                console.log(error);
+
+            }
+
+        })
+    }
+count_favoris()
 
 })
 
@@ -446,6 +591,46 @@ $(document).ready(function () {
                     }, 'slow');
                     $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
+
+            },
+            error: function (error) {
+                console.log(error);
+
+            }
+
+
+        })
+
+    })
+
+
+    $(document).on('click', '.checked_folow', function (e) {
+        e.preventDefault();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var btn = $('.folow_btn');
+        var dataId = $(this).data("id");
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
+            },
+            success: function (data) {
+
+                
+                var hearts = $('#heart_' + dataId);
+                /* console.log(hearts); */
+
+                var updatedEventId = data[1].events_id;
+                console.log(data);
+
+                hearts.each(function () {
+                    $(this).removeClass('fa-solid').addClass('fa-regular');  
+                });
+                $('.event[data-event-id="' + updatedEventId + '"]').hide();
+                btn.show();
+               
 
             },
             error: function (error) {

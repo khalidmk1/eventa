@@ -44,6 +44,8 @@ Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(funct
     Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
     Route::get('favoris', [LandingPageController::class, 'Favoris_list'])->name('favoris');
+    //this is the controller of checked favoris 
+    Route::post('checked/{slug}', [LandingPageController::class, 'folow_checked'])->name('folow.checked');
 });
 
 

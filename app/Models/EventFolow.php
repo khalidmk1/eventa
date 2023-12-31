@@ -12,8 +12,9 @@ class EventFolow extends Model
 
     protected $fillable = [
         'user_id',
-        'event_id',
-        'confirmed'
+        'events_id',
+        'confirmed',
+        'check'
     ];
 
     /**
@@ -23,7 +24,7 @@ class EventFolow extends Model
      */
     public function event(): BelongsTo
     {
-        return $this->belongsTo(Events::class);
+        return $this->belongsTo(Events::class , 'events_id');
     }
 
 }

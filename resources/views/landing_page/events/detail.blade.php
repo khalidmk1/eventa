@@ -19,21 +19,23 @@
 
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-md-12 col-sm-12">
+                            <div class="col-md-12 col-sm-12 d-flex align-items-center justify-content-between">
                                 <h2 class="text-start">{{ $event->title }}
                                     @foreach ($event->categorie as $categorie)
                                         <span class="categorie-tag" style="font-size: 20px ">{{ $categorie }}</span>
                                     @endforeach
                                 </h2>
+
+                                <h4 class="m-0">{{ $event->price }} DH</h4>
                             </div>
                             <div class="col-md-12 col-sm-12 d-flex gap-2 justify-content-end">
                                 @if (auth()->check())
-                                    @if ($confirmedFolows->has($event->id))
+                                    @if ($confirmedFolows->has($event->id) || $existsFolows === false)
                                         <form action="{{ Route('home.folow', $event->slug) }}" method="post"
                                             data-id="{{ $event->id }}" class="event_folow">
                                             @csrf
-                                            <button type="button"  class="btn btn-outline-dark folow_btn"><i class="fa-solid fa-heart"
-                                                    id="heart_{{ $event->id }}"></i>
+                                            <button type="button" class="btn btn-outline-dark folow_btn"><i
+                                                    class="fa-solid fa-heart" id="heart_{{ $event->id }}"></i>
                                                 suivi</button>
                                         </form>
                                     @endif
@@ -53,7 +55,7 @@
                         </div>
 
                         <p class="card-text">{{ $event->description }}</p>
-                        <h4>Date : <span>{{ $event->date }}</span></h4>
+                        <h4>Date : <span>{{ $event->date_start }}</span></h4>
 
                         <h4 class="text-start">Programme :</h4>
                         <div class="row gap-2">
@@ -94,10 +96,15 @@
                         <p class="card-text"><a href="{{ $event->user->organization_link }}"
                                 class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                 <i class="fa-solid fa-link"></i> website</a></p>
-                        <a type="button" href="{{ Route('home.profile', $event->user->slug) }}"
-                            class="btn btn-light btn-outline-secondary">Profile</a>
-
+                     @if ($event->user->role == 'visiter')
+                     <a type="button" href="{{ Route('home.profile', $event->user->slug) }}"
+                        class="btn btn-light btn-outline-secondary">Profile</a>
+                     @else
+                     <a type="button" href="{{ Route('dashboard.profile.edit') }}"
+                        class="btn btn-light btn-outline-secondary">Profile</a>
                     </div>
+                     @endif
+
                 </div>
             </div>
         </div>

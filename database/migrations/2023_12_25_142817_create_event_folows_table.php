@@ -16,10 +16,11 @@ return new class extends Migration
         Schema::create('event_folows', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('event_id');
+            $table->unsignedBigInteger('events_id');
             $table->boolean('confirmed')->nullable()->default(false);
+            $table->boolean('check')->nullable()->default(false);
             $table->foreign('user_id')->references('id')->on('users');
-            $table->foreign('event_id')->references('id')->on('events');
+            $table->foreign('events_id')->references('id')->on('events');
             $table->timestamps();
         });
     }
