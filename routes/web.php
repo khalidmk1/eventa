@@ -36,16 +36,23 @@ Route::name('home.')->prefix('/')->group(function (){
     Route::get('/', [LandingPageController::class, 'home'])->name('show');
     Route::get('events',[LandingPageController::class, 'show'])->name('event');
     Route::get('event/{slug}',[LandingPageController::class, 'detail'])->name('detail');
-    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
-    
+    //this count for event favoris
+    Route::get('event/favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
+    Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
+
 });
 
 Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(function (){
-    Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
+    
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
     Route::get('favoris', [LandingPageController::class, 'Favoris_list'])->name('favoris');
-    //this is the controller of checked favoris 
+    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
+    //this is the controller of checked favoris and make confirme favoris table to false 
     Route::post('checked/{slug}', [LandingPageController::class, 'folow_checked'])->name('folow.checked');
+    // this controller just unchecked the favori list 
+    Route::post('unchecked/{slug}', [LandingPageController::class, 'unchecked_favoris'])->name('folow.unchecked');
+    //this count for event favoris
+    Route::get('favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
 });
 
 
@@ -54,6 +61,8 @@ Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(funct
 Route::middleware('auth')->group(function () {
    /*  Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit'); */
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+      //this count for event favoris
+    Route::get('profile/favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
     /* Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); */
 });
 

@@ -229,8 +229,11 @@
                                         </p>
                                     </div>
                                     <div class="text-center">
-                                        <a class="btn btn-info w-25 mb-2"
+                                        <form action="{{ Route('home.folow.unchecked', $event->event->slug) }}" method="post"  class="unchecked_folow">
+                                            <a class="btn btn-info w-25 mb-2" id="detailLink"
                                             href="{{ Route('home.detail', $event->event->slug) }}">detail -></a>
+                                        </form>
+                                        
                                     </div>
 
                                     <div class="card-footer border-0 text-center">

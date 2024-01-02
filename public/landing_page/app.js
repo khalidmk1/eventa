@@ -1,9 +1,4 @@
 
-
-
-
-
-
 $(document).ready(function () {
     // avatar show image 
     var image_avatar = $('#avatar');
@@ -239,7 +234,7 @@ $(document).ready(function () {
 
     $('#search_forme').submit(function (e) {
         e.preventDefault();
-       
+
         /*  var url_location = $(location).attr('href'); */
 
         $.ajax({
@@ -381,6 +376,10 @@ $(document).ready(function () {
     });
 
 
+
+
+
+
     //fovoris list page
     $('#search_forme_favoris').submit(function (e) {
         e.preventDefault();
@@ -395,9 +394,10 @@ $(document).ready(function () {
                 'city': city
             },
 
-            success : function (data) {
+            success: function (data) {
                 console.log(data);
                 $('.event_conatine').empty();
+
                 $('.all_content').hide();
 
                 var obj = data[2];
@@ -410,9 +410,8 @@ $(document).ready(function () {
                     data[0].forEach(event => {
                         const extension = event.video.split('.').pop().toLowerCase();
 
-
                         output += `
-        <div class="col event" data-event-id="${event.id }">
+        <div class="col event" data-event-id="${event.id}">
             <div class="card h-100 shadow-lg border-0 mb-5 p-0 rounded">
                 <div class="position-relative">
                    `;
@@ -425,7 +424,7 @@ $(document).ready(function () {
 
 
                         output += `  <form action="/checked/${event.slug}" method="post"
-                    data-id="${event.id}" class="event_folow">`
+                    data-id="${event.id}" class="checked_folow">`
 
                         if (data[1] == true) {
 
@@ -503,11 +502,11 @@ $(document).ready(function () {
                 </div>`;
 
 
-                       
+
                     });
 
 
-                }else{
+                } else {
                     output += `<h2>is empty</h2>`
                 }
 
@@ -527,28 +526,13 @@ $(document).ready(function () {
     })
 
 
-    function count_favoris(){
-        $.ajax({
-            url: $(this).attr('action'),
-            method: $(this).attr('method'),
-
-            success : function (data) {
-                console.log(data);
-
-            },
-
-            error: function (error) {
-                console.log(error);
-
-            }
-
-        })
-    }
-count_favoris()
+   
+   
 
 })
 
 $(document).ready(function () {
+    //this for event show
     $(document).on('click', '.event_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -562,6 +546,7 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
             },
             success: function (data) {
+                
 
                 var hearts = $('#heart_' + dataId);
                 /* console.log(hearts); */
@@ -583,6 +568,8 @@ $(document).ready(function () {
                         $(this).removeClass('fa-regular').addClass('fa-solid');
                     });
                     btn.hide();
+                    location.reload();
+                    
                 }
 
                 if (data === "please you need to be authenticated") {
@@ -592,6 +579,8 @@ $(document).ready(function () {
                     $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
 
+                count_favoris();
+
             },
             error: function (error) {
                 console.log(error);
@@ -600,11 +589,11 @@ $(document).ready(function () {
 
 
         })
-
     })
 
+    //this is for profile favoris list event
 
-    $(document).on('click', '.checked_folow', function (e) {
+    $(document).on('click', '.profile_event_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var btn = $('.folow_btn');
@@ -618,19 +607,23 @@ $(document).ready(function () {
             },
             success: function (data) {
 
-                
+
                 var hearts = $('#heart_' + dataId);
                 /* console.log(hearts); */
+                if (data === "folow true") {
+                    hearts.each(function () {
+                        $(this).remove();
+                    });
+                    btn.hide();
+                }
+                if (data === "folow false") {
+                    hearts.each(function () {
+                        $(this).remove();
+                    });
+                    btn.show();
+                }
 
-                var updatedEventId = data[1].events_id;
-                console.log(data);
-
-                hearts.each(function () {
-                    $(this).removeClass('fa-solid').addClass('fa-regular');  
-                });
-                $('.event[data-event-id="' + updatedEventId + '"]').hide();
-                btn.show();
-               
+                count_favoris();
 
             },
             error: function (error) {
@@ -640,12 +633,97 @@ $(document).ready(function () {
 
 
         })
-
     })
+
+
+    //this ajax for folow_checked controller 
+    $(document).on('click', '.checked_folow', function (e) {
+        e.preventDefault();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        /*  var dataId = $(this).data("id"); */
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
+            },
+            success: function (data) {
+                console.log(data);
+                var updatedEventId = data[1].events_id;
+                var hideChecked = $('.event[data-event-id="' + updatedEventId + '"]');
+
+                hideChecked.each(function () {
+                    $(this).remove();
+                });
+                count_favoris();
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+    //this ajax for unchecked_favoris controller 
+    $(document).on('click', '.unchecked_folow', function (e) {
+        e.preventDefault();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        /*  var dataId = $(this).data("id"); */
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
+            },
+            success: function (data) {
+                console.log(data);
+                var detailURL = $('#detailLink').attr('href');
+                window.location.href = detailURL;
+
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+    });
+
+
+
+    function count_favoris() {
+        $.ajax({
+            url: 'favoris/count',
+            method: 'GET',
+
+            success: function (data) {
+                console.log(data);
+
+                if(data == 0){
+                    $('.counte').hide();
+                }
+
+                $('.counte').empty().append(data);
+
+            },
+
+            error: function (error) {
+                console.log(error);
+
+            }
+
+        })
+    }
+    count_favoris();
+
+ 
 
 
 
 })
+
+
+
 
 
 

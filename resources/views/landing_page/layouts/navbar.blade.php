@@ -36,9 +36,16 @@
 
             @if (auth()->user()->role == 'visiter')
             <li>
+               <div class="position-relative">
+                <span class="position-absolute counte translate-middle badge rounded-pill bg-danger" 
+                style="right: -1px; top: 5px">
+                    
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
                 <a class="btn btn btn-outline-dark m-2" href="{{ Route('home.favoris') }}">
                     <i class="fa-solid fa-bookmark"></i>
                     List Favoris Event</a>
+               </div>
             </li>    
             @endif
 

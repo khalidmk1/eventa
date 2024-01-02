@@ -202,24 +202,47 @@ class LandingPageController extends Controller
 
     public function edit(Request $request , $slug){
 
-        $user = User::where('slug' , $slug)->first();
+        $user = User::where('slug', $slug)->first();
 
-        $events = Events::where('user_id' , $user->id)->get();
+        $events = Events::where('user_id', $user->id)->get();
 
+
+        $favoris = EventFolow::with('event')
+            ->where('user_id', $user->id)
+            ->where('confirmed', 1)
+            ->get();
+             
+       
+        $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
+                ->whereIn('events_id', $events->pluck('id'))
+                ->where('confirmed', 1)
+                ->get()
+                ->groupBy('events_id');
+        
         $extensions = [];
-    
+        
         foreach ($events as $event) {
-            // Assuming that 'video' is a property of each event
             $extension = pathinfo($event->video, PATHINFO_EXTENSION);
             $extensions[] = $extension;
         }
         
-
-       
+     
+        
+        foreach ($favoris as $favori) {
+            $extension = pathinfo($favori->event->video, PATHINFO_EXTENSION);
+            $extensions[] = $extension; 
+        }
+        
         return view('landing_page.profile.show')->with([
-            'user' => $user  , 'events' => $events , 'extensions' => $extensions ,
+            'user' => $user,
+            'events' => $events,
+            'extensions' => $extensions,
             'city' => $this->city,
-           ]);
+            'favoris' => $favoris,
+            'confirmedFolows' => $confirmedFolows,
+        ]);
+        
+      
     }
 
     public function update(Request $request){
@@ -282,13 +305,15 @@ class LandingPageController extends Controller
         if ($folow_false) {
             $message = 'folow true';
             $folow_false->update([
-                'confirmed' => 1
+                'confirmed' => 1,
+                'check' => 1
             ]);
             return response()->json($message);
         } elseif ($folow_true) {
             $message = 'folow false';
             $folow_true->update([
-                'confirmed' => 0
+                'confirmed' => 0,
+                'check' => 0
             ]);
             return response()->json($message);
         } else {
@@ -296,7 +321,8 @@ class LandingPageController extends Controller
             $newfolow = EventFolow::create([
                 'user_id' => auth()->user()->id,
                 'events_id' => $event->id,
-                'confirmed' => 1
+                'confirmed' => 1,
+                'check' => 1
             ]);
             return response()->json($message);
         }
@@ -318,15 +344,39 @@ class LandingPageController extends Controller
             ->where('confirmed', 1)
             ->first();
 
+         
+
         if ($folow_true) {
             $message = 'folow false';
             $folow_true->update([
                 'confirmed' => 0,
-                'check' => 1
+                'check' => 0
             ]);
+
             return response()->json([$message , $folow_true]);
         }
-        
+       
+
+    }
+
+    public function unchecked_favoris($slug){
+
+        $event = Events::where('slug' , $slug )->first();
+
+        $folow_unchecked = EventFolow::where('user_id', auth()->user()->id)
+        ->where('events_id', $event->id)
+        ->where('confirmed', 1)
+        ->where('check', 1)
+        ->first();
+
+        if ($folow_unchecked) {
+            $message = 'folow unchecked';
+            $folow_unchecked->update([
+                'check' => 0
+            ]);
+
+            return response()->json([$message , $folow_unchecked]);
+        }
 
     }
 
@@ -391,13 +441,6 @@ class LandingPageController extends Controller
                 ->where('confirmed', 1)
                 ->get();
 
-                $countfolow = EventFolow::with('event')->where('user_id', auth()->user()->id)
-                ->where('confirmed', 1)
-                ->where('check' , 0)
-                ->count();
-
-                /* dd($countfolow); */
-
                 $extensions = [];
                 
                 foreach ($events as $event) {
@@ -430,9 +473,10 @@ class LandingPageController extends Controller
 
     public function favoris_count(){
         $folow_count = EventFolow::where('user_id', auth()->user()->id)
-        ->where('confirmed', 0)
-        ->where('')
-        ->first();
+        ->where('check' , 1)
+        ->count();
+
+        return response()->json($folow_count);
     }
 
 
