@@ -38,7 +38,12 @@ Route::name('home.')->prefix('/')->group(function (){
     Route::get('event/{slug}',[LandingPageController::class, 'detail'])->name('detail');
     //this count for event favoris
     Route::get('event/favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
+    //this for profile of landing page 
     Route::get('profile/{slug}', [LandingPageController::class, 'edit'])->name('profile');
+    //this controller for folow event
+    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
+    //this controller for folow users 
+    Route::post('folow/user/{slug}', [LandingPageController::class, 'user_folow'])->name('folow.user');
 
 });
 
@@ -46,13 +51,15 @@ Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(funct
     
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
     Route::get('favoris', [LandingPageController::class, 'Favoris_list'])->name('favoris');
-    Route::post('folow/{slug}', [LandingPageController::class, 'event_folow'])->name('folow');
+  
     //this is the controller of checked favoris and make confirme favoris table to false 
     Route::post('checked/{slug}', [LandingPageController::class, 'folow_checked'])->name('folow.checked');
     // this controller just unchecked the favori list 
     Route::post('unchecked/{slug}', [LandingPageController::class, 'unchecked_favoris'])->name('folow.unchecked');
     //this count for event favoris
     Route::get('favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
+  
+
 });
 
 

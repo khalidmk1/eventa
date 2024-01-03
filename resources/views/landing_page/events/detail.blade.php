@@ -82,9 +82,24 @@
             </div>
 
             <div class="col-sm-4">
+                <div class="message_container_user mb-2"></div>
                 <div class="card shadow p-1 bg-body-tertiary">
-                    <i class="fa-regular fa-heart position-absolute p-2"
-                        style="right: 0 ; font-size: 30px ; color: red"></i>
+                    <form action="{{ Route('home.folow.user', $event->user->slug) }}" method="post" class="user_folow"
+                        data-id="{{ $event->user->id }}">
+                        @csrf
+                        @if (auth()->check())
+                            @if ($confirmedFolowsuser)
+                            <i class="fa-solid fa-heart position-absolute p-2" id="heart_{{ $event->user->id }}"
+                                style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                            @else
+                            <i class="fa-regular fa-heart position-absolute p-2" id="heart_{{ $event->user->id }}"
+                                style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                            @endif
+                        @else
+                            <i class="fa-regular fa-heart position-absolute p-2" id="heart_{{ $event->user->id }}"
+                                style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+                        @endif
+                    </form>
                     <div class="card-body">
 
                         <img src="{{ asset('storage/avatars/' . $event->user->image) }}"
@@ -97,15 +112,15 @@
                                 class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
                                 <i class="fa-solid fa-link"></i> website</a></p>
 
-                                <a type="button" href="{{ Route('home.profile', $event->user->slug) }}"
-                                    class="btn btn-light btn-outline-secondary"> Profile</a>
+                        <a type="button" href="{{ Route('home.profile', $event->user->slug) }}"
+                            class="btn btn-light btn-outline-secondary"> Profile</a>
 
 
 
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Include jQuery library -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
-@endsection
+        <!-- Include jQuery library -->
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js" type="text/javascript"></script>
+    @endsection

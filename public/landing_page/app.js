@@ -532,7 +532,7 @@ $(document).ready(function () {
 })
 
 $(document).ready(function () {
-    //this for event show
+    //this for event show to folow event
     $(document).on('click', '.event_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -636,11 +636,65 @@ $(document).ready(function () {
     })
 
 
-    //this ajax for folow_checked controller 
+       //this for detail page to folow user
+       $(document).on('click', '.user_folow', function (e) {
+        e.preventDefault();
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        var dataId = $(this).data("id");
+
+        $.ajax({
+            url: $(this).attr('action'),
+            method: $(this).attr('method'),
+            headers: {
+                'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
+            },
+            success: function (data) {
+                console.log(data);
+
+                var hearts = $('#heart_' + dataId);
+                /* console.log(hearts); */
+                if (data === "folow true") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-regular').addClass('fa-solid');
+                    });
+                   
+                }
+                if (data === "folow false") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-solid').addClass('fa-regular');
+                    });
+                  
+                }
+
+                if (data === "folow created") {
+                    hearts.each(function () {
+                        $(this).removeClass('fa-regular').addClass('fa-solid');
+                    });
+                   
+                    /* location.reload(); */
+                    
+                }
+
+                if (data === "please you need to be authenticated") {
+                    $('.message_container_user').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+                }
+
+
+            },
+            error: function (error) {
+                console.log(error);
+
+            }
+
+
+        })
+    })
+
+
+    //this ajax for user_folow controller that turn the user folow to false and remove its card
     $(document).on('click', '.checked_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        /*  var dataId = $(this).data("id"); */
 
         $.ajax({
             url: $(this).attr('action'),

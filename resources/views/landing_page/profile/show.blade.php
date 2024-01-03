@@ -84,9 +84,44 @@
                     <div class="row shadow p-1 mt-4 bg-body-tertiary rounded  row-cols-1 row-cols-md-2 g-4 tab-pane fade show active"
                         id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab" tabindex="0">
 
-                        <h2 class="text-center position-absolute mt-3">Your Favoris</h2>
+                        <h2 class="text-center position-absolute  mt-3">Your Favoris</h2>
+                      
                         @foreach ($favoris as $index => $favori)
-                            <div class="col event mt-5 pt-3"  id="heart_{{ $favori->event->id }}">
+
+                        <div class="card event  shadow p-1 bg-body-tertiary" style="margin-top: 4rem" id="heart_{{ $favori->user->id }}">
+                            <form action="{{ Route('home.folow.user', $favori->user->slug) }}" method="post"
+                                data-id="{{ $favori->user->id }}" class="profile_event_folow">
+                                @csrf
+                               
+                                    <i class="fa-solid fa-heart position-absolute p-2"
+                                       
+                                        style="right: 0 ; font-size: 30px ; color: red ; z-index: 1000;"></i>
+
+
+
+                            </form>
+                            <div class="card-body">
+        
+                                <img src="{{ asset('storage/avatars/' . $favori->user->image) }}"
+                                    class="rounded-circle w-50 shadow p-1 bg-body-tertiary rounded " style="height: 180px;"
+                                    alt="Avatar">
+                                <h5 class="card-title mt-3">{{ $favori->user->first_name . ' ' . $favori->user->last_name }}</h5>
+                                <h6 class="card-subtitle mb-2 text-body-secondary">{{ $favori->user->organization_name }}</h6>
+                                <p class="card-text"><i class="fa-solid fa-phone"></i> {{ $favori->user->phone }}</p>
+                                <p class="card-text"><a href="{{ $favori->user->organization_link }}"
+                                        class="link-info link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">
+                                        <i class="fa-solid fa-link"></i> website</a></p>
+        
+                                <a type="button" href="{{ Route('home.profile', $favori->user->slug) }}"
+                                    class="btn btn-light btn-outline-secondary"> Profile</a>
+        
+        
+        
+                            </div>
+                        </div>
+
+
+                            {{-- <div class="col event mt-5 pt-3"  id="heart_{{ $favori->event->id }}">
                                 <div class="card h-100 shadow-lg border-0  mb-5 p-0 rounded">
                                     <div class="position-relative">
                     
@@ -138,7 +173,7 @@
                                     @endforeach
                                 </div>
                             </div>
-                        </div>
+                        </div> --}}
                     @endforeach
 
                 </div>

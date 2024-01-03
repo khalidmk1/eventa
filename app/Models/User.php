@@ -72,4 +72,17 @@ class User extends Authenticatable
         return $this->hasMany(EventFolow::class);
     }
 
+
+ /**
+  * Get all of the userfolow for the User
+  *
+  * @return \Illuminate\Database\Eloquent\Relations\HasMany
+  */
+ public function userfolow(): HasMany
+ {
+     return $this->hasMany(UserFolow::class, 'id_user');
+ }
+
+
+
 }

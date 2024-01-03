@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\Events;
 use App\Models\User;
 use App\Models\EventFolow;
+use App\Models\UserFolow;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -176,8 +177,10 @@ class LandingPageController extends Controller
 
 
     public function detail($slug){
+
         $event = Events::where('slug' , $slug)->first();
         $extension = pathinfo($event->video, PATHINFO_EXTENSION);
+
        if(Auth::check()){
         $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
         ->whereIn('events_id', $event->pluck('id'))
@@ -185,15 +188,23 @@ class LandingPageController extends Controller
         ->get()
         ->groupBy('events_id');
 
+        $confirmedFolowsuser = UserFolow::where('user_id' , auth()->user()->id)
+        ->whereIn('id_user', $event->user->pluck('id'))
+        ->where('confirmed', 1)
+        ->exists();
+
         $existsFolows = EventFolow::where('user_id' , auth()->user()->id)
         ->whereIn('events_id', $event->pluck('id'))
         ->where('confirmed', 1)
         ->exists();
         
         return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension, 
-        'confirmedFolows'=>$confirmedFolows , 'existsFolows' => $existsFolows
+        'confirmedFolows'=>$confirmedFolows , 'existsFolows' => $existsFolows , 
+        'confirmedFolowsuser' => $confirmedFolowsuser
     ]);
+
        }else{
+
         return view('landing_page.events.detail')->with(['event' => $event ,  'extension' => $extension
     ]);
 }
@@ -207,7 +218,7 @@ class LandingPageController extends Controller
         $events = Events::where('user_id', $user->id)->get();
 
 
-        $favoris = EventFolow::with('event')
+        $favoris = UserFolow::with('user')
             ->where('user_id', $user->id)
             ->where('confirmed', 1)
             ->get();
@@ -226,12 +237,6 @@ class LandingPageController extends Controller
             $extensions[] = $extension;
         }
         
-     
-        
-        foreach ($favoris as $favori) {
-            $extension = pathinfo($favori->event->video, PATHINFO_EXTENSION);
-            $extensions[] = $extension; 
-        }
         
         return view('landing_page.profile.show')->with([
             'user' => $user,
@@ -289,7 +294,7 @@ class LandingPageController extends Controller
 
 
     public function event_folow($slug){
-        if(Auth::check()){
+        if(Auth::check() && auth()->user()->role == 'visiter'){
             $event = Events::where('slug' , $slug )->first();
        
         $folow_false = EventFolow::where('user_id', auth()->user()->id)
@@ -475,8 +480,51 @@ class LandingPageController extends Controller
         $folow_count = EventFolow::where('user_id', auth()->user()->id)
         ->where('check' , 1)
         ->count();
-
         return response()->json($folow_count);
+    }
+
+    public function user_folow($slug){
+
+        if(Auth::check() && auth()->user()->role == 'visiter'){
+            $user = User::where('slug' , $slug )->first();
+       
+        $folow_false = UserFolow::where('user_id', auth()->user()->id)
+            ->where('id_user', $user->id)
+            ->where('confirmed', 0)
+            ->first();
+        
+        $folow_true = UserFolow::where('user_id', auth()->user()->id)
+            ->where('id_user', $user->id)
+            ->where('confirmed', 1)
+            ->first();
+
+        if ($folow_false) {
+            $message = 'folow true';
+            $folow_false->update([
+                'confirmed' => 1,
+            ]);
+            return response()->json($message);
+        } elseif ($folow_true) {
+            $message = 'folow false';
+            $folow_true->update([
+                'confirmed' => 0,
+            ]);
+            return response()->json($message);
+        } else {
+            $message = 'folow created';
+            $newfolow = UserFolow::create([
+                'user_id' => auth()->user()->id,
+                'id_user' => $user->id,
+                'confirmed' => 1,
+            ]);
+            return response()->json($message);
+        }
+
+
+        }else{
+            $message = 'please you need to be authenticated';
+            return response()->json($message);
+        }
     }
 
 
