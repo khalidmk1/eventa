@@ -26,6 +26,10 @@ class ProfileController extends Controller
         ]);
     }
 
+    public function verifyemail(){
+        return view('auth.verify-email');
+    }
+
     /**
      * Update the user's profile information.
      */

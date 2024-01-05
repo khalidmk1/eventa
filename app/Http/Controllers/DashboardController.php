@@ -113,6 +113,8 @@ class DashboardController extends Controller
 
     $event = new Events();
 
+    /* dd($event); */
+
     
 
     $video_image = $request->file('video');
@@ -124,7 +126,7 @@ class DashboardController extends Controller
      if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
          /* dd($originalName); */
          $storagePath_img = $video_image->storeAs('event/image', $originalName, 'public');
-          $event->video = $originalName;
+        
 
      }
      if(in_array($extension , ['mp4', 'avi', 'mov'])){
@@ -133,12 +135,12 @@ class DashboardController extends Controller
            $originalPath = $video_image->storeAs('event/video',$originalName, 'public');
            // Dispatch the job for video compression
           /*  CompressVideo::dispatch($originalPath, $originalName); */
-           $event->video = $originalName;
+          /*  $event->video = $originalName; */
           
      }
      
      
-
+     $event->video = $originalName;
        
          foreach ($request->input('categories') as $categorie) {
              $UploadCategories[] = $categorie;
@@ -213,6 +215,11 @@ class DashboardController extends Controller
 
     }
     
+
+    public function checked_paticipated(){
+        
+        return view('dashboard.organizare.table.pariticipated');
+    }
    
 
 }

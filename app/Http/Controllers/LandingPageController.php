@@ -5,6 +5,7 @@ use App\Models\Events;
 use App\Models\User;
 use App\Models\EventFolow;
 use App\Models\UserFolow;
+use App\Models\EventParticipated;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -189,7 +190,7 @@ class LandingPageController extends Controller
         ->groupBy('events_id');
 
         $confirmedFolowsuser = UserFolow::where('user_id' , auth()->user()->id)
-        ->whereIn('id_user', $event->user->pluck('id'))
+        ->where('id_user', $event->user->id)
         ->where('confirmed', 1)
         ->exists();
 
@@ -294,44 +295,48 @@ class LandingPageController extends Controller
 
 
     public function event_folow($slug){
-        if(Auth::check() && auth()->user()->role == 'visiter'){
-            $event = Events::where('slug' , $slug )->first();
+        if(Auth::check()){
+            if(auth()->user()->role == 'visiter'){
+                $event = Events::where('slug' , $slug )->first();
        
-        $folow_false = EventFolow::where('user_id', auth()->user()->id)
-            ->where('events_id', $event->id)
-            ->where('confirmed', 0)
-            ->first();
+                $folow_false = EventFolow::where('user_id', auth()->user()->id)
+                    ->where('events_id', $event->id)
+                    ->where('confirmed', 0)
+                    ->first();
+                
+                $folow_true = EventFolow::where('user_id', auth()->user()->id)
+                    ->where('events_id', $event->id)
+                    ->where('confirmed', 1)
+                    ->first();
         
-        $folow_true = EventFolow::where('user_id', auth()->user()->id)
-            ->where('events_id', $event->id)
-            ->where('confirmed', 1)
-            ->first();
-
-        if ($folow_false) {
-            $message = 'folow true';
-            $folow_false->update([
-                'confirmed' => 1,
-                'check' => 1
-            ]);
-            return response()->json($message);
-        } elseif ($folow_true) {
-            $message = 'folow false';
-            $folow_true->update([
-                'confirmed' => 0,
-                'check' => 0
-            ]);
-            return response()->json($message);
-        } else {
-            $message = 'folow created';
-            $newfolow = EventFolow::create([
-                'user_id' => auth()->user()->id,
-                'events_id' => $event->id,
-                'confirmed' => 1,
-                'check' => 1
-            ]);
-            return response()->json($message);
-        }
-
+                if ($folow_false) {
+                    $message = 'folow true';
+                    $folow_false->update([
+                        'confirmed' => 1,
+                        'check' => 1
+                    ]);
+                    return response()->json($message);
+                } elseif ($folow_true) {
+                    $message = 'folow false';
+                    $folow_true->update([
+                        'confirmed' => 0,
+                        'check' => 0
+                    ]);
+                    return response()->json($message);
+                } else {
+                    $message = 'folow created';
+                    $newfolow = EventFolow::create([
+                        'user_id' => auth()->user()->id,
+                        'events_id' => $event->id,
+                        'confirmed' => 1,
+                        'check' => 1
+                    ]);
+                    return response()->json($message);
+                }
+            }else{
+                $message = 'your not authorize to make this action';
+                return response()->json($message);
+            }
 
         }else{
             $message = 'please you need to be authenticated';
@@ -520,6 +525,56 @@ class LandingPageController extends Controller
             return response()->json($message);
         }
 
+
+        }else{
+            $message = 'please you need to be authenticated';
+            return response()->json($message);
+        }
+    }
+
+    public function event_partipited($slug){
+        if(Auth::check()){
+            if(auth()->user()->role == 'visiter'){
+                $event = Events::where('slug' , $slug )->first();
+       
+                $folow_false = EventParticipated::where('user_id', auth()->user()->id)
+                    ->where('events_id', $event->id)
+                    ->where('confirmed', 0)
+                    ->first();
+                
+                $folow_true = EventFolow::where('user_id', auth()->user()->id)
+                    ->where('events_id', $event->id)
+                    ->where('confirmed', 1)
+                    ->first();
+        
+                if ($folow_false) {
+                    $message = 'folow true';
+                    $folow_false->update([
+                        'confirmed' => 1,
+                        'check' => 1
+                    ]);
+                    return response()->json($message);
+                } elseif ($folow_true) {
+                    $message = 'folow false';
+                    $folow_true->update([
+                        'confirmed' => 0,
+                        'check' => 0
+                    ]);
+                    return response()->json($message);
+                } else {
+                    $message = 'folow created';
+                    $newfolow = EventFolow::create([
+                        'user_id' => auth()->user()->id,
+                        'events_id' => $event->id,
+                        'confirmed' => 1,
+                        'check' => 1
+                    ]);
+                    return response()->json($message);
+                }
+            }else{
+                $message = 'your not authorize to make this action';
+                return response()->json($message);
+            }
 
         }else{
             $message = 'please you need to be authenticated';

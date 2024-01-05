@@ -210,7 +210,11 @@
 
 
                                         </form>
+                                        @if ($event->event->price == 'free')
                                         <span class="position-absolute price">{{ $event->event->price }}</span>
+                                        @else
+                                        <span class="position-absolute price">{{ $event->event->price }} DH</span>
+                                        @endif
                                         @if (in_array($extensions[$index], ['mp4', 'avi', 'mov']))
                                             <video class="card-img-top  about_vid w-100" autoplay loop muted>
                                                 <source src="{{ asset('storage/event/video/' . $event->event->video) }}"
@@ -230,7 +234,7 @@
                                     </div>
                                     <div class="text-center">
                                         <form action="{{ Route('home.folow.unchecked', $event->event->slug) }}" method="post"  class="unchecked_folow">
-                                            <a class="btn btn-info w-25 mb-2" id="detailLink"
+                                            <a class="btn btn-info w-25 mb-2" 
                                             href="{{ Route('home.detail', $event->event->slug) }}">detail -></a>
                                         </form>
                                         

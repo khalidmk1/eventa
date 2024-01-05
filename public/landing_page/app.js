@@ -579,6 +579,13 @@ $(document).ready(function () {
                     $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
 
+                if (data === "your not authorize to make this action") {
+                    $('html, body').animate({
+                        scrollTop: 0
+                    }, 'slow');
+                    $('.message_container').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
+                }
+
                 count_favoris();
 
             },
@@ -678,6 +685,8 @@ $(document).ready(function () {
                 if (data === "please you need to be authenticated") {
                     $('.message_container_user').append('<div class="alert alert-primary alert-dismissible fade show w-100 m-auto mt-2" role="alert"><strong>' + data + " " + '<a href="/login" class="link-dark link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover">Login</a>' + '</strong><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>');
                 }
+                
+               
 
 
             },
@@ -723,7 +732,7 @@ $(document).ready(function () {
     $(document).on('click', '.unchecked_folow', function (e) {
         e.preventDefault();
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-        /*  var dataId = $(this).data("id"); */
+        let url = $(this)
 
         $.ajax({
             url: $(this).attr('action'),
@@ -732,9 +741,13 @@ $(document).ready(function () {
                 'X-CSRF-TOKEN': CSRF_TOKEN // Include CSRF token in the headers
             },
             success: function (data) {
-                console.log(data);
-                var detailURL = $('#detailLink').attr('href');
+                console.log($(this));
+                /* console.log(data); */
+
+                var detailURL = url.find('a').attr('href');
+
                 window.location.href = detailURL;
+                
 
             },
             error: function (error) {

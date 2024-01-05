@@ -62,6 +62,16 @@ class Events extends Model
         return $this->hasMany(EventFolow::class);
     }
 
+      /**
+     * Get all of the paticipated for the Events
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function paticipated(): HasMany
+    {
+        return $this->hasMany(EventFolow::class);
+    }
+
     
 
 }

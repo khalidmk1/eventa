@@ -432,6 +432,8 @@
                     },
                     error: function(error) {
 
+                        console.log(error);
+
                         setTimeout(function() {
                             $('#exampleModalCenter').modal('hide')
                         }, 1000);
@@ -444,8 +446,8 @@
                             $('#message_containe').empty();
                         } */
 
-
-                        if (error.responseJSON.errors) {
+/* 
+                        if (error.responseJSON.errors && error.responseJSON.errors) {
 
                             $.each(error.responseJSON.errors, function(key, value) {
                                 console.log(value);
@@ -457,7 +459,9 @@
                                     </div>`;
                                 $('#message_containe').append(error);
                             });
-                        }
+                        }else{
+                            console.log('Error occurred: ', error);
+                        } */
                             
 
                     }

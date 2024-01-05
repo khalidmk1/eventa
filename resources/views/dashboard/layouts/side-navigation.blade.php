@@ -66,6 +66,18 @@
                           </p>
                       </a>
                   </li>
+
+                  <li class="nav-header">confirem participte</li>
+                  <li class="nav-item">
+                    <a href="{{route("dashboard.table.participated")}}" class="nav-link">
+                      <i class="nav-icon fa fa-calendar" aria-hidden="true"></i>
+                        <p>
+                            participated
+                        </p>
+                    </a>
+                </li>
+
+
                   <li class="nav-item">
                     <a href="{{Route('dashboard.profile.edit')}}" class="nav-link active">
                         <i class="far fa-circle nav-icon"></i>

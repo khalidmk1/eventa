@@ -26,7 +26,11 @@
                                     @endforeach
                                 </h2>
 
+                                @if($event->price == 'free')
+                                <h4 class="m-0">{{ $event->price }} </h4>
+                                @else
                                 <h4 class="m-0">{{ $event->price }} DH</h4>
+                                @endif
                             </div>
                             <div class="col-md-12 col-sm-12 d-flex gap-2 justify-content-end">
                                 @if (auth()->check())

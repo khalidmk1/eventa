@@ -38,6 +38,8 @@ class RegisteredUserController extends Controller
         return view('auth.register' )->with('county' , $this->county);
     }
 
+
+
     /**
      * Handle an incoming registration request.
      *
@@ -89,8 +91,6 @@ $user->block = false;
 
 
 $user->save();
-
-
 
 return response()->json(['message' => 'user created successfully']);
 

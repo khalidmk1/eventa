@@ -19,13 +19,14 @@ use Illuminate\Support\Facades\Route;
 
 
 
-Route::middleware(['auth','organizare','admin'])->name('dashboard.')->prefix('dashboard')->group(function (){
+Route::middleware(['auth','organizare','admin' , 'verified'])->name('dashboard.')->prefix('dashboard')->group(function (){
     Route::get('/home', [DashboardController::class, 'home'])->name('home');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('table/participated', [DashboardController::class, 'checked_paticipated'])->name('table.participated');
 });
 
 
-Route::middleware(['auth','organizare'])->name('dashboard.event.')->prefix('event')->group(function (){
+Route::middleware(['auth','organizare' , 'verified'])->name('dashboard.event.')->prefix('event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
@@ -47,7 +48,11 @@ Route::name('home.')->prefix('/')->group(function (){
 
 });
 
-Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(function (){
+Route::middleware(['auth' , 'verified'])->name('home.')->prefix('/home')->group(function (){
+    Route::get('/', [LandingPageController::class, 'home'])->name('index');
+});
+
+Route::middleware(['visiter' , 'auth' , 'verified'])->name('home.')->prefix('/')->group(function (){
     
     Route::put('update/{id}', [LandingPageController::class, 'update'])->name('update');
     Route::get('favoris', [LandingPageController::class, 'Favoris_list'])->name('favoris');
@@ -58,6 +63,8 @@ Route::middleware(['visiter' , 'auth'])->name('home.')->prefix('/')->group(funct
     Route::post('unchecked/{slug}', [LandingPageController::class, 'unchecked_favoris'])->name('folow.unchecked');
     //this count for event favoris
     Route::get('favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
+
+    
   
 
 });
@@ -71,6 +78,8 @@ Route::middleware('auth')->group(function () {
       //this count for event favoris
     Route::get('profile/favoris/count', [LandingPageController::class, 'favoris_count'])->name('folow.count');
     /* Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy'); */
+    Route::get('/email/verify', [ProfileController::class, 'verifyemail'])->name('verification.notice');
+   
 });
 
 require __DIR__.'/auth.php';
