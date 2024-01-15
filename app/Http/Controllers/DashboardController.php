@@ -2,15 +2,14 @@
 
 namespace App\Http\Controllers;
 use App\Models\Events;
-use App\Jobs\CompressVideo;
-use App\Jobs\CompressImage;
-
+use App\Models\EventsAsset;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
-use FFMpeg;
-use FFMpeg\Format\Video\X264;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Illuminate\Support\Facades\File;
+
 
 class DashboardController extends Controller
 {
@@ -87,11 +86,126 @@ class DashboardController extends Controller
     ]);
     }
 
+
+    public function assetevent(Request $request){
+
+       /*  $eventasset = new EventsAsset(); */
+
+       /*  dd($eventasset); */
+/* 
+        $video = $request->file('video'); */
+        /*  dd($video_image); */
+
+       /*  $originalName = time() . '_' . $video->getClientOriginalName(); */
+       /*  $storagePath = $video->storeAs('event/video', $originalName, 'public'); */
+
+       // Set the path to the video file
+       $filePath = $request->file('video')->getRealPath();
+       $chunkSize = 10 * 1024 * 1024; // 10MB chunks (you can adjust this as needed)
+       
+       $fileHandle = fopen($filePath, 'rb');
+       
+       if ($fileHandle !== false) {
+           $chunkIndex = 1;
+       
+           // Create the directory if it doesn't exist
+           $tempDirectory = storage_path('app/temp/');
+           if (!File::isDirectory($tempDirectory)) {
+               File::makeDirectory($tempDirectory, 0777, true, true);
+           }
+       
+           while (!feof($fileHandle)) {
+               $chunkContent = fread($fileHandle, $chunkSize);
+       
+               $chunkFilePath = $tempDirectory . 'chunk_' . $chunkIndex;
+               file_put_contents($chunkFilePath, $chunkContent);
+       
+               $uploadedChunk = Cloudinary::upload($chunkFilePath, [
+                   'resource_type' => 'video',
+                   'folder' => 'uploads',
+               ]);
+       
+               $secureUrl = $uploadedChunk->getSecurePath();
+       
+               // Process or store the URL as needed
+               // ...
+               return response()->json($secureUrl);
+       
+               $chunkIndex++;
+           }
+       
+           fclose($fileHandle);
+       }
+
+        
+    // Upload the video to Cloudinary
+   /*  $uploadedVideo = Cloudinary::upload($fileHandle, [
+        'folder' => 'uploads',
+        'resource_type' => 'video',
+        'transformation' => [
+            'width' => 350,
+            'height' => 200,
+            'crop' => 'fill',
+        ],
+    ]);
+ */
+    // Get the secure URL of the transformed video
+    /* $secureUrl = $uploadedVideo->getSecurePath(); */
+
+  /*   return response()->json($secureUrl); */
+
+
+      /*   return response()->json($data, 200, $headers); */
+
+
+      /*   $eventasset->video = $originalName; */
+
+
+       /*  if($video_image && $video_image->isValid()){
+            CompressVideo::dispatch($video_image)->onQueue('fileuploads');
+        }
+
+        $eventasset->create([
+            'user_id' => auth()->user()->id,
+            'events_id'
+        ]); */
+
+
+    
+        /*  if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
+             dd($originalName); 
+            
+            
+    
+         }
+         if(in_array($extension , ['mp4', 'avi', 'mov'])){
+    
+               // Store the original file
+              
+               // Dispatch the job for video compression
+               CompressVideo::dispatch($originalPath, $originalName);
+               $event->video = $originalName;
+              
+         } */
+
+         
+        /*  if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
+            Storage::delete('public/event/image/' . $originalName);
+   
+        }
+        if(in_array($extension , ['mp4', 'avi', 'mov']) ){
+
+            Storage::delete('public/event/video/' . $originalName); 
+        } */
+
+        return response()->json($video_image);
+    }
+
     public function store(Request $request){
 
            // Validate the request data
     $validator = Validator::make($request->all(), [
-        'video' => 'required|file',
+      /*   'video' => 'required|file', */
         'title' => 'required|string|max:255',
         'tags' => 'required|array',
         'adresse' =>'required|string|max:255',
@@ -115,32 +229,9 @@ class DashboardController extends Controller
 
     /* dd($event); */
 
-    
-
-    $video_image = $request->file('video');
-    /*  dd($video_image); */
-   
-     $originalName =time().'_'. $video_image->getClientOriginalName();
-     $extension = $video_image->getClientOriginalExtension();
-
-     if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
-         /* dd($originalName); */
-         $storagePath_img = $video_image->storeAs('event/image', $originalName, 'public');
-        
-
-     }
-     if(in_array($extension , ['mp4', 'avi', 'mov'])){
-
-           // Store the original file
-           $originalPath = $video_image->storeAs('event/video',$originalName, 'public');
-           // Dispatch the job for video compression
-          /*  CompressVideo::dispatch($originalPath, $originalName); */
-          /*  $event->video = $originalName; */
-          
-     }
      
      
-     $event->video = $originalName;
+  
        
          foreach ($request->input('categories') as $categorie) {
              $UploadCategories[] = $categorie;
@@ -195,15 +286,6 @@ class DashboardController extends Controller
             $event->save();
             return response()->json(['message' => 'Event created successfully']);
         } else {
-
-            if(in_array($extension, ['jpg', 'jpeg', 'png', 'gif'])){
-                Storage::delete('public/event/image/' . $originalName);
-       
-            }
-            if(in_array($extension , ['mp4', 'avi', 'mov']) ){
-
-                Storage::delete('public/event/video/' . $originalName); 
-            }
 
             return response()->json(['message' => 'The date is invalid']);
         }

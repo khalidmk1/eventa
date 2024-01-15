@@ -17,18 +17,15 @@ class CompressVideo implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
-    protected $originalPath;
-    protected $videoName;
-
+    protected $videoData;
     /**
      * Create a new job instance.
      *
      * @return void
      */
-    public function __construct($originalPath, $videoName )
+    public function __construct($videoData)
     {
-        $this->originalPath = $originalPath;
-        $this->videoName = $videoName;
+        $this->videoData = $videoData;
 
     }
 
@@ -39,17 +36,14 @@ class CompressVideo implements ShouldQueue
      */
     public function handle()
     {
-        
-        $savePath = 'compressed/';
-         // Compress the video
-         FFMpeg::fromDisk('public')
-         ->open($this->originalPath)
-         ->export()
-         ->toDisk('public')
-         ->inFormat(new X264('aac'))
-         ->save($savePath .$this->videoName);
 
-     Storage::disk('public')->delete($this->originalPath);
+        $video = $this->videoData;
+
+        if ($video && $video->isValid()) {
+            $originalName = time() . '_' . $video->getClientOriginalName();
+            $storagePath = $video->storeAs('event/video', $originalName, 'public');
+            $eventasset->video = $originalName;
+        }
 
     }
 }

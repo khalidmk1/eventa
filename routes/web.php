@@ -28,9 +28,11 @@ Route::middleware(['auth','organizare','admin' , 'verified'])->name('dashboard.'
 
 Route::middleware(['auth','organizare' , 'verified'])->name('dashboard.event.')->prefix('event')->group(function (){
     Route::get('/create', [DashboardController::class, 'create'])->name('create');
+    Route::post('create/asset', [DashboardController::class, 'assetevent'])->name('asset');
     Route::post('/store', [DashboardController::class, 'store'])->name('store');
     Route::get('/show', [DashboardController::class, 'show'])->name('show');
     Route::get('/detail/{slug}', [DashboardController::class, 'detail'])->name('detail');
+
 });
 
 Route::name('home.')->prefix('/')->group(function (){

@@ -72,6 +72,16 @@ class Events extends Model
         return $this->hasMany(EventFolow::class);
     }
 
+    /**
+     * Get the assetevent associated with the Events
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
+    public function assetevent(): HasOne
+    {
+        return $this->hasOne(EventsAsset::class, 'events_id');
+    }
+
     
 
 }

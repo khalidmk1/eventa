@@ -223,22 +223,23 @@ class LandingPageController extends Controller
             ->where('user_id', $user->id)
             ->where('confirmed', 1)
             ->get();
+
+            $extensions = [];
+        
+            foreach ($events as $event) {
+                $extension = pathinfo($event->video, PATHINFO_EXTENSION);
+                $extensions[] = $extension;
+            }
+            
              
        
+      if(Auth::check()){
         $confirmedFolows = EventFolow::where('user_id' , auth()->user()->id)
-                ->whereIn('events_id', $events->pluck('id'))
-                ->where('confirmed', 1)
-                ->get()
-                ->groupBy('events_id');
-        
-        $extensions = [];
-        
-        foreach ($events as $event) {
-            $extension = pathinfo($event->video, PATHINFO_EXTENSION);
-            $extensions[] = $extension;
-        }
-        
-        
+        ->whereIn('events_id', $events->pluck('id'))
+        ->where('confirmed', 1)
+        ->get()
+        ->groupBy('events_id');
+
         return view('landing_page.profile.show')->with([
             'user' => $user,
             'events' => $events,
@@ -247,6 +248,20 @@ class LandingPageController extends Controller
             'favoris' => $favoris,
             'confirmedFolows' => $confirmedFolows,
         ]);
+      }else{
+
+        return view('landing_page.profile.show')->with([
+            'user' => $user,
+            'events' => $events,
+            'extensions' => $extensions,
+            'city' => $this->city,
+            'favoris' => $favoris,
+        ]);
+      }
+        
+      
+        
+     
         
       
     }

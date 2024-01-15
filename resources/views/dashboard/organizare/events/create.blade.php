@@ -49,6 +49,27 @@
                 <div class="card ">
 
                     <div class="card-body m-auto ">
+
+                        <form action="{{ Route('dashboard.event.asset') }}" method="post" enctype="multipart/form-data"
+                            id="asset_store">
+                            @csrf
+
+                            <img id="Myimage" style="object-fit: fill; width: 100%; border-radius:10px; height: 900px;"
+                                src=""
+                                alt="">
+
+                            <video id="myVideo" class="myVideo Myvideo_create" height="900" autoplay loop muted>
+                                <source
+                                    src=""
+                                    type="video/mp4">
+                            </video>
+
+                            <div class="video_add_containe">
+                                <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
+                                <input type="file" id="add_file" name="video" aria-hidden="true" />
+                            </div>
+                        </form>
+
                         <form action="{{ Route('dashboard.event.store') }}" id="store_event" method="post"
                             enctype="multipart/form-data">
                             @csrf
@@ -80,22 +101,7 @@
                             </div>
                             {{-- end Exemple for user --}}
 
-                            <img height="900" id="Myimage"
-                                style="  object-fit: fill;
-                            width: 100%;
-                            border-radius:10px; "
-                                src="{{ asset('storage/originals/image/1700574639_16-169348_user-icon-user-white-icon-transparent-clipart.jpg') }}"
-                                alt="">
-                            <video id="myVideo" class="myVideo Myvideo_create" height="900" autoplay loop muted>
-                                <source
-                                    src="{{ asset('storage/compressed/videos1700571747_podcast talk show - Made with PosterMyWall.mp4') }}"
-                                    type="video/mp4">
-                            </video>
 
-                            <div class="video_add_containe">
-                                <label for="add_file"><i class="fa fa-plus add_icon border border-dark"></i></label>
-                                <input type="file" id="add_file" name="video" aria-hidden="true" />
-                            </div>
 
 
                             <div class="col-md-12 mt-4">
@@ -377,6 +383,85 @@
         //create event
         $(document).ready(function() {
 
+            $('#asset_store').on('change' , function(e){
+                e.preventDefault();
+                var formData = new FormData(this);
+                $.ajax({
+                    url: $(this).attr('action'),
+                    method: $(this).attr('method'),
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+
+                        console.log(response);
+                       /*  setTimeout(function() {
+                            $('#exampleModalCenter').modal('hide')
+                        }, 1000);
+
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 'slow');
+                        $('.days').remove();
+
+                        if ($('.days').length === 0) {
+                            let addButton =
+                                '<i class="fa fa-plus card_add border border-dark add-programme"></i>';
+                            $('#programmeContainer .card-header').last().append(addButton);
+                        } */
+
+
+
+
+                        var seccuss;
+                       
+
+
+                      /*   $('#message_containe').append(seccuss); */
+                       
+                    },
+                    error: function(error) {
+
+                        console.log(error);
+/* 
+                        setTimeout(function() {
+                            $('#exampleModalCenter').modal('hide')
+                        }, 1000);
+
+                        $('html, body').animate({
+                            scrollTop: 0
+                        }, 'slow'); */
+
+                        /*  if ($('#message_containe').children().length > 0) {
+                             $('#message_containe').empty();
+                         } */
+
+                        /* 
+                                                if (error.responseJSON.errors && error.responseJSON.errors) {
+
+                                                    $.each(error.responseJSON.errors, function(key, value) {
+                                                        console.log(value);
+                                                        var error = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show  danger_alert " role="alert">
+                                                    <strong>${value}</strong>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>`;
+                                                        $('#message_containe').append(error);
+                                                    });
+                                                }else{
+                                                    console.log('Error occurred: ', error);
+                                                } */
+
+
+                    }
+
+                });
+
+            })
+
+
+
             $('#store_event').off('submit').on('submit', function(e) {
                 e.preventDefault();
                 $('#exampleModalCenter').modal('show')
@@ -404,7 +489,7 @@
                         }
 
 
-                      
+
 
                         var seccuss;
                         if (response.message === "The date is invalid") {
@@ -415,7 +500,7 @@
                         </button>
                     </div>`;
                         } else {
-                           
+
                             seccuss = `<div class="col-6 alert alert-success alert-dismissible ml-2 text-center fade show danger_alert" role="alert">
                         <strong>${response.message}</strong>
                         <button type="button" class="close" data-dismiss="alert" aria-label="Close">
@@ -423,7 +508,7 @@
                         </button>
                     </div>`;
 
-                    $('#store_event')[0].reset();
+                            $('#store_event')[0].reset();
                         }
 
 
@@ -442,27 +527,27 @@
                             scrollTop: 0
                         }, 'slow');
 
-                       /*  if ($('#message_containe').children().length > 0) {
-                            $('#message_containe').empty();
-                        } */
+                        /*  if ($('#message_containe').children().length > 0) {
+                             $('#message_containe').empty();
+                         } */
 
-/* 
-                        if (error.responseJSON.errors && error.responseJSON.errors) {
+                        /* 
+                                                if (error.responseJSON.errors && error.responseJSON.errors) {
 
-                            $.each(error.responseJSON.errors, function(key, value) {
-                                console.log(value);
-                                var error = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show  danger_alert " role="alert">
-                                        <strong>${value}</strong>
-                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                            <span aria-hidden="true">&times;</span>
-                                        </button>
-                                    </div>`;
-                                $('#message_containe').append(error);
-                            });
-                        }else{
-                            console.log('Error occurred: ', error);
-                        } */
-                            
+                                                    $.each(error.responseJSON.errors, function(key, value) {
+                                                        console.log(value);
+                                                        var error = `<div class="col-6 alert alert-danger alert-dismissible ml-2 text-center fade show  danger_alert " role="alert">
+                                                    <strong>${value}</strong>
+                                                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                        <span aria-hidden="true">&times;</span>
+                                                    </button>
+                                                </div>`;
+                                                        $('#message_containe').append(error);
+                                                    });
+                                                }else{
+                                                    console.log('Error occurred: ', error);
+                                                } */
+
 
                     }
 
